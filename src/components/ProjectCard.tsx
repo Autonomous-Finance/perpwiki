@@ -9,6 +9,7 @@ interface ProjectCardProps {
   category: string;
   status: string;
   isVerified: boolean;
+  logoUrl?: string | null;
 }
 
 export function ProjectCard({
@@ -19,6 +20,7 @@ export function ProjectCard({
   category,
   status,
   isVerified,
+  logoUrl,
 }: ProjectCardProps) {
   return (
     <Link href={`/projects/${slug}`}>
@@ -27,14 +29,26 @@ export function ProjectCard({
         style={{ borderRadius: "4px" }}
       >
         <div className="flex items-start justify-between gap-2">
-          <h3 className="font-[family-name:var(--font-space-grotesk)] text-base font-semibold text-[var(--hw-text)]">
-            {name}
-            {isVerified && (
-              <span className="ml-1.5 inline-block text-[var(--hw-green)]" title="Verified">
-                ✓
+          <div className="flex items-center gap-2.5">
+            {logoUrl ? (
+              <img src={logoUrl} alt="" className="h-6 w-6 shrink-0 rounded-full object-cover" />
+            ) : (
+              <span
+                className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-[10px] font-bold text-[var(--hw-bg)]"
+                style={{ background: "var(--hw-text-dim)" }}
+              >
+                {name.charAt(0)}
               </span>
             )}
-          </h3>
+            <h3 className="font-[family-name:var(--font-space-grotesk)] text-base font-semibold text-[var(--hw-text)]">
+              {name}
+              {isVerified && (
+                <span className="ml-1.5 inline-block text-[var(--hw-green)]" title="Verified">
+                  ✓
+                </span>
+              )}
+            </h3>
+          </div>
           <LayerBadge layer={layer} />
         </div>
         {tagline && (

@@ -158,6 +158,7 @@ export default async function ProjectsPage({
             category={project.category}
             status={project.status}
             isVerified={project.isVerified}
+            logoUrl={project.logoUrl}
           />
         ))}
       </div>

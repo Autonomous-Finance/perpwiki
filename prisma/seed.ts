@@ -851,6 +851,60 @@ const projects = [
   },
 ];
 
+// Logo URLs for known projects (unavatar.io/twitter or logo.clearbit.com)
+const LOGO_URLS: Record<string, string> = {
+  hyperliquid: "https://unavatar.io/twitter/HyperliquidX",
+  hlp: "https://unavatar.io/twitter/HyperliquidX",
+  purr: "https://unavatar.io/twitter/Hy_Purr_liquid",
+  "hyperdrive-trade": "https://unavatar.io/twitter/hyperdrivetrade",
+  "insilico-terminal": "https://unavatar.io/twitter/InsilicoTrading",
+  coinpilot: "https://unavatar.io/twitter/trycoinpilot",
+  "pvp-trade": "https://unavatar.io/twitter/pvp_dot_trade",
+  katoshi: "https://unavatar.io/twitter/KatoshiAI",
+  hummingbot: "https://logo.clearbit.com/hummingbot.org",
+  "rage-trade": "https://unavatar.io/twitter/rage_trade",
+  "growi-hf": "https://unavatar.io/twitter/GrowiFinance",
+  hypurrscan: "https://unavatar.io/twitter/HypurrScan",
+  asxn: "https://unavatar.io/twitter/asxn_r",
+  hyperscanner: "https://unavatar.io/twitter/hyperscanner_io",
+  kinetiq: "https://logo.clearbit.com/kinetiq.xyz",
+  stakedhype: "https://unavatar.io/twitter/stakedhype",
+  hyperlend: "https://logo.clearbit.com/hyperlend.finance",
+  "felix-protocol": "https://logo.clearbit.com/usefelix.xyz",
+  "hypurr-fi": "https://unavatar.io/twitter/hypurrfi",
+  sentiment: "https://unavatar.io/twitter/sentimentxyz",
+  morpho: "https://logo.clearbit.com/morpho.org",
+  timeswap: "https://logo.clearbit.com/timeswap.io",
+  hyperswap: "https://unavatar.io/twitter/HyperSwapX",
+  kittenswap: "https://unavatar.io/twitter/KittenswapHype",
+  gliquid: "https://unavatar.io/twitter/gliquidx",
+  valantis: "https://unavatar.io/twitter/ValantisLabs",
+  "drip-trade": "https://unavatar.io/twitter/drip__trade",
+  purrswap: "https://unavatar.io/twitter/PurrSwap_",
+  hyperbeat: "https://unavatar.io/twitter/0xHyperBeat",
+  "looped-hype": "https://unavatar.io/twitter/Looped_HYPE",
+  hyperbloom: "https://unavatar.io/twitter/hyperbloomxyz",
+  resolv: "https://logo.clearbit.com/resolv.xyz",
+  mizu: "https://unavatar.io/twitter/mizulabs",
+  debridge: "https://logo.clearbit.com/debridge.com",
+  "across-protocol": "https://unavatar.io/twitter/AcrossProtocol",
+  layerzero: "https://logo.clearbit.com/layerzero.network",
+  "hl-names": "https://unavatar.io/twitter/hlnames",
+  hyperzap: "https://unavatar.io/twitter/hyperzap_io",
+  redstone: "https://logo.clearbit.com/redstone.finance",
+  "trade-xyz": "https://unavatar.io/twitter/traborexyz",
+  hyperodd: "https://unavatar.io/twitter/HyperOddX",
+  ventuals: "https://unavatar.io/twitter/ventuals_xyz",
+  volmex: "https://logo.clearbit.com/volmex.finance",
+};
+
+// Apply logos to projects
+for (const p of projects) {
+  if (LOGO_URLS[p.slug]) {
+    (p as Record<string, unknown>).logoUrl = LOGO_URLS[p.slug];
+  }
+}
+
 async function main() {
   console.log("Seeding database...");
 
