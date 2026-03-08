@@ -1,0 +1,75 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Project {
+  id             String         @id @default(cuid())
+  slug           String         @unique
+  name           String
+  tagline        String?
+  description    String?
+  website        String?
+  twitter        String?
+  github         String?
+  discord        String?
+  telegram       String?
+  logoUrl        String?
+  layer          String         @default("BOTH")
+  category       String
+  tags           String         @default("[]")
+  status         String         @default("ACTIVE")
+  launchYear     Int?
+  launchDate     String?
+  isVerified     Boolean        @default(false)
+  isFeatured     Boolean        @default(false)
+  isHip3         Boolean        @default(false)
+  submittedBy    String?
+  approvalStatus String         @default("APPROVED")
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+
+  dossier     Dossier?
+  reviews     Review[]
+  suggestions Suggestion[]
+}
+
+model Dossier {
+  id             String   @id @default(cuid())
+  projectId      String   @unique
+  project        Project  @relation(fields: [projectId], references: [id])
+  seedId         String   @unique
+  entityName     String
+  schemaVersion  String   @default("2.0")
+  dossierJson    String
+  qualityScore   Float    @default(0.0)
+  readyToPublish Boolean  @default(false)
+  importedAt     DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+model Review {
+  id          String   @id @default(cuid())
+  projectId   String
+  project     Project  @relation(fields: [projectId], references: [id])
+  rating      Int
+  content     String?
+  authorId    String?
+  isPublished Boolean  @default(false)
+  createdAt   DateTime @default(now())
+}
+
+model Suggestion {
+  id        String   @id @default(cuid())
+  projectId String?
+  project   Project? @relation(fields: [projectId], references: [id])
+  field     String?
+  value     String?
+  type      String?
+  status    String   @default("pending")
+  createdAt DateTime @default(now())
+}

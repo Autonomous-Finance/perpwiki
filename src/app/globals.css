@@ -1,0 +1,91 @@
+@import "tailwindcss";
+
+:root {
+  /* Backgrounds — ink blue */
+  --hw-bg: #060A12;
+  --hw-surface: #0D1525;
+  --hw-surface-raised: #121F33;
+  --hw-border: #1B2B42;
+  --hw-border-bright: #25384F;
+
+  /* Accent — professional steel blue */
+  --hw-blue: #4B8EF4;
+  --hw-blue-dim: #2F6FD4;
+  --hw-blue-subtle: rgba(75, 142, 244, 0.08);
+
+  /* Layer tier colors — subtle, not neon */
+  --hw-tier-core: #4B8EF4;
+  --hw-tier-evm: #818CF8;
+  --hw-tier-hip3: #C084FC;
+  --hw-tier-tools: #60A5FA;
+
+  /* Status colors */
+  --hw-gold: #D97706;
+  --hw-red: #EF4444;
+  --hw-green: #10B981;
+
+  /* Typography */
+  --hw-text: #E2E8F0;
+  --hw-text-muted: #7A91AA;
+  --hw-text-dim: #3A5070;
+}
+
+@theme inline {
+  --color-hw-bg: var(--hw-bg);
+  --color-hw-surface: var(--hw-surface);
+  --color-hw-surface-raised: var(--hw-surface-raised);
+  --color-hw-border: var(--hw-border);
+  --color-hw-border-bright: var(--hw-border-bright);
+  --color-hw-blue: var(--hw-blue);
+  --color-hw-blue-dim: var(--hw-blue-dim);
+  --color-hw-gold: var(--hw-gold);
+  --color-hw-red: var(--hw-red);
+  --color-hw-green: var(--hw-green);
+  --color-hw-text: var(--hw-text);
+  --color-hw-text-muted: var(--hw-text-muted);
+  --color-hw-text-dim: var(--hw-text-dim);
+  --font-display: var(--font-space-grotesk);
+  --font-body: var(--font-inter);
+  --font-mono: var(--font-jetbrains-mono);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background: var(--hw-bg);
+  color: var(--hw-text);
+  font-family: var(--font-body, Inter, system-ui, sans-serif);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Glass morphism search */
+.glass {
+  background: rgba(13, 21, 37, 0.8);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+/* Layer badge colors */
+.badge-hypercore { background: rgba(75, 142, 244, 0.10); color: #4B8EF4; border: 1px solid rgba(75, 142, 244, 0.20); }
+.badge-hyperevm { background: rgba(129, 140, 248, 0.10); color: #818CF8; border: 1px solid rgba(129, 140, 248, 0.20); }
+.badge-hip3 { background: rgba(192, 132, 252, 0.10); color: #C084FC; border: 1px solid rgba(192, 132, 252, 0.20); }
+.badge-both { background: rgba(96, 165, 250, 0.10); color: #60A5FA; border: 1px solid rgba(96, 165, 250, 0.20); }
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--hw-bg);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--hw-border-bright);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--hw-text-dim);
+}

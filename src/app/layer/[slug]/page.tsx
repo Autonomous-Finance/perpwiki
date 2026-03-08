@@ -1,0 +1,80 @@
+import { prisma } from "@/lib/prisma";
+import { LAYER_META } from "@/lib/categories";
+import { ProjectCard } from "@/components/ProjectCard";
+import { notFound } from "next/navigation";
+import Link from "next/link";
+import type { Metadata } from "next";
+
+const LAYER_SLUGS: Record<string, string> = {
+  hypercore: "HYPERCORE",
+  hyperevm: "HYPEREVM",
+  hip3: "HIP3",
+};
+
+interface Props {
+  params: Promise<{ slug: string }>;
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { slug } = await params;
+  const layer = LAYER_SLUGS[slug];
+  if (!layer) return { title: "Not Found" };
+  const meta = LAYER_META[layer];
+  return {
+    title: `${meta.label} Projects`,
+    description: `Explore all ${meta.label} projects in the Hyperliquid ecosystem. ${meta.description}.`,
+  };
+}
+
+export default async function LayerPage({ params }: Props) {
+  const { slug } = await params;
+  const layer = LAYER_SLUGS[slug];
+  if (!layer) notFound();
+
+  const meta = LAYER_META[layer];
+
+  const projects = await prisma.project.findMany({
+    where: {
+      approvalStatus: "APPROVED",
+      OR: [{ layer }, { layer: "BOTH" }],
+    },
+    orderBy: [{ isFeatured: "desc" }, { isVerified: "desc" }, { name: "asc" }],
+  });
+
+  return (
+    <div className="mx-auto max-w-7xl px-4 py-8">
+      <div className="mb-2 text-sm text-[var(--hw-text-dim)]">
+        <Link href="/" className="hover:text-[var(--hw-text-muted)]">Home</Link>
+        {" / "}
+        <span className="text-[var(--hw-text-muted)]">{meta.label}</span>
+      </div>
+
+      <h1
+        className="font-[family-name:var(--font-space-grotesk)] text-3xl font-bold mb-2"
+        style={{ color: meta.color }}
+      >
+        {meta.label}
+      </h1>
+      <p className="text-[var(--hw-text-muted)] mb-8">{meta.description}</p>
+
+      <div className="mb-4 text-sm text-[var(--hw-text-dim)]">
+        {projects.length} project{projects.length !== 1 ? "s" : ""}
+      </div>
+
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {projects.map((project) => (
+          <ProjectCard
+            key={project.slug}
+            slug={project.slug}
+            name={project.name}
+            tagline={project.tagline}
+            layer={project.layer}
+            category={project.category}
+            status={project.status}
+            isVerified={project.isVerified}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
