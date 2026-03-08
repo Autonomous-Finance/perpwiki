@@ -8,8 +8,9 @@ const article = getArticle(SLUG)!;
 const { prev, next } = getAdjacentArticles(SLUG);
 
 export const metadata: Metadata = {
-  title: article.title,
-  description: article.description,
+  title: "HyperCore vs HyperEVM — What's the Difference? | perp.wiki",
+  description:
+    "HyperCore is Hyperliquid's native trading layer; HyperEVM is the EVM-compatible smart contract layer. Full comparison of features, speed, and use cases.",
 };
 
 const TOC = [

@@ -8,8 +8,9 @@ const article = getArticle(SLUG)!;
 const { prev, next } = getAdjacentArticles(SLUG);
 
 export const metadata: Metadata = {
-  title: article.title,
-  description: article.description,
+  title: "What Is Hyperliquid? Complete Guide 2026 | perp.wiki",
+  description:
+    "Hyperliquid explained: how the DEX works, HYPE token, HLP vault, HyperEVM, fees, and why it dominates decentralized perp trading with $40B+ weekly volume.",
 };
 
 const TOC = [

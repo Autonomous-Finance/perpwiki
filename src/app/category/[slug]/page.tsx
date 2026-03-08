@@ -32,8 +32,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const category = slugToCategory(slug);
   if (!category) return { title: "Not Found" };
   return {
-    title: `${category} Projects on Hyperliquid`,
-    description: `Browse all ${category} projects in the Hyperliquid ecosystem.`,
+    title: `Best Hyperliquid ${category} Projects 2026 | perp.wiki`,
+    description: `Top ${category} projects in the Hyperliquid ecosystem. Independent directory with features and ecosystem context. perp.wiki`,
   };
 }
 

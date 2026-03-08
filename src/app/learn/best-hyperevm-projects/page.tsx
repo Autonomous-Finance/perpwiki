@@ -8,8 +8,9 @@ const article = getArticle(SLUG)!;
 const { prev, next } = getAdjacentArticles(SLUG);
 
 export const metadata: Metadata = {
-  title: "Best HyperEVM Projects in 2026 | PerpWiki",
-  description: article.description,
+  title: "Best HyperEVM Projects 2026 — Top Hyperliquid Ecosystem Apps | perp.wiki",
+  description:
+    "The best projects building on HyperEVM in 2026: DeFi, liquid staking, lending, DEX, and infrastructure. Independent rankings on perp.wiki.",
 };
 
 const TOC = [

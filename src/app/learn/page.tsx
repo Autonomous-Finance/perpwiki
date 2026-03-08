@@ -3,9 +3,9 @@ import Link from "next/link";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Learn Hyperliquid",
+  title: "Hyperliquid Guides & Resources 2026 | perp.wiki",
   description:
-    "Understand the Hyperliquid ecosystem — guides on HyperCore, HyperEVM, HIP-3, liquid staking, and more.",
+    "Learn about Hyperliquid, HyperEVM, HYPE staking, HLP vault, trading bots, and the Hyperliquid ecosystem. Guides for beginners and advanced users.",
 };
 
 export default function LearnPage() {

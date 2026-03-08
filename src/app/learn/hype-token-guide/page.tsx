@@ -8,8 +8,9 @@ const article = getArticle(SLUG)!;
 const { prev, next } = getAdjacentArticles(SLUG);
 
 export const metadata: Metadata = {
-  title: "HYPE Token Guide: Tokenomics, Staking & Governance | PerpWiki",
-  description: article.description,
+  title: "HYPE Token Guide — Tokenomics, Staking & Use Cases 2026 | perp.wiki",
+  description:
+    "Everything about the HYPE token: supply, staking mechanics, fee discounts, governance, liquid staking, and burn mechanism. Complete guide 2026.",
 };
 
 const TOC = [

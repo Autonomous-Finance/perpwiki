@@ -5,6 +5,26 @@ import { ProjectCard } from "@/components/ProjectCard";
 import Link from "next/link";
 import { JsonLd } from "@/components/JsonLd";
 import { getHypePrice, getHlMeta, formatUsd } from "@/lib/hl-api";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "PerpWiki — Hyperliquid Ecosystem Directory 2026",
+  description:
+    "Independent directory of 48+ Hyperliquid ecosystem projects. Browse HyperCore, HyperEVM, and HIP-3 apps — trading tools, DeFi, liquid staking, analytics and more. perp.wiki",
+  openGraph: {
+    title: "PerpWiki — Hyperliquid Ecosystem Directory 2026",
+    description:
+      "Independent directory of 48+ Hyperliquid ecosystem projects. Browse HyperCore, HyperEVM, and HIP-3 apps — trading tools, DeFi, liquid staking, analytics and more. perp.wiki",
+  },
+  keywords: [
+    "Hyperliquid",
+    "Hyperliquid ecosystem",
+    "HyperEVM projects",
+    "HYPE token",
+    "perp DEX",
+    "perpetual DEX directory",
+  ],
+};
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:4000";
 

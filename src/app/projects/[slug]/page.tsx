@@ -13,12 +13,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const project = await prisma.project.findUnique({ where: { slug } });
   if (!project) return { title: "Not Found" };
+  const seoTitle = `${project.name} — Hyperliquid Ecosystem | perp.wiki`;
+  const seoDesc = `${project.name} on Hyperliquid: overview, features, layer, and ecosystem context. Independent profile on perp.wiki.`;
   return {
-    title: project.name,
-    description: project.tagline || `${project.name} — ${project.category} on Hyperliquid`,
+    title: seoTitle,
+    description: seoDesc,
     openGraph: {
-      title: `${project.name} | PerpWiki`,
-      description: project.tagline || `${project.name} — ${project.category} on Hyperliquid`,
+      title: seoTitle,
+      description: seoDesc,
     },
   };
 }
@@ -92,7 +94,18 @@ export default async function ProjectDetailPage({ params }: Props) {
       {/* Hero header */}
       <div className="border-b border-[var(--hw-border)] pb-6 mb-8">
         <div className="flex items-start justify-between gap-4 mb-4">
-          <div>
+          <div className="flex items-start gap-4">
+            {project.logoUrl ? (
+              <img src={project.logoUrl} alt="" className="h-12 w-12 shrink-0 rounded-full object-cover mt-1" />
+            ) : (
+              <span
+                className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full text-lg font-bold text-[var(--hw-bg)]"
+                style={{ background: "var(--hw-text-dim)" }}
+              >
+                {project.name.charAt(0)}
+              </span>
+            )}
+            <div>
             <h1 className="font-[family-name:var(--font-space-grotesk)] text-3xl font-bold text-[var(--hw-text)]">
               {project.name}
               {project.isVerified && (
@@ -104,6 +117,7 @@ export default async function ProjectDetailPage({ params }: Props) {
             {project.tagline && (
               <p className="mt-2 text-lg text-[var(--hw-text-muted)]">{project.tagline}</p>
             )}
+            </div>
           </div>
           <LayerBadge layer={project.layer} />
         </div>
