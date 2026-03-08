@@ -20,6 +20,10 @@ const TOC = [
   { id: "hype-token", title: "The HYPE Token" },
   { id: "why-traders-use-it", title: "Why Traders Use It" },
   { id: "ecosystem", title: "The Ecosystem" },
+  { id: "growth-story", title: "Hyperliquid's Growth Story" },
+  { id: "how-hl-makes-money", title: "How Hyperliquid Makes Money" },
+  { id: "hype-airdrop", title: "The HYPE Airdrop" },
+  { id: "is-hl-safe", title: "Is Hyperliquid Safe?" },
   { id: "key-risks", title: "Key Risks" },
 ];
 
@@ -155,6 +159,186 @@ export default function WhatIsHyperliquidPage() {
         HIP-3, the permissionless perpetual market standard, has enabled prediction markets,
         stock perpetuals, and other novel financial products. Read our{" "}
         <InlineLink href="/learn/what-is-hip-3">What Is HIP-3?</InlineLink> guide for a deep dive.
+      </P>
+
+      <H2 id="growth-story">Hyperliquid&apos;s Growth Story</H2>
+      <P>
+        Hyperliquid&apos;s trajectory from obscure testnet to the largest perpetual DEX in crypto
+        is one of the most striking growth stories in decentralized finance. The platform launched
+        its mainnet in late 2023 with a handful of markets and minimal fanfare — no venture capital
+        announcements, no celebrity endorsements, no token sale. Just a fast order book and word of
+        mouth from traders who noticed the execution quality.
+      </P>
+      <P>
+        Within months, daily volume climbed past $100M. By mid-2024, Hyperliquid was consistently
+        processing over $1B per day. As of early 2026, the numbers speak for themselves: $3.4B in
+        average daily volume, $40B or more in weekly volume, and 229 listed perpetual markets
+        spanning major crypto assets, altcoins, meme tokens, and HIP-3 external assets.
+      </P>
+      <P>
+        The market share numbers tell an even more compelling story. Two years ago, Hyperliquid
+        accounted for roughly 2% of all perpetual futures trading across centralized and
+        decentralized venues. Today that figure stands at 10.2% — a five-fold increase that has
+        come almost entirely at the expense of centralized exchanges. Among DEX-only perpetual
+        volume, Hyperliquid commands approximately 32% of the market, making it the undisputed
+        leader in on-chain derivatives trading.
+      </P>
+      <P>
+        This growth was not driven by unsustainable incentives or wash trading. Hyperliquid never
+        ran a liquidity mining program in the traditional sense. Instead, growth was organic:
+        professional traders migrated because the execution was genuinely competitive with Binance
+        and Bybit. Market makers came because the order book model was familiar and the latency
+        was acceptable. Retail traders followed because the interface was clean and onboarding was
+        simple — deposit USDC from Arbitrum, and you are trading in under a minute.
+      </P>
+      <P>
+        The launch of HyperEVM in early 2025 accelerated growth further by creating an entire DeFi
+        ecosystem around the trading platform. Suddenly, traders could stake their HYPE, borrow
+        against it, earn yield in lending markets, and deploy into automated strategies — all
+        without leaving the Hyperliquid L1. Total value locked across HyperEVM protocols grew from
+        near zero to over $2B within months, creating a flywheel where DeFi activity generated more
+        trading volume, which attracted more liquidity, which enabled more DeFi.
+      </P>
+
+      <H2 id="how-hl-makes-money">How Hyperliquid Makes Money</H2>
+      <P>
+        Understanding Hyperliquid&apos;s revenue model is important for anyone evaluating HYPE as
+        an investment or simply trying to understand the protocol&apos;s sustainability. Unlike
+        many DeFi protocols that rely on token emissions to subsidize activity, Hyperliquid
+        generates real revenue from trading fees — and it generates a lot of it.
+      </P>
+      <P>
+        The fee structure follows the standard maker-taker model familiar from centralized
+        exchanges. Taker fees — charged to traders who remove liquidity from the order book by
+        placing market orders or crossing the spread — range from 0.035% to 0.045% depending on
+        the trader&apos;s volume tier. Maker fees are actually negative: makers (traders who add
+        liquidity by placing limit orders that rest on the book) receive a rebate of approximately
+        0.01% per fill. This negative maker fee is a deliberate incentive to encourage deep order
+        books and tight spreads.
+      </P>
+      <P>
+        At $3.4B in daily volume, even small fee percentages generate substantial revenue. Rough
+        math: if 60% of volume is taker-side at an average rate of 0.04%, that is approximately
+        $816,000 in daily taker fee revenue. Subtract maker rebates and the net daily fee revenue
+        is still in the hundreds of thousands of dollars — adding up to tens of millions per month.
+      </P>
+      <P>
+        Beyond direct trading fees, the HLP vault is another revenue center. HLP (Hyperliquidity
+        Provider) is a protocol-operated vault that acts as a market maker across all perpetual
+        markets. It earns revenue from the bid-ask spread, from funding rate arbitrage, and from
+        successful liquidations. When traders get liquidated, their remaining margin (after covering
+        the position) flows to the insurance fund and, in part, to HLP. Depositors in the HLP
+        vault share these returns, which have historically averaged in the low double-digit APY
+        range, though with significant variance.
+      </P>
+      <P>
+        A portion of fee revenue flows to the Assistance Fund, which conducts open-market HYPE
+        buybacks. These buybacks create consistent buy pressure on the HYPE token, effectively
+        redistributing protocol revenue to token holders. The buyback mechanism is transparent and
+        can be tracked on-chain — the Assistance Fund wallet is publicly known and its transactions
+        are visible to anyone. This creates a direct link between trading volume and token value
+        that many protocols lack.
+      </P>
+
+      <H2 id="hype-airdrop">The HYPE Airdrop</H2>
+      <P>
+        The HYPE token genesis event in November 2024 was, by most measures, the largest airdrop
+        in cryptocurrency history. Over $1.9 billion worth of HYPE tokens were distributed to early
+        users of the platform, making it not just the largest by dollar value but also one of the
+        most broadly distributed token launches ever conducted.
+      </P>
+      <P>
+        What made the HYPE airdrop remarkable was not just its size but its structure. There was no
+        venture capital allocation. Zero. In an industry where 15-25% of token supply routinely goes
+        to investors who bought at a fraction of the public price, Hyperliquid allocated 76% of the
+        total HYPE supply to the community. This was a deliberate philosophical choice by the team:
+        the protocol was self-funded, and the team believed that the people who used the product
+        should own the majority of it.
+      </P>
+      <P>
+        The airdrop was based primarily on trading activity during Hyperliquid&apos;s first year of
+        operation. Traders who had generated volume, provided liquidity, or otherwise contributed to
+        the ecosystem received allocations proportional to their activity. There were no complex
+        quest systems, no social media tasks, and no referral games. You traded, and you were
+        rewarded based on how much you traded.
+      </P>
+      <P>
+        Critically, community recipients had no lockup period. When HYPE launched, airdrop
+        recipients could immediately sell, stake, or use their tokens however they chose. This was
+        another deliberate decision — the team did not want to create artificial sell pressure cliffs
+        months or years down the line. If the product was good enough, the team reasoned, people
+        would hold voluntarily.
+      </P>
+      <P>
+        The team and future contributor tokens, by contrast, are on a multi-year vesting schedule.
+        Team tokens unlock gradually over several years, ensuring long-term alignment between the
+        core developers and the protocol&apos;s success. This is the inverse of the typical crypto
+        pattern where insiders have short lockups and the community is left holding the bag.
+      </P>
+      <P>
+        The market&apos;s response to this structure was overwhelmingly positive. Despite the
+        absence of any lockup for community tokens, HYPE traded upward after launch — a signal that
+        recipients saw long-term value in holding rather than immediately liquidating. The token
+        reached a market capitalization of over $10B within weeks of launch, establishing it as a
+        top-30 cryptocurrency by market cap.
+      </P>
+
+      <H2 id="is-hl-safe">Is Hyperliquid Safe?</H2>
+      <P>
+        Safety on Hyperliquid requires evaluating several distinct layers: the consensus mechanism,
+        the bridge, the smart contract ecosystem on HyperEVM, and the governance structure. Each
+        carries its own risk profile, and informed users should understand all of them.
+      </P>
+      <P>
+        On the consensus side, Hyperliquid currently operates with 25 active validators running
+        HyperBFT. This validator set is growing — the protocol has a roadmap to expand it
+        significantly — but 25 is still small compared to networks like Ethereum (hundreds of
+        thousands of validators) or even Solana (roughly 1,500). A smaller validator set means
+        lower decentralization, which in turn means more trust in a smaller group of operators. In
+        practice, the validators have performed reliably, and the chain has never experienced a
+        consensus failure or unplanned downtime. But &quot;never has failed&quot; is not the same
+        as &quot;cannot fail,&quot; and users should weigh this accordingly.
+      </P>
+      <P>
+        The bridge is perhaps the most important trust assumption in the system. To trade on
+        Hyperliquid, users deposit USDC from Arbitrum (an Ethereum L2) into the Hyperliquid bridge
+        contract. This bridge is secured by a subset of Hyperliquid validators who run the bridge
+        signer software. Deposits are fast and reliable, but the bridge represents a concentrated
+        point of risk: if enough bridge signers were compromised simultaneously, bridge funds could
+        theoretically be at risk. The Hyperliquid team has taken steps to mitigate this — including
+        timelocks on large withdrawals and monitoring systems — but bridge risk is inherent in any
+        cross-chain system.
+      </P>
+      <P>
+        The March 2025 JELLY incident is worth examining in detail because it revealed both the
+        strengths and limitations of Hyperliquid&apos;s safety model. A whale trader attempted to
+        manipulate the JELLY perpetual market through a coordinated strategy: they built a large
+        short position on Hyperliquid while simultaneously pumping the JELLY spot price on external
+        markets. The goal was to trigger liquidations and force the HLP vault to absorb a losing
+        position at manipulated prices.
+      </P>
+      <P>
+        The attack partially succeeded in that HLP took a temporary unrealized loss. However, the
+        validator set responded by voting to delist the JELLY perpetual market entirely, unwinding
+        positions at a fair price determined by the validators. The HLP vault recovered its losses
+        once the manipulated positions were closed out. No user funds were lost, and the attacker
+        did not profit from the manipulation.
+      </P>
+      <P>
+        The JELLY incident demonstrated that Hyperliquid&apos;s governance can respond quickly to
+        threats — the entire resolution happened within hours. But it also highlighted a
+        centralization concern: the validator set effectively made a discretionary decision to
+        delist a market and settle positions at a price they determined was fair. In a perfectly
+        decentralized system, such unilateral action would not be possible. Whether this is a
+        feature (fast crisis response) or a bug (centralized control) depends on your perspective,
+        and it remains one of the most debated aspects of Hyperliquid&apos;s design.
+      </P>
+      <P>
+        On the audit front, HyperCore&apos;s core trading logic has been reviewed by security
+        firms, but the full audit history is not as extensive as older protocols like Aave or
+        Uniswap. HyperEVM smart contracts are audited on a per-project basis — some protocols like
+        Felix and Kinetiq have undergone multiple audits, while newer projects may have less
+        coverage. Users should check individual project audit statuses before depositing funds.
       </P>
 
       <H2 id="key-risks">Key Risks</H2>

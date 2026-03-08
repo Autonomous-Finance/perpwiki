@@ -14,8 +14,26 @@ export const LEARN_ARTICLES: LearnArticle[] = [
     description:
       "Everything you need to know about Hyperliquid — the high-performance L1 blockchain built for on-chain perpetual trading.",
     category: "Fundamentals",
-    readingTime: "8 min",
+    readingTime: "12 min",
     datePublished: "2026-01-15",
+  },
+  {
+    slug: "how-to-use-hyperliquid",
+    title: "How to Use Hyperliquid — Complete Beginner's Tutorial",
+    description:
+      "Step-by-step guide: create a wallet, bridge USDC, place your first perpetual trade, manage positions, and withdraw funds from Hyperliquid.",
+    category: "Guides",
+    readingTime: "12 min",
+    datePublished: "2026-01-18",
+  },
+  {
+    slug: "hyperliquid-fees",
+    title: "Hyperliquid Fees Explained — Trading, Gas & Maker Rebates",
+    description:
+      "Complete breakdown of Hyperliquid fees: taker fees, maker rebates, HyperEVM gas, withdrawal fees, and how to reduce costs with volume tiers.",
+    category: "Guides",
+    readingTime: "9 min",
+    datePublished: "2026-01-19",
   },
   {
     slug: "hypercore-vs-hyperevm",
@@ -23,7 +41,7 @@ export const LEARN_ARTICLES: LearnArticle[] = [
     description:
       "Understand the two layers of Hyperliquid — HyperCore for native trading and HyperEVM for smart contract DeFi.",
     category: "Architecture",
-    readingTime: "6 min",
+    readingTime: "11 min",
     datePublished: "2026-01-20",
   },
   {
@@ -32,7 +50,7 @@ export const LEARN_ARTICLES: LearnArticle[] = [
     description:
       "How HIP-3 lets anyone create perpetual futures markets on Hyperliquid — from stocks to prediction markets.",
     category: "Protocol",
-    readingTime: "7 min",
+    readingTime: "11 min",
     datePublished: "2026-02-01",
   },
   {
@@ -41,7 +59,7 @@ export const LEARN_ARTICLES: LearnArticle[] = [
     description:
       "Everything you need to know about earning yield on Hyperliquid — HLP vault strategies, HYPE staking, liquid staking tokens, and current APY rates.",
     category: "Guides",
-    readingTime: "8 min",
+    readingTime: "11 min",
     datePublished: "2026-03-01",
   },
   {
@@ -50,7 +68,7 @@ export const LEARN_ARTICLES: LearnArticle[] = [
     description:
       "A curated guide to the top projects building on HyperEVM — from liquid staking and lending to DEXs and yield aggregators.",
     category: "Ecosystem",
-    readingTime: "10 min",
+    readingTime: "12 min",
     datePublished: "2026-03-03",
   },
   {
@@ -59,7 +77,7 @@ export const LEARN_ARTICLES: LearnArticle[] = [
     description:
       "An honest comparison of Hyperliquid against top centralized exchanges on fees, speed, custody, and features.",
     category: "Comparisons",
-    readingTime: "7 min",
+    readingTime: "11 min",
     datePublished: "2026-03-04",
   },
   {
@@ -68,7 +86,7 @@ export const LEARN_ARTICLES: LearnArticle[] = [
     description:
       "HyperEVM is the EVM-compatible smart contract layer on Hyperliquid L1. Learn how it works and why it matters.",
     category: "Fundamentals",
-    readingTime: "6 min",
+    readingTime: "11 min",
     datePublished: "2026-03-05",
   },
   {
@@ -77,7 +95,7 @@ export const LEARN_ARTICLES: LearnArticle[] = [
     description:
       "A complete guide to the HYPE token — how it works, staking rewards, governance power, and the burn mechanism.",
     category: "Tokens",
-    readingTime: "7 min",
+    readingTime: "11 min",
     datePublished: "2026-03-06",
   },
   {
@@ -86,7 +104,16 @@ export const LEARN_ARTICLES: LearnArticle[] = [
     description:
       "How the HLP vault works: deposit USDC, earn yield from market-making, liquidations, and trading fees. HLP APY, risks, TVL, and how it compares to HYPE staking.",
     category: "Guides",
-    readingTime: "8 min",
+    readingTime: "12 min",
+    datePublished: "2026-03-07",
+  },
+  {
+    slug: "perp-dex-comparison",
+    title: "Best Perp DEX in 2026 — Hyperliquid vs dYdX vs GMX vs Drift",
+    description:
+      "Detailed comparison of the top perpetual DEXs: Hyperliquid, dYdX, GMX, Drift, and Lighter. Volume, fees, leverage, and which suits different trader types.",
+    category: "Comparisons",
+    readingTime: "14 min",
     datePublished: "2026-03-08",
   },
 ];
