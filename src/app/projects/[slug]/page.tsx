@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { notFound } from "next/navigation";
 import { LayerBadge } from "@/components/LayerBadge";
+import { JsonLd } from "@/components/JsonLd";
 import Link from "next/link";
 import type { Metadata } from "next";
 
@@ -46,8 +47,29 @@ export default async function ProjectDetailPage({ params }: Props) {
     { label: "Telegram", url: project.telegram },
   ].filter((l) => l.url);
 
+  const similarProjects = await prisma.project.findMany({
+    where: {
+      approvalStatus: "APPROVED",
+      category: project.category,
+      slug: { not: project.slug },
+    },
+    take: 3,
+    orderBy: [{ isFeatured: "desc" }, { name: "asc" }],
+    select: { slug: true, name: true },
+  });
+
   return (
     <div className="mx-auto max-w-4xl px-4 py-8">
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
+          "@type": "SoftwareApplication",
+          name: project.name,
+          url: project.website || undefined,
+          applicationCategory: "FinanceApplication",
+          description: project.tagline || project.description || undefined,
+        }}
+      />
       {/* Breadcrumb */}
       <div className="mb-6 text-sm text-[var(--hw-text-dim)]">
         <Link href="/" className="hover:text-[var(--hw-text-muted)]">
@@ -193,6 +215,29 @@ export default async function ProjectDetailPage({ params }: Props) {
                     <span>{link.label}</span>
                     <span className="text-[var(--hw-text-dim)]">&nearr;</span>
                   </a>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Compare */}
+          {similarProjects.length > 0 && (
+            <div
+              className="border border-[var(--hw-border)] bg-[var(--hw-surface)] p-4"
+              style={{ borderRadius: "4px" }}
+            >
+              <h3 className="font-[family-name:var(--font-space-grotesk)] text-sm font-semibold text-[var(--hw-text)] mb-3">
+                Compare
+              </h3>
+              <div className="space-y-2">
+                {similarProjects.map((sp) => (
+                  <Link
+                    key={sp.slug}
+                    href={`/compare/${project.slug}-vs-${sp.slug}`}
+                    className="block text-sm text-[var(--hw-blue)] hover:text-[var(--hw-blue-dim)]"
+                  >
+                    vs {sp.name}
+                  </Link>
                 ))}
               </div>
             </div>

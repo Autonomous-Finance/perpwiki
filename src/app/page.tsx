@@ -3,6 +3,9 @@ import { LAYER_META } from "@/lib/categories";
 import { SearchBar } from "@/components/SearchBar";
 import { ProjectCard } from "@/components/ProjectCard";
 import Link from "next/link";
+import { JsonLd } from "@/components/JsonLd";
+
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:4000";
 
 async function getStats() {
   const total = await prisma.project.count({ where: { approvalStatus: "APPROVED" } });
@@ -91,6 +94,20 @@ export default async function HomePage() {
 
   return (
     <>
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
+          "@type": "WebSite",
+          name: "HYPE.WIKI",
+          url: SITE_URL,
+          description: "The definitive intelligence directory for the Hyperliquid ecosystem.",
+          potentialAction: {
+            "@type": "SearchAction",
+            target: `${SITE_URL}/projects?q={search_term_string}`,
+            "query-input": "required name=search_term_string",
+          },
+        }}
+      />
       {/* Hero */}
       <section className="relative overflow-hidden border-b border-[var(--hw-border)]">
         <div

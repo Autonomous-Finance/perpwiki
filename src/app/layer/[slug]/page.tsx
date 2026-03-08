@@ -1,9 +1,12 @@
 import { prisma } from "@/lib/prisma";
 import { LAYER_META } from "@/lib/categories";
 import { ProjectCard } from "@/components/ProjectCard";
+import { JsonLd } from "@/components/JsonLd";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import type { Metadata } from "next";
+
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:4000";
 
 const LAYER_SLUGS: Record<string, string> = {
   hypercore: "HYPERCORE",
@@ -43,6 +46,25 @@ export default async function LayerPage({ params }: Props) {
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8">
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
+          "@type": "CollectionPage",
+          name: `${meta.label} Projects`,
+          description: `All ${meta.label} projects in the Hyperliquid ecosystem. ${meta.description}.`,
+          url: `${SITE_URL}/layer/${slug}`,
+          mainEntity: {
+            "@type": "ItemList",
+            numberOfItems: projects.length,
+            itemListElement: projects.slice(0, 20).map((p, i) => ({
+              "@type": "ListItem",
+              position: i + 1,
+              name: p.name,
+              url: `${SITE_URL}/projects/${p.slug}`,
+            })),
+          },
+        }}
+      />
       <div className="mb-2 text-sm text-[var(--hw-text-dim)]">
         <Link href="/" className="hover:text-[var(--hw-text-muted)]">Home</Link>
         {" / "}
