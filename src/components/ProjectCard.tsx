@@ -23,7 +23,7 @@ export function ProjectCard({
   return (
     <Link href={`/projects/${slug}`}>
       <div
-        className="group flex h-full flex-col gap-3 border border-[var(--hw-border)] bg-[var(--hw-surface)] p-4 transition-all hover:border-[var(--hw-blue)] hover:shadow-[0_0_8px_rgba(75,142,244,0.15)]"
+        className="group flex h-full flex-col gap-3 border border-[var(--hw-border)] bg-[var(--hw-surface)] p-4 transition-all hover:border-[var(--hw-green)] hover:shadow-[0_0_8px_rgba(0,229,160,0.08)]"
         style={{ borderRadius: "4px" }}
       >
         <div className="flex items-start justify-between gap-2">
@@ -44,7 +44,7 @@ export function ProjectCard({
         )}
         <div className="mt-auto flex items-center gap-2">
           <span
-            className="bg-[var(--hw-blue-subtle)] px-1.5 py-0.5 text-xs text-[var(--hw-text-muted)]"
+            className="bg-[var(--hw-green-subtle)] px-1.5 py-0.5 text-xs text-[var(--hw-text-muted)]"
             style={{ borderRadius: "2px" }}
           >
             {category}

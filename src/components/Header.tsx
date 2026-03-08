@@ -8,6 +8,7 @@ const NAV_LINKS = [
   { href: "/layer/hypercore", label: "HyperCore" },
   { href: "/layer/hyperevm", label: "HyperEVM" },
   { href: "/layer/hip3", label: "HIP-3" },
+  { href: "/learn", label: "Learn" },
 ];
 
 export function Header() {
@@ -20,7 +21,7 @@ export function Header() {
           href="/"
           className="font-[family-name:var(--font-space-grotesk)] text-lg font-bold tracking-widest text-[var(--hw-text)]"
         >
-          HYPE<span className="text-[var(--hw-blue)] font-light">.WIKI</span>
+          HYPE<span className="text-[var(--hw-green)] font-light">.WIKI</span>
         </Link>
 
         {/* Desktop nav */}

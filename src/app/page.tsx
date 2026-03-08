@@ -4,6 +4,7 @@ import { SearchBar } from "@/components/SearchBar";
 import { ProjectCard } from "@/components/ProjectCard";
 import Link from "next/link";
 import { JsonLd } from "@/components/JsonLd";
+import { getHypePrice } from "@/lib/hl-api";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:4000";
 
@@ -44,6 +45,14 @@ async function getFeaturedProjects() {
   });
 }
 
+async function getRecentProjects() {
+  return prisma.project.findMany({
+    where: { approvalStatus: "APPROVED" },
+    orderBy: { createdAt: "desc" },
+    take: 5,
+  });
+}
+
 async function getCategoryCounts() {
   const projects = await prisma.project.findMany({
     where: { approvalStatus: "APPROVED" },
@@ -58,14 +67,16 @@ async function getCategoryCounts() {
 }
 
 export default async function HomePage() {
-  const [stats, featured, coreProjects, evmProjects, hip3Projects, categoryCounts] =
+  const [stats, featured, recentProjects, coreProjects, evmProjects, hip3Projects, categoryCounts, hypeData] =
     await Promise.all([
       getStats(),
       getFeaturedProjects(),
+      getRecentProjects(),
       getLayerProjects("HYPERCORE"),
       getLayerProjects("HYPEREVM"),
       getLayerProjects("HIP3"),
       getCategoryCounts(),
+      getHypePrice(),
     ]);
 
   const layerSections = [
@@ -114,7 +125,7 @@ export default async function HomePage() {
           className="absolute inset-0"
           style={{
             background:
-              "radial-gradient(ellipse at 50% 0%, rgba(75,142,244,0.04) 0%, transparent 60%)",
+              "radial-gradient(ellipse at 50% 0%, rgba(0,229,160,0.04) 0%, transparent 60%)",
           }}
         />
         <div className="relative mx-auto max-w-7xl px-4 py-16 text-center md:py-24">
@@ -126,7 +137,25 @@ export default async function HomePage() {
           </p>
 
           {/* Stats bar */}
-          <div className="mx-auto mt-8 flex max-w-2xl flex-wrap items-center justify-center gap-6 md:gap-10">
+          <div className="mx-auto mt-8 flex max-w-3xl flex-wrap items-center justify-center gap-6 md:gap-10">
+            {hypeData.price && (
+              <div className="text-center">
+                <div className="flex items-center justify-center gap-1.5">
+                  <div
+                    className="font-[family-name:var(--font-jetbrains-mono)] text-2xl font-bold text-[var(--hw-green)]"
+                  >
+                    ${parseFloat(hypeData.price).toFixed(2)}
+                  </div>
+                  {hypeData.live && (
+                    <span className="relative flex h-2 w-2">
+                      <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[var(--hw-green)] opacity-75" />
+                      <span className="relative inline-flex h-2 w-2 rounded-full bg-[var(--hw-green)]" />
+                    </span>
+                  )}
+                </div>
+                <div className="text-xs text-[var(--hw-text-dim)]">HYPE</div>
+              </div>
+            )}
             <StatItem label="Projects" value={stats.total} />
             <StatItem label="HyperCore" value={stats.hypercore} color="var(--hw-tier-core)" />
             <StatItem label="HyperEVM" value={stats.hyperevm} color="var(--hw-tier-evm)" />
@@ -207,7 +236,7 @@ export default async function HomePage() {
           </h2>
           <Link
             href="/projects"
-            className="text-sm text-[var(--hw-blue)] hover:text-[var(--hw-blue-dim)]"
+            className="text-sm text-[var(--hw-green)] hover:text-[var(--hw-green-dim)]"
           >
             View all &rarr;
           </Link>
@@ -224,6 +253,35 @@ export default async function HomePage() {
               status={project.status}
               isVerified={project.isVerified}
             />
+          ))}
+        </div>
+      </section>
+
+      {/* Recently Added */}
+      <section className="mx-auto max-w-7xl px-4 py-12">
+        <h2 className="font-[family-name:var(--font-space-grotesk)] text-xl font-semibold text-[var(--hw-text)] mb-6">
+          Recently Added
+        </h2>
+        <div className="space-y-2">
+          {recentProjects.map((p) => (
+            <Link
+              key={p.slug}
+              href={`/projects/${p.slug}`}
+              className="flex items-center justify-between border border-[var(--hw-border)] bg-[var(--hw-surface)] px-4 py-3 transition-all hover:border-[var(--hw-border-bright)]"
+              style={{ borderRadius: "2px" }}
+            >
+              <div className="flex items-center gap-3">
+                <span className="text-sm font-medium text-[var(--hw-text)]">{p.name}</span>
+                {p.tagline && (
+                  <span className="hidden text-sm text-[var(--hw-text-dim)] sm:inline">
+                    {p.tagline}
+                  </span>
+                )}
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="text-xs text-[var(--hw-text-dim)]">{p.category}</span>
+              </div>
+            </Link>
           ))}
         </div>
       </section>

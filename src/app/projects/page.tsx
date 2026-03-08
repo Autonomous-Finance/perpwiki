@@ -11,15 +11,18 @@ export const metadata: Metadata = {
     "Browse every project in the Hyperliquid ecosystem — HyperCore, HyperEVM, and HIP-3.",
 };
 
+type SortOption = "name" | "category" | "newest";
+
 export default async function ProjectsPage({
   searchParams,
 }: {
-  searchParams: Promise<{ q?: string; layer?: string; category?: string }>;
+  searchParams: Promise<{ q?: string; layer?: string; category?: string; sort?: string }>;
 }) {
   const params = await searchParams;
   const q = params.q || "";
   const layer = params.layer || "";
   const category = params.category || "";
+  const sort = (params.sort || "name") as SortOption;
 
   const where: Record<string, unknown> = { approvalStatus: "APPROVED" };
 
@@ -46,10 +49,17 @@ export default async function ProjectsPage({
     ];
   }
 
-  const projects = await prisma.project.findMany({
-    where,
-    orderBy: [{ isFeatured: "desc" }, { isVerified: "desc" }, { name: "asc" }],
-  });
+  const orderBy =
+    sort === "newest"
+      ? [{ createdAt: "desc" as const }]
+      : sort === "category"
+        ? [{ category: "asc" as const }, { name: "asc" as const }]
+        : [{ isFeatured: "desc" as const }, { isVerified: "desc" as const }, { name: "asc" as const }];
+
+  const [projects, totalCount] = await Promise.all([
+    prisma.project.findMany({ where, orderBy }),
+    prisma.project.count({ where: { approvalStatus: "APPROVED" } }),
+  ]);
 
   const layers = ["HYPERCORE", "HYPEREVM", "HIP3"];
   const activeCategories = await prisma.project.findMany({
@@ -58,6 +68,19 @@ export default async function ProjectsPage({
     distinct: ["category"],
   });
   const usedCategories = activeCategories.map((c) => c.category);
+
+  // Build base URL for sort links
+  const baseParams = new URLSearchParams();
+  if (q) baseParams.set("q", q);
+  if (layer) baseParams.set("layer", layer);
+  if (category) baseParams.set("category", category);
+
+  function sortUrl(s: string) {
+    const p = new URLSearchParams(baseParams);
+    if (s !== "name") p.set("sort", s);
+    const qs = p.toString();
+    return `/projects${qs ? `?${qs}` : ""}`;
+  }
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8">
@@ -97,12 +120,31 @@ export default async function ProjectsPage({
           ))}
       </div>
 
-      {/* Results */}
-      <div className="mb-4 text-sm text-[var(--hw-text-dim)]">
-        {projects.length} project{projects.length !== 1 ? "s" : ""}
-        {q && ` matching "${q}"`}
-        {layer && ` on ${LAYER_META[layer]?.label || layer}`}
-        {category && ` in ${category}`}
+      {/* Results header with count + sort */}
+      <div className="mb-4 flex items-center justify-between">
+        <div className="text-sm text-[var(--hw-text-dim)]">
+          Showing {projects.length} of {totalCount} projects
+          {q && ` matching "${q}"`}
+          {layer && ` on ${LAYER_META[layer]?.label || layer}`}
+          {category && ` in ${category}`}
+        </div>
+        <div className="flex items-center gap-2 text-xs">
+          <span className="text-[var(--hw-text-dim)]">Sort:</span>
+          {(["name", "category", "newest"] as const).map((s) => (
+            <Link
+              key={s}
+              href={sortUrl(s)}
+              className="px-2 py-0.5 border transition-all"
+              style={{
+                borderRadius: "2px",
+                borderColor: sort === s ? "var(--hw-green)" : "var(--hw-border)",
+                color: sort === s ? "var(--hw-green)" : "var(--hw-text-muted)",
+              }}
+            >
+              {s === "name" ? "A-Z" : s === "category" ? "Category" : "Newest"}
+            </Link>
+          ))}
+        </div>
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -146,9 +188,9 @@ function FilterPill({
       className="px-3 py-1 text-xs border transition-all"
       style={{
         borderRadius: "2px",
-        borderColor: active ? (color || "var(--hw-blue)") : "var(--hw-border)",
-        background: active ? "var(--hw-blue-subtle)" : "transparent",
-        color: active ? (color || "var(--hw-blue)") : "var(--hw-text-muted)",
+        borderColor: active ? (color || "var(--hw-green)") : "var(--hw-border)",
+        background: active ? "var(--hw-green-subtle)" : "transparent",
+        color: active ? (color || "var(--hw-green)") : "var(--hw-text-muted)",
       }}
     >
       {label}

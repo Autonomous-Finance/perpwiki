@@ -35,7 +35,7 @@ export default async function Image() {
           }}
         >
           <span>HYPE</span>
-          <span style={{ color: HW_COLORS.blue, fontWeight: 300 }}>.WIKI</span>
+          <span style={{ color: HW_COLORS.green, fontWeight: 300 }}>.WIKI</span>
         </div>
         <div
           style={{
@@ -54,7 +54,7 @@ export default async function Image() {
             gap: 12,
             marginTop: 40,
             fontSize: 22,
-            color: HW_COLORS.blue,
+            color: HW_COLORS.green,
           }}
         >
           <span>{count} Projects</span>

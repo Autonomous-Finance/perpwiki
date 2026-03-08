@@ -79,7 +79,7 @@ export default async function Image({ params }: { params: Promise<{ slug: string
           }}
         >
           <span style={{ color: HW_COLORS.text }}>HYPE</span>
-          <span style={{ color: HW_COLORS.blue }}>.WIKI</span>
+          <span style={{ color: HW_COLORS.green }}>.WIKI</span>
         </div>
       </div>
     ),

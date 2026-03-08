@@ -52,7 +52,7 @@ export default async function Image() {
           }}
         >
           <span style={{ color: HW_COLORS.text }}>HYPE</span>
-          <span style={{ color: HW_COLORS.blue }}>.WIKI</span>
+          <span style={{ color: HW_COLORS.green }}>.WIKI</span>
           <span style={{ marginLeft: 8 }}> · Learn</span>
         </div>
       </div>

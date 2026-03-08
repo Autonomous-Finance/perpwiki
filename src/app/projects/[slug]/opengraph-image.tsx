@@ -23,7 +23,7 @@ export default async function Image({ params }: { params: Promise<{ slug: string
         ? HW_COLORS.tierEvm
         : layer === "HIP3"
           ? HW_COLORS.tierHip3
-          : HW_COLORS.blue;
+          : HW_COLORS.green;
 
   return new ImageResponse(
     (
@@ -99,7 +99,7 @@ export default async function Image({ params }: { params: Promise<{ slug: string
           }}
         >
           <span style={{ color: HW_COLORS.text }}>HYPE</span>
-          <span style={{ color: HW_COLORS.blue }}>.WIKI</span>
+          <span style={{ color: HW_COLORS.green }}>.WIKI</span>
         </div>
       </div>
     ),

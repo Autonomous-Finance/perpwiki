@@ -130,13 +130,13 @@ export default async function ComparePage({ params }: Props) {
       <div className="flex gap-4 mt-8">
         <Link
           href={`/projects/${projectA.slug}`}
-          className="text-sm text-[var(--hw-blue)] hover:text-[var(--hw-blue-dim)]"
+          className="text-sm text-[var(--hw-green)] hover:text-[var(--hw-green-dim)]"
         >
           View {projectA.name} &rarr;
         </Link>
         <Link
           href={`/projects/${projectB.slug}`}
-          className="text-sm text-[var(--hw-blue)] hover:text-[var(--hw-blue-dim)]"
+          className="text-sm text-[var(--hw-green)] hover:text-[var(--hw-green-dim)]"
         >
           View {projectB.name} &rarr;
         </Link>
@@ -163,7 +163,7 @@ function ProjectSummary({ project }: { project: { name: string; slug: string; ta
         ) : null}
         <div className="mt-3">
           <span
-            className="bg-[var(--hw-blue-subtle)] px-1.5 py-0.5 text-xs text-[var(--hw-text-muted)]"
+            className="bg-[var(--hw-green-subtle)] px-1.5 py-0.5 text-xs text-[var(--hw-text-muted)]"
             style={{ borderRadius: "2px" }}
           >
             {project.category}

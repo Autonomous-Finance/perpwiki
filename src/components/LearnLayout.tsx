@@ -27,7 +27,7 @@ export function LearnLayout({ article, prev, next, toc, children }: LearnLayoutP
           <div className="sticky top-20">
             <Link
               href="/learn"
-              className="mb-6 block text-sm text-[var(--hw-blue)] hover:text-[var(--hw-blue-dim)]"
+              className="mb-6 block text-sm text-[var(--hw-green)] hover:text-[var(--hw-green-dim)]"
             >
               &larr; Back to Learn
             </Link>
@@ -50,7 +50,7 @@ export function LearnLayout({ article, prev, next, toc, children }: LearnLayoutP
           <header className="mb-8 border-b border-[var(--hw-border)] pb-6">
             <div className="flex items-center gap-3 mb-3">
               <span
-                className="bg-[var(--hw-blue-subtle)] px-2 py-0.5 text-xs text-[var(--hw-blue)]"
+                className="bg-[var(--hw-green-subtle)] px-2 py-0.5 text-xs text-[var(--hw-green)]"
                 style={{ borderRadius: "2px" }}
               >
                 {article.category}
@@ -114,7 +114,7 @@ export function P({ children }: { children: React.ReactNode }) {
 
 export function InlineLink({ href, children }: { href: string; children: React.ReactNode }) {
   return (
-    <Link href={href} className="text-[var(--hw-blue)] hover:text-[var(--hw-blue-dim)] underline underline-offset-2">
+    <Link href={href} className="text-[var(--hw-green)] hover:text-[var(--hw-green-dim)] underline underline-offset-2">
       {children}
     </Link>
   );
@@ -166,7 +166,7 @@ export function CTA({ href, children }: { href: string; children: React.ReactNod
     <div className="my-8">
       <Link
         href={href}
-        className="inline-block border border-[var(--hw-blue)] px-5 py-2 text-sm font-medium text-[var(--hw-blue)] hover:bg-[var(--hw-blue-subtle)] transition-colors"
+        className="inline-block border border-[var(--hw-green)] px-5 py-2 text-sm font-medium text-[var(--hw-green)] hover:bg-[var(--hw-green-subtle)] transition-colors"
         style={{ borderRadius: "2px" }}
       >
         {children}

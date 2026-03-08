@@ -47,7 +47,7 @@ export default async function ProjectDetailPage({ params }: Props) {
     { label: "Telegram", url: project.telegram },
   ].filter((l) => l.url);
 
-  const similarProjects = await prisma.project.findMany({
+  const relatedProjects = await prisma.project.findMany({
     where: {
       approvalStatus: "APPROVED",
       category: project.category,
@@ -55,8 +55,14 @@ export default async function ProjectDetailPage({ params }: Props) {
     },
     take: 3,
     orderBy: [{ isFeatured: "desc" }, { name: "asc" }],
-    select: { slug: true, name: true },
   });
+
+  const statusColor =
+    project.status === "ACTIVE"
+      ? "var(--hw-green)"
+      : project.status === "BETA"
+        ? "var(--hw-gold)"
+        : "var(--hw-red)";
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-8">
@@ -83,9 +89,9 @@ export default async function ProjectDetailPage({ params }: Props) {
         <span className="text-[var(--hw-text-muted)]">{project.name}</span>
       </div>
 
-      {/* Header */}
-      <div className="flex flex-col gap-4 border-b border-[var(--hw-border)] pb-6 mb-8">
-        <div className="flex items-start justify-between gap-4">
+      {/* Hero header */}
+      <div className="border-b border-[var(--hw-border)] pb-6 mb-8">
+        <div className="flex items-start justify-between gap-4 mb-4">
           <div>
             <h1 className="font-[family-name:var(--font-space-grotesk)] text-3xl font-bold text-[var(--hw-text)]">
               {project.name}
@@ -102,29 +108,24 @@ export default async function ProjectDetailPage({ params }: Props) {
           <LayerBadge layer={project.layer} />
         </div>
 
-        {/* Status & category */}
+        {/* Quick facts strip */}
         <div className="flex flex-wrap items-center gap-3">
           <span
-            className="bg-[var(--hw-blue-subtle)] px-2 py-0.5 text-xs text-[var(--hw-text-muted)]"
+            className="flex items-center gap-1.5 px-2 py-0.5 text-xs"
+            style={{ borderRadius: "2px", color: statusColor }}
+          >
+            <span
+              className="inline-block h-1.5 w-1.5 rounded-full"
+              style={{ background: statusColor }}
+            />
+            {project.status}
+          </span>
+          <span
+            className="bg-[var(--hw-green-subtle)] px-2 py-0.5 text-xs text-[var(--hw-text-muted)]"
             style={{ borderRadius: "2px" }}
           >
             {project.category}
           </span>
-          {project.status !== "ACTIVE" && (
-            <span
-              className="px-2 py-0.5 text-xs"
-              style={{
-                borderRadius: "2px",
-                background:
-                  project.status === "BETA"
-                    ? "rgba(240,180,41,0.15)"
-                    : "rgba(255,77,106,0.15)",
-                color: project.status === "BETA" ? "var(--hw-gold)" : "var(--hw-red)",
-              }}
-            >
-              {project.status}
-            </span>
-          )}
           {project.isFeatured && (
             <span
               className="px-2 py-0.5 text-xs"
@@ -137,6 +138,16 @@ export default async function ProjectDetailPage({ params }: Props) {
               Featured
             </span>
           )}
+          {project.website && (
+            <a
+              href={project.website}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-xs text-[var(--hw-green)] hover:text-[var(--hw-green-dim)]"
+            >
+              {new URL(project.website).hostname} ↗
+            </a>
+          )}
         </div>
       </div>
 
@@ -146,7 +157,7 @@ export default async function ProjectDetailPage({ params }: Props) {
           {project.description && (
             <div className="mb-8">
               <h2 className="font-[family-name:var(--font-space-grotesk)] text-lg font-semibold text-[var(--hw-text)] mb-3">
-                About
+                Overview
               </h2>
               <p className="text-sm leading-relaxed text-[var(--hw-text-muted)] whitespace-pre-line">
                 {project.description}
@@ -168,6 +179,33 @@ export default async function ProjectDetailPage({ params }: Props) {
                   >
                     {tag}
                   </span>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Related Projects */}
+          {relatedProjects.length > 0 && (
+            <div className="mb-8">
+              <h2 className="font-[family-name:var(--font-space-grotesk)] text-lg font-semibold text-[var(--hw-text)] mb-3">
+                Related Projects
+              </h2>
+              <div className="space-y-2">
+                {relatedProjects.map((rp) => (
+                  <Link
+                    key={rp.slug}
+                    href={`/projects/${rp.slug}`}
+                    className="flex items-center justify-between border border-[var(--hw-border)] bg-[var(--hw-surface)] px-4 py-3 transition-all hover:border-[var(--hw-border-bright)]"
+                    style={{ borderRadius: "2px" }}
+                  >
+                    <div>
+                      <span className="text-sm font-medium text-[var(--hw-text)]">{rp.name}</span>
+                      {rp.tagline && (
+                        <span className="ml-2 text-xs text-[var(--hw-text-dim)]">{rp.tagline}</span>
+                      )}
+                    </div>
+                    <LayerBadge layer={rp.layer} />
+                  </Link>
                 ))}
               </div>
             </div>
@@ -210,7 +248,7 @@ export default async function ProjectDetailPage({ params }: Props) {
                     href={link.url!}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-2 text-sm text-[var(--hw-blue)] hover:text-[var(--hw-blue-dim)]"
+                    className="flex items-center gap-2 text-sm text-[var(--hw-green)] hover:text-[var(--hw-green-dim)]"
                   >
                     <span>{link.label}</span>
                     <span className="text-[var(--hw-text-dim)]">&nearr;</span>
@@ -221,7 +259,7 @@ export default async function ProjectDetailPage({ params }: Props) {
           )}
 
           {/* Compare */}
-          {similarProjects.length > 0 && (
+          {relatedProjects.length > 0 && (
             <div
               className="border border-[var(--hw-border)] bg-[var(--hw-surface)] p-4"
               style={{ borderRadius: "4px" }}
@@ -230,11 +268,11 @@ export default async function ProjectDetailPage({ params }: Props) {
                 Compare
               </h3>
               <div className="space-y-2">
-                {similarProjects.map((sp) => (
+                {relatedProjects.map((sp) => (
                   <Link
                     key={sp.slug}
                     href={`/compare/${project.slug}-vs-${sp.slug}`}
-                    className="block text-sm text-[var(--hw-blue)] hover:text-[var(--hw-blue-dim)]"
+                    className="block text-sm text-[var(--hw-green)] hover:text-[var(--hw-green-dim)]"
                   >
                     vs {sp.name}
                   </Link>

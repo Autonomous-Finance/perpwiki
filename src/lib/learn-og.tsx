@@ -21,8 +21,8 @@ export function createLearnOGImage(title: string, category: string) {
               display: "flex",
               padding: "6px 16px",
               fontSize: 16,
-              color: HW_COLORS.blue,
-              border: `1px solid ${HW_COLORS.blue}`,
+              color: HW_COLORS.green,
+              border: `1px solid ${HW_COLORS.green}`,
               borderRadius: 2,
               marginBottom: 24,
               alignSelf: "flex-start",
@@ -51,7 +51,7 @@ export function createLearnOGImage(title: string, category: string) {
           }}
         >
           <span style={{ color: HW_COLORS.text }}>HYPE</span>
-          <span style={{ color: HW_COLORS.blue }}>.WIKI</span>
+          <span style={{ color: HW_COLORS.green }}>.WIKI</span>
           <span style={{ marginLeft: 8 }}> · Learn</span>
         </div>
       </div>

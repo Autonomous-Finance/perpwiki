@@ -4,22 +4,22 @@ export type Layer = (typeof LAYERS)[number];
 export const LAYER_META: Record<string, { label: string; color: string; description: string }> = {
   HYPERCORE: {
     label: "HyperCore",
-    color: "#4B8EF4",
+    color: "#00E5A0",
     description: "Native on-chain perpetual orderbook",
   },
   HYPEREVM: {
     label: "HyperEVM",
-    color: "#818CF8",
+    color: "#00C8E0",
     description: "EVM smart contracts on Hyperliquid L1",
   },
   HIP3: {
     label: "HIP-3",
-    color: "#C084FC",
+    color: "#A78BFA",
     description: "Permissionless custom perpetual markets",
   },
   BOTH: {
     label: "Multi-Layer",
-    color: "#60A5FA",
+    color: "#F0B429",
     description: "Spans multiple Hyperliquid layers",
   },
 };

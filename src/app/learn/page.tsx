@@ -30,12 +30,12 @@ export default function LearnPage() {
         {LEARN_ARTICLES.map((article) => (
           <Link key={article.slug} href={`/learn/${article.slug}`}>
             <div
-              className="flex h-full flex-col gap-3 border border-[var(--hw-border)] bg-[var(--hw-surface)] p-5 transition-all hover:border-[var(--hw-blue)] hover:shadow-[0_0_8px_rgba(75,142,244,0.15)]"
+              className="flex h-full flex-col gap-3 border border-[var(--hw-border)] bg-[var(--hw-surface)] p-5 transition-all hover:border-[var(--hw-green)] hover:shadow-[0_0_8px_rgba(0,229,160,0.08)]"
               style={{ borderRadius: "4px" }}
             >
               <div className="flex items-center gap-2">
                 <span
-                  className="bg-[var(--hw-blue-subtle)] px-2 py-0.5 text-xs text-[var(--hw-blue)]"
+                  className="bg-[var(--hw-green-subtle)] px-2 py-0.5 text-xs text-[var(--hw-green)]"
                   style={{ borderRadius: "2px" }}
                 >
                   {article.category}
