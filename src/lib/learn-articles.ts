@@ -35,6 +35,60 @@ export const LEARN_ARTICLES: LearnArticle[] = [
     readingTime: "7 min",
     datePublished: "2026-02-01",
   },
+  {
+    slug: "hyperliquid-staking-guide",
+    title: "Hyperliquid Staking Guide: HLP Vault, HYPE Staking & APY",
+    description:
+      "Everything you need to know about earning yield on Hyperliquid — HLP vault strategies, HYPE staking, liquid staking tokens, and current APY rates.",
+    category: "Guides",
+    readingTime: "8 min",
+    datePublished: "2026-03-01",
+  },
+  {
+    slug: "best-hyperevm-projects",
+    title: "Best HyperEVM Projects in 2026",
+    description:
+      "A curated guide to the top projects building on HyperEVM — from liquid staking and lending to DEXs and yield aggregators.",
+    category: "Ecosystem",
+    readingTime: "10 min",
+    datePublished: "2026-03-03",
+  },
+  {
+    slug: "hyperliquid-vs-cex",
+    title: "Hyperliquid vs Binance & Bybit: How Does It Compare?",
+    description:
+      "An honest comparison of Hyperliquid against top centralized exchanges on fees, speed, custody, and features.",
+    category: "Comparisons",
+    readingTime: "7 min",
+    datePublished: "2026-03-04",
+  },
+  {
+    slug: "what-is-hyperevm",
+    title: "What Is HyperEVM? A Beginner's Guide",
+    description:
+      "HyperEVM is the EVM-compatible smart contract layer on Hyperliquid L1. Learn how it works and why it matters.",
+    category: "Fundamentals",
+    readingTime: "6 min",
+    datePublished: "2026-03-05",
+  },
+  {
+    slug: "hype-token-guide",
+    title: "HYPE Token Guide: Tokenomics, Staking & Governance",
+    description:
+      "A complete guide to the HYPE token — how it works, staking rewards, governance power, and the burn mechanism.",
+    category: "Tokens",
+    readingTime: "7 min",
+    datePublished: "2026-03-06",
+  },
+  {
+    slug: "hlp-vault-guide",
+    title: "HLP Vault Guide: Hyperliquid Liquidity Provider Explained",
+    description:
+      "How the HLP vault works: deposit USDC, earn yield from market-making, liquidations, and trading fees. HLP APY, risks, TVL, and how it compares to HYPE staking.",
+    category: "Guides",
+    readingTime: "8 min",
+    datePublished: "2026-03-08",
+  },
 ];
 
 export function getArticle(slug: string): LearnArticle | undefined {
