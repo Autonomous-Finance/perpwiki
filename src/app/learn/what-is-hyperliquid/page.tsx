@@ -48,8 +48,8 @@ export default function WhatIsHyperliquidPage() {
         The result is a trading experience that rivals centralized exchanges: sub-second
         transaction finality, no gas fees for placing orders, and the ability to process up to
         200,000 orders per second. Launched in late 2023, Hyperliquid quickly grew to become
-        one of the highest-volume perpetual DEXs in crypto, regularly processing billions of
-        dollars in daily trading volume.
+        the highest-volume perpetual DEX in crypto — processing over $3.4B in daily volume across
+        229 markets and capturing 10.2% of all perpetual trading (up from 2% two years ago).
       </P>
       <P>
         What makes Hyperliquid unique is its fully on-chain order book. While most DEXs use
