@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { PerpLogo } from "@/components/logo/PerpLogo";
 
 const NAV_LINKS = [
   { href: "/projects", label: "Projects" },
@@ -17,11 +18,8 @@ export function Header() {
   return (
     <header className="sticky top-0 z-50 border-b border-[var(--hw-border)] bg-[var(--hw-bg)]/95 backdrop-blur-md">
       <div className="mx-auto flex h-14 max-w-7xl items-center justify-between px-4">
-        <Link
-          href="/"
-          className="font-[family-name:var(--font-space-grotesk)] text-lg font-bold tracking-widest text-[var(--hw-text)]"
-        >
-          HYPE<span className="text-[var(--hw-green)] font-light">.WIKI</span>
+        <Link href="/" className="flex items-center">
+          <PerpLogo size={28} variant="full" />
         </Link>
 
         {/* Desktop nav */}
@@ -35,6 +33,12 @@ export function Header() {
               {link.label}
             </Link>
           ))}
+          <Link
+            href="/submit"
+            className="text-sm text-[var(--hw-text-dim)] transition-colors hover:text-[var(--hw-green)]"
+          >
+            Submit
+          </Link>
         </nav>
 
         {/* Mobile hamburger */}
@@ -68,6 +72,13 @@ export function Header() {
               {link.label}
             </Link>
           ))}
+          <Link
+            href="/submit"
+            className="block py-2 text-sm text-[var(--hw-text-dim)] hover:text-[var(--hw-green)]"
+            onClick={() => setMenuOpen(false)}
+          >
+            Submit a Project
+          </Link>
         </nav>
       )}
     </header>

@@ -47,6 +47,8 @@ export const CATEGORIES = [
   "SDKs & Developer Tools",
   "Security & Audits",
   "Data APIs",
+  // NFTs & Culture
+  "NFTs & Collectibles",
   // Community
   "Communities & DAOs",
   "Media & Education",

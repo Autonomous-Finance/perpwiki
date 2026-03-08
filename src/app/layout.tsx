@@ -25,20 +25,23 @@ const jetbrainsMono = JetBrains_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:4000"),
   title: {
-    default: "HYPE.WIKI — The Hyperliquid Ecosystem Directory",
-    template: "%s | HYPE.WIKI",
+    default: "PerpWiki — Hyperliquid Ecosystem Intelligence",
+    template: "%s | PerpWiki",
   },
   description:
-    "The definitive directory for the Hyperliquid ecosystem. Discover every project across HyperCore, HyperEVM, and HIP-3.",
+    "Discover, compare, and research every project building on Hyperliquid. The independent intelligence directory for HyperCore, HyperEVM, and HIP-3.",
   openGraph: {
-    title: "HYPE.WIKI — The Hyperliquid Ecosystem Directory",
+    title: "PerpWiki — Hyperliquid Ecosystem Intelligence",
     description:
-      "Every project. Every layer. One place. The definitive intelligence directory for Hyperliquid.",
-    siteName: "HYPE.WIKI",
+      "The independent intelligence directory for the Hyperliquid ecosystem.",
+    siteName: "PerpWiki",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
+  },
+  icons: {
+    icon: "/icon.svg",
   },
   robots: {
     index: true,

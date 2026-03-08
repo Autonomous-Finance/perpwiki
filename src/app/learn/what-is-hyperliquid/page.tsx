@@ -32,8 +32,8 @@ export default function WhatIsHyperliquidPage() {
           headline: article.title,
           description: article.description,
           datePublished: article.datePublished,
-          author: { "@type": "Organization", name: "HYPE.WIKI" },
-          publisher: { "@type": "Organization", name: "HYPE.WIKI" },
+          author: { "@type": "Organization", name: "PerpWiki" },
+          publisher: { "@type": "Organization", name: "PerpWiki" },
         }}
       />
 

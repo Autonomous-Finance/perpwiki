@@ -17,7 +17,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: project.name,
     description: project.tagline || `${project.name} — ${project.category} on Hyperliquid`,
     openGraph: {
-      title: `${project.name} | HYPE.WIKI`,
+      title: `${project.name} | PerpWiki`,
       description: project.tagline || `${project.name} — ${project.category} on Hyperliquid`,
     },
   };

@@ -50,7 +50,7 @@ export function createLearnOGImage(title: string, category: string) {
             letterSpacing: "0.1em",
           }}
         >
-          <span style={{ color: HW_COLORS.text }}>HYPE</span>
+          <span style={{ color: HW_COLORS.text }}>PERP</span>
           <span style={{ color: HW_COLORS.green }}>.WIKI</span>
           <span style={{ marginLeft: 8 }}> · Learn</span>
         </div>

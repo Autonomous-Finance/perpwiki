@@ -4,7 +4,7 @@ import { prisma } from "@/lib/prisma";
 
 export const runtime = "nodejs";
 export const revalidate = 86400;
-export const alt = "HYPE.WIKI — The Hyperliquid Ecosystem Directory";
+export const alt = "PerpWiki — Hyperliquid Ecosystem Intelligence";
 export const size = OG_SIZE;
 export const contentType = "image/png";
 
@@ -34,7 +34,7 @@ export default async function Image() {
             letterSpacing: "0.1em",
           }}
         >
-          <span>HYPE</span>
+          <span>PERP</span>
           <span style={{ color: HW_COLORS.green, fontWeight: 300 }}>.WIKI</span>
         </div>
         <div
@@ -45,7 +45,7 @@ export default async function Image() {
             marginTop: 20,
           }}
         >
-          The Hyperliquid Ecosystem Directory
+          Hyperliquid Ecosystem Intelligence
         </div>
         <div
           style={{

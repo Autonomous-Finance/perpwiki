@@ -60,7 +60,7 @@ export default async function Image({ params }: { params: Promise<{ slug: string
             letterSpacing: "0.1em",
           }}
         >
-          <span style={{ color: HW_COLORS.text }}>HYPE</span>
+          <span style={{ color: HW_COLORS.text }}>PERP</span>
           <span style={{ color: HW_COLORS.green }}>.WIKI</span>
         </div>
       </div>

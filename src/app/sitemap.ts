@@ -63,6 +63,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       lastModified: new Date(),
       priority: 0.7,
     },
+    {
+      url: `${SITE_URL}/submit`,
+      lastModified: new Date(),
+      priority: 0.5,
+    },
     ...learnEntries,
     ...categoryEntries,
     ...projectEntries,

@@ -3,7 +3,7 @@ import { OG_SIZE, HW_COLORS } from "@/lib/og-utils";
 
 export const runtime = "nodejs";
 export const revalidate = 86400;
-export const alt = "Learn Hyperliquid | HYPE.WIKI";
+export const alt = "Learn Hyperliquid | PerpWiki";
 export const size = OG_SIZE;
 export const contentType = "image/png";
 
@@ -51,7 +51,7 @@ export default async function Image() {
             letterSpacing: "0.1em",
           }}
         >
-          <span style={{ color: HW_COLORS.text }}>HYPE</span>
+          <span style={{ color: HW_COLORS.text }}>PERP</span>
           <span style={{ color: HW_COLORS.green }}>.WIKI</span>
           <span style={{ marginLeft: 8 }}> · Learn</span>
         </div>

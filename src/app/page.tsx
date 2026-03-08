@@ -109,9 +109,9 @@ export default async function HomePage() {
         data={{
           "@context": "https://schema.org",
           "@type": "WebSite",
-          name: "HYPE.WIKI",
+          name: "PerpWiki",
           url: SITE_URL,
-          description: "The definitive intelligence directory for the Hyperliquid ecosystem.",
+          description: "The independent intelligence directory for the Hyperliquid ecosystem.",
           potentialAction: {
             "@type": "SearchAction",
             target: `${SITE_URL}/projects?q={search_term_string}`,
@@ -165,6 +165,16 @@ export default async function HomePage() {
           {/* Search */}
           <div className="mt-8">
             <SearchBar />
+          </div>
+
+          <div className="mt-6">
+            <Link
+              href="/submit"
+              className="inline-block border border-[var(--hw-border)] px-4 py-2 text-sm text-[var(--hw-text-dim)] transition-all hover:border-[var(--hw-green)] hover:text-[var(--hw-green)]"
+              style={{ borderRadius: "2px" }}
+            >
+              Submit a Project
+            </Link>
           </div>
         </div>
       </section>
