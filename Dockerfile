@@ -20,7 +20,7 @@ ENV NODE_ENV=production
 ENV PORT=4001
 ENV HOSTNAME=0.0.0.0
 EXPOSE 4001
-RUN apk add --no-cache libstdc++ && \
+RUN apk add --no-cache libstdc++ sqlite && \
     wget -q -O /tmp/litestream.tar.gz https://github.com/benbjohnson/litestream/releases/download/v0.3.13/litestream-v0.3.13-linux-amd64.tar.gz && \
     tar -xzf /tmp/litestream.tar.gz -C /usr/local/bin litestream && \
     rm /tmp/litestream.tar.gz

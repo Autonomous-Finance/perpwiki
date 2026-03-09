@@ -7,12 +7,7 @@ echo "[entrypoint] PerpWiki starting..."
 
 # If DB exists, verify it's not corrupt
 if [ -f "$DB_PATH" ]; then
-  if node -e "
-    const D = require('better-sqlite3');
-    const d = new D(process.argv[1], { readonly: true });
-    d.pragma('integrity_check');
-    d.close();
-  " "$DB_PATH" 2>/dev/null; then
+  if sqlite3 "$DB_PATH" "PRAGMA integrity_check;" >/dev/null 2>&1; then
     echo "[entrypoint] Database OK ($(du -h "$DB_PATH" | cut -f1))"
   else
     echo "[entrypoint] Database is corrupt — removing"
@@ -41,7 +36,9 @@ fi
 
 # Apply migrations
 echo "[entrypoint] Applying migrations..."
-node scripts/apply-migrations.mjs
+for f in prisma/migrations/*/migration.sql; do
+  [ -f "$f" ] && sqlite3 "$DB_PATH" < "$f" 2>/dev/null || true
+done
 echo "[entrypoint] Migrations complete"
 
 echo "[entrypoint] Starting server on port ${PORT:-4001}..."
