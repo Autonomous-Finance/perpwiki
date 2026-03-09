@@ -10,7 +10,7 @@ RUN pnpm db:generate
 COPY . .
 # Create empty DB for build-time SSG
 ENV DATABASE_URL=file:./prisma/dev.db
-RUN pnpm db:push --accept-data-loss 2>/dev/null || true
+RUN pnpm exec prisma migrate deploy
 RUN --mount=type=cache,target=/app/.next/cache pnpm build
 
 # --- Runner ---
