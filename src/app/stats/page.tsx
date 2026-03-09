@@ -120,10 +120,50 @@ async function fetchLiveData() {
   }
 }
 
+async function fetchCommunityStats() {
+  const [totalReviews, avgRatingResult, mostReviewed, totalSuggestions] =
+    await Promise.all([
+      prisma.review.count({ where: { isPublished: true } }),
+      prisma.review.aggregate({
+        where: { isPublished: true },
+        _avg: { rating: true },
+      }),
+      prisma.review.groupBy({
+        by: ["projectId"],
+        where: { isPublished: true },
+        _count: { id: true },
+        _avg: { rating: true },
+        orderBy: { _count: { id: "desc" } },
+        take: 3,
+      }),
+      prisma.suggestion.count(),
+    ]);
+
+  // Fetch project names for most-reviewed
+  const projectIds = mostReviewed.map((r) => r.projectId);
+  const projects = await prisma.project.findMany({
+    where: { id: { in: projectIds } },
+    select: { id: true, name: true, slug: true },
+  });
+  const projectMap = new Map(projects.map((p) => [p.id, p]));
+
+  return {
+    totalReviews,
+    avgRating: avgRatingResult._avg.rating ?? 0,
+    mostReviewed: mostReviewed.map((r) => ({
+      project: projectMap.get(r.projectId),
+      count: r._count.id,
+      avgRating: r._avg.rating ?? 0,
+    })),
+    totalSuggestions,
+  };
+}
+
 export default async function StatsPage() {
-  const [liveData, projectCount] = await Promise.all([
+  const [liveData, projectCount, communityStats] = await Promise.all([
     fetchLiveData(),
     prisma.project.count({ where: { approvalStatus: "APPROVED" } }),
+    fetchCommunityStats(),
   ]);
 
   const statCards = [
@@ -242,6 +282,77 @@ export default async function StatsPage() {
               </div>
             );
           })}
+        </div>
+
+        {/* ===== COMMUNITY STATS ===== */}
+        <div className="mt-8">
+          <h2 className="font-[family-name:var(--font-space-grotesk)] text-xl font-bold text-[var(--hw-text)] mb-4 flex items-center gap-2">
+            <span className="inline-block h-1 w-5" style={{ background: "var(--hw-gold)", borderRadius: 1 }} />
+            Community
+          </h2>
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+            <div
+              className="border border-[var(--hw-border)] bg-[var(--hw-surface)] p-4"
+              style={{ borderRadius: 4 }}
+            >
+              <div className="text-xs text-[var(--hw-text-dim)]">Total Reviews</div>
+              <div className="mt-1 font-[family-name:var(--font-jetbrains-mono)] text-lg font-bold text-[var(--hw-text)]">
+                {communityStats.totalReviews}
+              </div>
+            </div>
+            <div
+              className="border border-[var(--hw-border)] bg-[var(--hw-surface)] p-4"
+              style={{ borderRadius: 4 }}
+            >
+              <div className="text-xs text-[var(--hw-text-dim)]">Avg Rating</div>
+              <div className="mt-1 font-[family-name:var(--font-jetbrains-mono)] text-lg font-bold text-[var(--hw-text)]">
+                {communityStats.totalReviews > 0
+                  ? communityStats.avgRating.toFixed(1)
+                  : "N/A"}
+                {communityStats.totalReviews > 0 && (
+                  <span className="ml-1 text-sm" style={{ color: "var(--hw-gold)" }}>★</span>
+                )}
+              </div>
+            </div>
+            <div
+              className="border border-[var(--hw-border)] bg-[var(--hw-surface)] p-4"
+              style={{ borderRadius: 4 }}
+            >
+              <div className="text-xs text-[var(--hw-text-dim)]">Suggestions</div>
+              <div className="mt-1 font-[family-name:var(--font-jetbrains-mono)] text-lg font-bold text-[var(--hw-text)]">
+                {communityStats.totalSuggestions}
+              </div>
+            </div>
+            <div
+              className="border border-[var(--hw-border)] bg-[var(--hw-surface)] p-4"
+              style={{ borderRadius: 4 }}
+            >
+              <div className="text-xs text-[var(--hw-text-dim)] mb-2">Most Reviewed</div>
+              {communityStats.mostReviewed.length > 0 ? (
+                <div className="space-y-1.5">
+                  {communityStats.mostReviewed.map((item, i) => (
+                    <div key={i} className="flex items-center justify-between">
+                      {item.project ? (
+                        <Link
+                          href={`/projects/${item.project.slug}`}
+                          className="text-xs text-[var(--hw-text-muted)] hover:text-[var(--hw-green)] transition-colors truncate mr-2"
+                        >
+                          {item.project.name}
+                        </Link>
+                      ) : (
+                        <span className="text-xs text-[var(--hw-text-dim)]">Unknown</span>
+                      )}
+                      <span className="text-xs text-[var(--hw-text-dim)] shrink-0">
+                        {item.count} review{item.count !== 1 ? "s" : ""}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <p className="text-xs text-[var(--hw-text-dim)]">No reviews yet</p>
+              )}
+            </div>
+          </div>
         </div>
 
         {/* Charts */}

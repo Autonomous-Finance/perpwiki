@@ -1,7 +1,11 @@
 import Link from "next/link";
 import { JsonLd } from "@/components/JsonLd";
 import { BreadcrumbSchema } from "@/components/BreadcrumbSchema";
+import { prisma } from "@/lib/prisma";
+import { categoryToSlug } from "@/lib/categories";
 import type { Metadata } from "next";
+
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Compare Hyperliquid Projects — LSTs, Lending, DEXs | perp.wiki",
@@ -10,48 +14,56 @@ export const metadata: Metadata = {
   alternates: { canonical: "https://perp.wiki/compare" },
 };
 
-interface ComparisonPair {
-  slugA: string;
-  slugB: string;
-  nameA: string;
-  nameB: string;
+interface GroupedCategory {
+  category: string;
+  slug: string;
+  projects: { slug: string; name: string }[];
+  pairs: { slugA: string; slugB: string; nameA: string; nameB: string }[];
 }
 
-interface CompareCategory {
-  title: string;
-  description: string;
-  pairs: ComparisonPair[];
-}
+export default async function CompareHubPage() {
+  const projects = await prisma.project.findMany({
+    where: { approvalStatus: "APPROVED" },
+    select: { slug: true, name: true, category: true },
+    orderBy: { name: "asc" },
+  });
 
-const CATEGORIES: CompareCategory[] = [
-  {
-    title: "Liquid Staking (LSTs)",
-    description: "Compare liquid staking solutions for HYPE — yields, liquidity, and integrations.",
-    pairs: [
-      { slugA: "kinetiq", slugB: "stakedhype", nameA: "Kinetiq", nameB: "StakedHYPE" },
-      { slugA: "kinetiq", slugB: "hyperbeat", nameA: "Kinetiq", nameB: "HyperBeat" },
-      { slugA: "stakedhype", slugB: "hyperbeat", nameA: "StakedHYPE", nameB: "HyperBeat" },
-    ],
-  },
-  {
-    title: "Lending Protocols",
-    description: "Compare borrowing and lending platforms on Hyperliquid — rates, collateral, and risk.",
-    pairs: [
-      { slugA: "hyperlend", slugB: "felix-protocol", nameA: "HyperLend", nameB: "Felix Protocol" },
-      { slugA: "hyperlend", slugB: "morpho", nameA: "HyperLend", nameB: "Morpho" },
-    ],
-  },
-  {
-    title: "DEXs & AMMs",
-    description: "Compare decentralized exchanges and AMMs on HyperEVM — liquidity, fees, and trading features.",
-    pairs: [
-      { slugA: "hyperswap", slugB: "gliquid", nameA: "HyperSwap", nameB: "Gliquid" },
-      { slugA: "hyperswap", slugB: "kittenswap", nameA: "HyperSwap", nameB: "KittenSwap" },
-    ],
-  },
-];
+  // Group by category
+  const byCategory = new Map<string, { slug: string; name: string }[]>();
+  for (const p of projects) {
+    const existing = byCategory.get(p.category) || [];
+    existing.push({ slug: p.slug, name: p.name });
+    byCategory.set(p.category, existing);
+  }
 
-export default function CompareHubPage() {
+  // Build category groups with all unique pairs (only categories with 2+ projects)
+  const groups: GroupedCategory[] = [];
+  for (const [category, members] of byCategory) {
+    if (members.length < 2) continue;
+    const pairs: GroupedCategory["pairs"] = [];
+    for (let i = 0; i < members.length; i++) {
+      for (let j = i + 1; j < members.length; j++) {
+        pairs.push({
+          slugA: members[i].slug,
+          slugB: members[j].slug,
+          nameA: members[i].name,
+          nameB: members[j].name,
+        });
+      }
+    }
+    groups.push({
+      category,
+      slug: categoryToSlug(category),
+      projects: members,
+      pairs,
+    });
+  }
+
+  // Sort categories by number of pairs descending
+  groups.sort((a, b) => b.pairs.length - a.pairs.length);
+
+  const totalPairs = groups.reduce((sum, g) => sum + g.pairs.length, 0);
+
   return (
     <div className="mx-auto max-w-4xl px-4 py-8">
       <JsonLd
@@ -60,7 +72,7 @@ export default function CompareHubPage() {
           "@type": "CollectionPage",
           name: "Compare Hyperliquid Ecosystem Projects",
           url: "https://perp.wiki/compare",
-          description: "Side-by-side comparisons of the top protocols across every DeFi category on HyperEVM.",
+          description: `Side-by-side comparisons of the top protocols across every DeFi category on HyperEVM. ${totalPairs} comparison pairs available.`,
         }}
       />
       <BreadcrumbSchema
@@ -82,20 +94,30 @@ export default function CompareHubPage() {
       <h1 className="font-[family-name:var(--font-space-grotesk)] text-3xl sm:text-4xl font-bold text-[var(--hw-text)] mb-3">
         Compare Hyperliquid Ecosystem Projects
       </h1>
-      <p className="text-base text-[var(--hw-text-muted)] mb-10 max-w-2xl">
+      <p className="text-base text-[var(--hw-text-muted)] mb-2 max-w-2xl">
         Side-by-side comparisons of the top protocols across every DeFi category on HyperEVM.
+      </p>
+      <p className="text-sm text-[var(--hw-text-dim)] mb-10">
+        {totalPairs} comparisons across {groups.length} categories
       </p>
 
       {/* Category sections */}
       <div className="space-y-10">
-        {CATEGORIES.map((cat) => (
-          <section key={cat.title}>
-            <h2 className="font-[family-name:var(--font-space-grotesk)] text-lg font-semibold text-[var(--hw-text)] mb-1">
-              {cat.title}
-            </h2>
-            <p className="text-sm text-[var(--hw-text-dim)] mb-4">{cat.description}</p>
+        {groups.map((group) => (
+          <section key={group.slug}>
+            <div className="flex items-baseline gap-3 mb-1">
+              <h2 className="font-[family-name:var(--font-space-grotesk)] text-lg font-semibold text-[var(--hw-text)]">
+                {group.category}
+              </h2>
+              <span className="text-xs text-[var(--hw-text-dim)]">
+                {group.projects.length} projects &middot; {group.pairs.length} comparisons
+              </span>
+            </div>
+            <p className="text-sm text-[var(--hw-text-dim)] mb-4">
+              Compare {group.category.toLowerCase()} protocols on Hyperliquid — features, layer, and ecosystem role.
+            </p>
             <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-              {cat.pairs.map((pair) => (
+              {group.pairs.map((pair) => (
                 <Link
                   key={`${pair.slugA}-${pair.slugB}`}
                   href={`/compare/${pair.slugA}-vs-${pair.slugB}`}

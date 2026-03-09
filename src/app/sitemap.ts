@@ -19,6 +19,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.8 as const,
   }));
 
+  // Ecosystem landing pages — one per approved project
+  const ecosystemEntries = projects.map((p) => ({
+    url: `${SITE_URL}/ecosystem/${p.slug}`,
+    lastModified: p.updatedAt,
+    priority: 0.7 as const,
+  }));
+
   // Unique categories
   const categories = [...new Set(projects.map((p) => p.category))];
   const categoryEntries = categories.map((cat) => ({
@@ -34,16 +41,26 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.8 as const,
   }));
 
-  // Compare pairs — top combinations by slug (alphabetical pairs)
-  const slugs = projects.map((p) => p.slug).sort();
+  // Compare pairs — all same-category project pairs
+  const byCategory = new Map<string, string[]>();
+  for (const p of projects) {
+    const existing = byCategory.get(p.category) || [];
+    existing.push(p.slug);
+    byCategory.set(p.category, existing);
+  }
+
   const comparePairs: MetadataRoute.Sitemap = [];
-  for (let i = 0; i < Math.min(slugs.length, 15); i++) {
-    for (let j = i + 1; j < Math.min(slugs.length, 15); j++) {
-      comparePairs.push({
-        url: `${SITE_URL}/compare/${slugs[i]}-vs-${slugs[j]}`,
-        lastModified: new Date(),
-        priority: 0.6,
-      });
+  for (const [, slugs] of byCategory) {
+    if (slugs.length < 2) continue;
+    slugs.sort();
+    for (let i = 0; i < slugs.length; i++) {
+      for (let j = i + 1; j < slugs.length; j++) {
+        comparePairs.push({
+          url: `${SITE_URL}/compare/${slugs[i]}-vs-${slugs[j]}`,
+          lastModified: new Date(),
+          priority: 0.6,
+        });
+      }
     }
   }
 
@@ -57,6 +74,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       url: `${SITE_URL}/projects`,
       lastModified: new Date(),
       priority: 0.9,
+    },
+    {
+      url: `${SITE_URL}/categories`,
+      lastModified: new Date(),
+      priority: 0.8,
     },
     {
       url: `${SITE_URL}/layer/hypercore`,
@@ -138,6 +160,21 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.8,
     },
     {
+      url: `${SITE_URL}/tools/position-size-calculator`,
+      lastModified: new Date(),
+      priority: 0.8,
+    },
+    {
+      url: `${SITE_URL}/tools/pnl-calculator`,
+      lastModified: new Date(),
+      priority: 0.8,
+    },
+    {
+      url: `${SITE_URL}/tools/funding-arbitrage-calculator`,
+      lastModified: new Date(),
+      priority: 0.8,
+    },
+    {
       url: `${SITE_URL}/submit`,
       lastModified: new Date(),
       priority: 0.5,
@@ -150,6 +187,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...learnEntries,
     ...categoryEntries,
     ...projectEntries,
+    ...ecosystemEntries,
     ...comparePairs,
   ];
 }

@@ -53,14 +53,15 @@ model Dossier {
 }
 
 model Review {
-  id          String   @id @default(cuid())
-  projectId   String
-  project     Project  @relation(fields: [projectId], references: [id])
-  rating      Int
-  content     String?
-  authorId    String?
-  isPublished Boolean  @default(false)
-  createdAt   DateTime @default(now())
+  id            String   @id @default(cuid())
+  projectId     String
+  project       Project  @relation(fields: [projectId], references: [id])
+  rating        Int
+  content       String?
+  authorId      String?
+  isPublished   Boolean  @default(false)
+  helpfulCount  Int      @default(0)
+  createdAt     DateTime @default(now())
 }
 
 model Suggestion {

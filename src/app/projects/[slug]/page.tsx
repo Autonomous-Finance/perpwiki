@@ -4,6 +4,8 @@ import { LayerBadge } from "@/components/LayerBadge";
 import { JsonLd } from "@/components/JsonLd";
 import { BreadcrumbSchema } from "@/components/BreadcrumbSchema";
 import { ReviewForm } from "@/components/ReviewForm";
+import { SuggestionForm } from "@/components/SuggestionForm";
+import { HelpfulButton } from "@/components/HelpfulButton";
 import { getMarketTicker } from "@/lib/market-map";
 import { LiveMarketCard } from "@/components/LiveMarketCard";
 import { ProjectTabs } from "@/components/ProjectTabs";
@@ -178,9 +180,18 @@ export default async function ProjectDetailPage({ params }: Props) {
 
   const reviews = await prisma.review.findMany({
     where: { projectId: project.id, isPublished: true },
-    take: 5,
     orderBy: { createdAt: "desc" },
   });
+
+  const reviewCount = reviews.length;
+  const avgRating =
+    reviewCount > 0
+      ? reviews.reduce((sum, r) => sum + r.rating, 0) / reviewCount
+      : 0;
+  const starDistribution = [1, 2, 3, 4, 5].map(
+    (star) => reviews.filter((r) => r.rating === star).length,
+  );
+  const maxStarCount = Math.max(...starDistribution, 1);
 
   const ticker = getMarketTicker(project.slug);
 
@@ -557,36 +568,134 @@ export default async function ProjectDetailPage({ params }: Props) {
               Community Reviews
             </h2>
 
-            {reviews.length > 0 && (
-              <div className="space-y-3 mb-6">
-                {reviews.map((review) => (
-                  <div
-                    key={review.id}
-                    className="border border-[var(--hw-border)] bg-[var(--hw-surface)] p-4"
-                    style={{ borderRadius: "4px" }}
-                  >
-                    <div className="flex items-center justify-between mb-2">
-                      <div className="flex gap-0.5">
+            {reviewCount > 0 ? (
+              <>
+                {/* Aggregate Rating + Star Distribution */}
+                <div
+                  className="border border-[var(--hw-border)] bg-[var(--hw-surface)] p-5 mb-4"
+                  style={{ borderRadius: "4px" }}
+                >
+                  <div className="flex flex-col sm:flex-row items-start sm:items-center gap-5">
+                    {/* Average score */}
+                    <div className="text-center shrink-0">
+                      <div className="font-[family-name:var(--font-jetbrains-mono)] text-3xl font-bold text-[var(--hw-text)]">
+                        {avgRating.toFixed(1)}
+                      </div>
+                      <div className="flex gap-0.5 justify-center mt-1">
                         {[1, 2, 3, 4, 5].map((star) => (
                           <span
                             key={star}
+                            className="text-sm"
                             style={{
-                              color: star <= review.rating ? "var(--hw-gold)" : "var(--hw-text-dim)",
+                              color:
+                                star <= Math.round(avgRating)
+                                  ? "var(--hw-gold)"
+                                  : "var(--hw-text-dim)",
                             }}
                           >
                             ★
                           </span>
                         ))}
                       </div>
-                      <span className="text-xs text-[var(--hw-text-dim)]">
-                        {formatRelativeTime(review.createdAt)}
-                      </span>
+                      <p className="text-xs text-[var(--hw-text-dim)] mt-1">
+                        {reviewCount} review{reviewCount !== 1 ? "s" : ""}
+                      </p>
                     </div>
-                    {review.content && (
-                      <p className="text-sm text-[var(--hw-text-muted)]">{review.content}</p>
-                    )}
+
+                    {/* Star distribution bars */}
+                    <div className="flex-1 w-full space-y-1.5">
+                      {[5, 4, 3, 2, 1].map((star) => {
+                        const count = starDistribution[star - 1];
+                        const pct = (count / maxStarCount) * 100;
+                        return (
+                          <div key={star} className="flex items-center gap-2">
+                            <span className="text-xs text-[var(--hw-text-dim)] w-3 text-right shrink-0">
+                              {star}
+                            </span>
+                            <span className="text-xs shrink-0" style={{ color: "var(--hw-gold)" }}>★</span>
+                            <div
+                              className="flex-1 h-2.5 overflow-hidden"
+                              style={{
+                                borderRadius: "1px",
+                                background: "var(--hw-bg)",
+                              }}
+                            >
+                              <div
+                                className="h-full transition-all"
+                                style={{
+                                  width: `${pct}%`,
+                                  background: "var(--hw-gold)",
+                                  borderRadius: "1px",
+                                  opacity: count > 0 ? 0.8 : 0.2,
+                                }}
+                              />
+                            </div>
+                            <span className="text-xs text-[var(--hw-text-dim)] w-6 shrink-0">
+                              {count}
+                            </span>
+                          </div>
+                        );
+                      })}
+                    </div>
                   </div>
-                ))}
+                </div>
+
+                {/* Individual reviews */}
+                <div className="space-y-3 mb-6">
+                  {reviews.slice(0, 10).map((review) => (
+                    <div
+                      key={review.id}
+                      className="border border-[var(--hw-border)] p-4"
+                      style={{
+                        borderRadius: "4px",
+                        background: "linear-gradient(135deg, var(--hw-surface) 0%, rgba(0,229,160,0.01) 100%)",
+                      }}
+                    >
+                      <div className="flex items-center justify-between mb-2">
+                        <div className="flex gap-0.5">
+                          {[1, 2, 3, 4, 5].map((star) => (
+                            <span
+                              key={star}
+                              className="text-sm"
+                              style={{
+                                color:
+                                  star <= review.rating
+                                    ? "var(--hw-gold)"
+                                    : "var(--hw-text-dim)",
+                              }}
+                            >
+                              ★
+                            </span>
+                          ))}
+                        </div>
+                        <span className="text-xs text-[var(--hw-text-dim)]">
+                          {formatRelativeTime(review.createdAt)}
+                        </span>
+                      </div>
+                      {review.content && (
+                        <p className="text-sm text-[var(--hw-text-muted)] leading-relaxed mb-3">
+                          {review.content}
+                        </p>
+                      )}
+                      <HelpfulButton
+                        reviewId={review.id}
+                        initialCount={review.helpfulCount}
+                      />
+                    </div>
+                  ))}
+                </div>
+              </>
+            ) : (
+              <div
+                className="border border-dashed border-[var(--hw-border)] p-6 text-center mb-4"
+                style={{ borderRadius: "4px" }}
+              >
+                <p className="text-sm text-[var(--hw-text-muted)] mb-1">
+                  No reviews yet — be the first!
+                </p>
+                <p className="text-xs text-[var(--hw-text-dim)]">
+                  Share your experience with {project.name} to help others in the community.
+                </p>
               </div>
             )}
 
@@ -598,6 +707,11 @@ export default async function ProjectDetailPage({ params }: Props) {
                 Leave a Review
               </h3>
               <ReviewForm projectId={project.id} />
+            </div>
+
+            {/* Suggestion Form */}
+            <div className="mt-4">
+              <SuggestionForm projectId={project.id} projectName={project.name} />
             </div>
           </div>
         </div>

@@ -1,7 +1,10 @@
 import Link from "next/link";
 import { BreadcrumbSchema } from "@/components/BreadcrumbSchema";
 import { LEARN_ARTICLES } from "@/lib/learn-articles";
+import { prisma } from "@/lib/prisma";
 import type { Metadata } from "next";
+
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Sitemap — perp.wiki",
@@ -13,6 +16,7 @@ export const metadata: Metadata = {
 const MAIN_PAGES = [
   { href: "/", label: "Home", desc: "Homepage with ecosystem overview and project highlights" },
   { href: "/projects", label: "All Projects", desc: "Browse every Hyperliquid ecosystem project" },
+  { href: "/categories", label: "Categories", desc: "All DeFi sectors in the Hyperliquid ecosystem" },
   { href: "/markets", label: "Markets", desc: "Live perpetual futures prices, volume, and open interest" },
   { href: "/funding-rates", label: "Funding Rates", desc: "Real-time funding rates across all Hyperliquid markets" },
   { href: "/stats", label: "Stats", desc: "Ecosystem statistics — TVL, volume, and open interest" },
@@ -34,6 +38,7 @@ const LAYER_PAGES = [
 
 const OTHER_PAGES = [
   { href: "/compare", label: "Compare Projects", desc: "Side-by-side analysis of competing protocols" },
+  { href: "/tools", label: "Tools", desc: "Calculators and utilities for Hyperliquid traders" },
   { href: "/submit", label: "Submit a Project", desc: "Submit a new project to the directory" },
 ];
 
@@ -82,7 +87,13 @@ function SitemapLink({
   );
 }
 
-export default function SitemapHtmlPage() {
+export default async function SitemapHtmlPage() {
+  const ecosystemProjects = await prisma.project.findMany({
+    where: { approvalStatus: "APPROVED" },
+    select: { slug: true, name: true },
+    orderBy: { name: "asc" },
+  });
+
   return (
     <div className="mx-auto max-w-4xl px-4 py-8">
       <BreadcrumbSchema
@@ -163,6 +174,22 @@ export default function SitemapHtmlPage() {
         <ul className="border border-[var(--hw-border)] bg-[var(--hw-surface)] divide-y divide-[var(--hw-border)] px-4" style={{ borderRadius: "4px" }}>
           {OTHER_PAGES.map((page) => (
             <SitemapLink key={page.href} {...page} />
+          ))}
+        </ul>
+      </SitemapSection>
+
+      {/* Ecosystem Landing Pages */}
+      <SitemapSection title="Ecosystem Landing Pages">
+        <p className="text-sm text-[var(--hw-text-dim)] mb-3">
+          Individual overview pages for each project on Hyperliquid.
+        </p>
+        <ul className="border border-[var(--hw-border)] bg-[var(--hw-surface)] divide-y divide-[var(--hw-border)] px-4" style={{ borderRadius: "4px" }}>
+          {ecosystemProjects.map((p) => (
+            <SitemapLink
+              key={p.slug}
+              href={`/ecosystem/${p.slug}`}
+              label={`${p.name} on Hyperliquid`}
+            />
           ))}
         </ul>
       </SitemapSection>

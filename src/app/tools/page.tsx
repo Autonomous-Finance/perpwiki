@@ -33,11 +33,43 @@ const TOOLS = [
       </svg>
     ),
   },
+  {
+    href: "/tools/position-size-calculator",
+    title: "Position Size Calculator",
+    description:
+      "Determine optimal position sizing based on your risk tolerance, account balance, and stop loss distance.",
+    icon: (
+      <svg className="w-8 h-8 text-[var(--hw-cyan)]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v17.25m0 0c-1.472 0-2.882.265-4.185.75M12 20.25c1.472 0 2.882.265 4.185.75M18.75 4.97A48.416 48.416 0 0 0 12 4.5c-2.291 0-4.545.16-6.75.47m13.5 0c1.01.143 2.01.317 3 .52m-3-.52 2.62 10.726c.122.499-.106 1.028-.589 1.202a5.988 5.988 0 0 1-2.031.352 5.988 5.988 0 0 1-2.031-.352c-.483-.174-.711-.703-.59-1.202L18.75 4.971Zm-16.5.52c.99-.203 1.99-.377 3-.52m0 0 2.62 10.726c.122.499-.106 1.028-.589 1.202a5.989 5.989 0 0 1-2.031.352 5.989 5.989 0 0 1-2.031-.352c-.483-.174-.711-.703-.59-1.202L5.25 4.971Z" />
+      </svg>
+    ),
+  },
+  {
+    href: "/tools/pnl-calculator",
+    title: "PnL Calculator",
+    description:
+      "Estimate profit and loss for Hyperliquid perpetual trades. Calculate PnL, ROE, and fees before entering a position.",
+    icon: (
+      <svg className="w-8 h-8 text-[var(--hw-gold)]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 0 1 3 19.875v-6.75ZM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V8.625ZM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V4.125Z" />
+      </svg>
+    ),
+  },
+  {
+    href: "/tools/funding-arbitrage-calculator",
+    title: "Funding Arbitrage Calculator",
+    description:
+      "Calculate potential yield from funding rate arbitrage strategies. Estimate APR from delta-neutral positions on Hyperliquid.",
+    icon: (
+      <svg className="w-8 h-8 text-[var(--hw-green)]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 18 9 11.25l4.306 4.306a11.95 11.95 0 0 1 5.814-5.518l2.74-1.22m0 0-5.94-2.281m5.94 2.28-2.28 5.941" />
+      </svg>
+    ),
+  },
 ];
 
 const COMING_SOON = [
-  { title: "Position Size Calculator", description: "Determine optimal position sizing based on your risk tolerance and account balance." },
-  { title: "PnL Calculator", description: "Estimate profit and loss across different price scenarios for your Hyperliquid trades." },
+  { title: "Volatility Tracker", description: "Track historical and implied volatility across Hyperliquid markets to identify trading opportunities." },
 ];
 
 export default function ToolsPage() {

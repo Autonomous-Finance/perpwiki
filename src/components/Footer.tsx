@@ -2,11 +2,13 @@ import Link from "next/link";
 
 const exploreLinks = [
   { label: "Projects", href: "/projects" },
+  { label: "Categories", href: "/categories" },
   { label: "Markets", href: "/markets" },
   { label: "Funding Rates", href: "/funding-rates" },
   { label: "Stats", href: "/stats" },
   { label: "Trending", href: "/trending" },
   { label: "Compare", href: "/compare" },
+  { label: "Tools", href: "/tools" },
 ];
 
 const learnLinks = [
