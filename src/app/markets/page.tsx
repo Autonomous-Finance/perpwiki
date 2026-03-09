@@ -2,6 +2,8 @@ import { MarketsTable, type MarketRow } from "@/components/MarketsTable";
 import { JsonLd } from "@/components/JsonLd";
 import type { Metadata } from "next";
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "Hyperliquid Live Markets — Funding Rates, Open Interest & Volume | perp.wiki",
   description:
@@ -29,7 +31,6 @@ async function fetchMarkets(): Promise<MarketRow[]> {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ type: "metaAndAssetCtxs" }),
-      next: { revalidate: 30 },
     });
 
     if (!res.ok) return [];

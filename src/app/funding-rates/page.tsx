@@ -3,6 +3,8 @@ import { JsonLd } from "@/components/JsonLd";
 import { FundingTable } from "./FundingTable";
 import type { Metadata } from "next";
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "Hyperliquid Funding Rates — Live Perpetual Funding Data 2026 | perp.wiki",
   description:
@@ -39,7 +41,6 @@ async function fetchFundingRates(): Promise<FundingRow[]> {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ type: "metaAndAssetCtxs" }),
-      next: { revalidate: 30 },
     });
 
     if (!res.ok) return [];

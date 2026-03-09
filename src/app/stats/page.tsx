@@ -4,6 +4,8 @@ import { JsonLd } from "@/components/JsonLd";
 import { StatsCharts } from "./StatsCharts";
 import type { Metadata } from "next";
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "Hyperliquid Stats — Volume, Open Interest & Ecosystem Growth | perp.wiki",
   description:
@@ -59,7 +61,6 @@ async function fetchLiveData() {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ type: "metaAndAssetCtxs" }),
-      next: { revalidate: 30 },
     });
 
     if (!res.ok) return null;

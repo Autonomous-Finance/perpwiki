@@ -4,6 +4,8 @@ import { JsonLd } from "@/components/JsonLd";
 import Link from "next/link";
 import type { Metadata } from "next";
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "Trending on Hyperliquid — Top Markets & New Projects | perp.wiki",
   description:
@@ -46,7 +48,6 @@ async function fetchMarketData(): Promise<{
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ type: "metaAndAssetCtxs" }),
-      next: { revalidate: 30 },
     });
 
     if (!res.ok) return null;

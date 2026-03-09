@@ -33,6 +33,7 @@ COPY --from=builder /app/prisma/dev.db ./seed.db
 COPY --from=builder /app/litestream.yml ./litestream.yml
 COPY --from=builder /app/docker-entrypoint.sh ./docker-entrypoint.sh
 RUN mkdir -p /data && chown nextjs:nodejs /data
+RUN chown -R nextjs:nodejs /app/.next
 RUN chmod +x ./docker-entrypoint.sh
 USER nextjs
 ENTRYPOINT ["./docker-entrypoint.sh"]
