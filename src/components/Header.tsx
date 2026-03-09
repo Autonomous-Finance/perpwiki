@@ -5,10 +5,10 @@ import { useState } from "react";
 import { PerpLogo } from "@/components/logo/PerpLogo";
 
 const NAV_LINKS = [
+  { href: "/markets", label: "Markets" },
+  { href: "/funding-rates", label: "Funding" },
+  { href: "/stats", label: "Stats" },
   { href: "/projects", label: "Projects" },
-  { href: "/layer/hypercore", label: "HyperCore" },
-  { href: "/layer/hyperevm", label: "HyperEVM" },
-  { href: "/layer/hip3", label: "HIP-3" },
   { href: "/learn", label: "Learn" },
 ];
 

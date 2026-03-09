@@ -79,6 +79,26 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.7,
     },
     {
+      url: `${SITE_URL}/markets`,
+      lastModified: new Date(),
+      priority: 0.9,
+    },
+    {
+      url: `${SITE_URL}/funding-rates`,
+      lastModified: new Date(),
+      priority: 0.8,
+    },
+    {
+      url: `${SITE_URL}/stats`,
+      lastModified: new Date(),
+      priority: 0.7,
+    },
+    {
+      url: `${SITE_URL}/trending`,
+      lastModified: new Date(),
+      priority: 0.7,
+    },
+    {
       url: `${SITE_URL}/submit`,
       lastModified: new Date(),
       priority: 0.5,
