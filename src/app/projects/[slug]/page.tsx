@@ -343,6 +343,10 @@ export default async function ProjectDetailPage({ params }: Props) {
             layer={project.layer}
             status={project.status}
             launchYear={project.launchYear}
+            launchDate={project.launchDate}
+            website={project.website}
+            isVerified={project.isVerified}
+            isFeatured={project.isFeatured}
           />
 
           {/* ===== CTA BANNER (mid-page) ===== */}
