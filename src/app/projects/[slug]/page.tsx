@@ -339,6 +339,10 @@ export default async function ProjectDetailPage({ params }: Props) {
             description={project.description}
             dossier={dossierData}
             tags={tags}
+            category={project.category}
+            layer={project.layer}
+            status={project.status}
+            launchYear={project.launchYear}
           />
 
           {/* ===== CTA BANNER (mid-page) ===== */}
