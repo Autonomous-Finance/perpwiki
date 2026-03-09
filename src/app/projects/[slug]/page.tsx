@@ -2,8 +2,27 @@ import { prisma } from "@/lib/prisma";
 import { notFound } from "next/navigation";
 import { LayerBadge } from "@/components/LayerBadge";
 import { JsonLd } from "@/components/JsonLd";
+import { ReviewForm } from "@/components/ReviewForm";
+import { getMarketTicker } from "@/lib/market-map";
+import { LiveMarketCard } from "@/components/LiveMarketCard";
 import Link from "next/link";
 import type { Metadata } from "next";
+
+interface DossierData {
+  entityName?: string;
+  oneLiner?: string;
+  overview?: string;
+  keyMetrics?: Array<{ label: string; value: string; note?: string }>;
+  howItWorks?: string;
+  tokenomics?: string;
+  risks?: string;
+  competitors?: string[];
+  team?: { description?: string; anonymous?: boolean };
+  funding?: { raised?: string; investors?: string[] };
+  auditStatus?: string;
+  verdict?: string;
+  lastUpdated?: string;
+}
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -23,6 +42,18 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       description: seoDesc,
     },
   };
+}
+
+function formatRelativeTime(date: Date): string {
+  const now = new Date();
+  const diffMs = now.getTime() - date.getTime();
+  const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+  if (diffDays === 0) return "today";
+  if (diffDays === 1) return "yesterday";
+  if (diffDays < 30) return `${diffDays}d ago`;
+  const diffMonths = Math.floor(diffDays / 30);
+  if (diffMonths < 12) return `${diffMonths}mo ago`;
+  return `${Math.floor(diffMonths / 12)}y ago`;
 }
 
 export default async function ProjectDetailPage({ params }: Props) {
@@ -58,6 +89,29 @@ export default async function ProjectDetailPage({ params }: Props) {
     take: 3,
     orderBy: [{ isFeatured: "desc" }, { name: "asc" }],
   });
+
+  // Fetch dossier
+  const dossier = await prisma.dossier.findUnique({
+    where: { projectId: project.id },
+  });
+
+  let dossierData: DossierData | null = null;
+  if (dossier) {
+    try {
+      dossierData = JSON.parse(dossier.dossierJson) as DossierData;
+    } catch {
+      dossierData = null;
+    }
+  }
+
+  // Fetch published reviews
+  const reviews = await prisma.review.findMany({
+    where: { projectId: project.id, isPublished: true },
+    take: 5,
+    orderBy: { createdAt: "desc" },
+  });
+
+  const ticker = getMarketTicker(project.slug);
 
   const statusColor =
     project.status === "ACTIVE"
@@ -168,15 +222,19 @@ export default async function ProjectDetailPage({ params }: Props) {
       <div className="grid gap-8 md:grid-cols-3">
         {/* Main content */}
         <div className="md:col-span-2">
-          {project.description && (
-            <div className="mb-8">
-              <h2 className="font-[family-name:var(--font-space-grotesk)] text-lg font-semibold text-[var(--hw-text)] mb-3">
-                Overview
-              </h2>
-              <p className="text-sm leading-relaxed text-[var(--hw-text-muted)] whitespace-pre-line">
-                {project.description}
-              </p>
-            </div>
+          {dossierData ? (
+            <DossierContent data={dossierData} />
+          ) : (
+            project.description && (
+              <div className="mb-8">
+                <h2 className="font-[family-name:var(--font-space-grotesk)] text-lg font-semibold text-[var(--hw-text)] mb-3">
+                  Overview
+                </h2>
+                <p className="text-sm leading-relaxed text-[var(--hw-text-muted)] whitespace-pre-line">
+                  {project.description}
+                </p>
+              </div>
+            )
           )}
 
           {tags.length > 0 && (
@@ -224,10 +282,66 @@ export default async function ProjectDetailPage({ params }: Props) {
               </div>
             </div>
           )}
+
+          {/* Reviews Section */}
+          <div className="mb-8">
+            <h2 className="font-[family-name:var(--font-space-grotesk)] text-lg font-semibold text-[var(--hw-text)] mb-4">
+              Reviews
+            </h2>
+
+            {reviews.length > 0 && (
+              <div className="space-y-3 mb-6">
+                {reviews.map((review) => (
+                  <div
+                    key={review.id}
+                    className="border border-[var(--hw-border)] bg-[var(--hw-surface)] p-4"
+                    style={{ borderRadius: "4px" }}
+                  >
+                    <div className="flex items-center justify-between mb-2">
+                      <div className="flex gap-0.5">
+                        {[1, 2, 3, 4, 5].map((star) => (
+                          <span
+                            key={star}
+                            style={{
+                              color:
+                                star <= review.rating
+                                  ? "var(--hw-gold)"
+                                  : "var(--hw-text-dim)",
+                            }}
+                          >
+                            ★
+                          </span>
+                        ))}
+                      </div>
+                      <span className="text-xs text-[var(--hw-text-dim)]">
+                        {formatRelativeTime(review.createdAt)}
+                      </span>
+                    </div>
+                    {review.content && (
+                      <p className="text-sm text-[var(--hw-text-muted)]">
+                        {review.content}
+                      </p>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
+
+            <div
+              className="border border-[var(--hw-border)] bg-[var(--hw-surface)] p-4"
+              style={{ borderRadius: "4px" }}
+            >
+              <h3 className="font-[family-name:var(--font-space-grotesk)] text-sm font-semibold text-[var(--hw-text)] mb-3">
+                Leave a Review
+              </h3>
+              <ReviewForm projectId={project.id} />
+            </div>
+          </div>
         </div>
 
         {/* Sidebar */}
         <div className="space-y-6">
+          {ticker && <LiveMarketCard coin={ticker} />}
           {/* Info table */}
           <div
             className="border border-[var(--hw-border)] bg-[var(--hw-surface)] p-4"
@@ -296,6 +410,209 @@ export default async function ProjectDetailPage({ params }: Props) {
           )}
         </div>
       </div>
+    </div>
+  );
+}
+
+function DossierContent({ data }: { data: DossierData }) {
+  return (
+    <div className="space-y-8">
+      {/* Key Metrics */}
+      {data.keyMetrics && data.keyMetrics.length > 0 && (
+        <div>
+          <h2 className="font-[family-name:var(--font-space-grotesk)] text-lg font-semibold text-[var(--hw-text)] mb-3">
+            Key Metrics
+          </h2>
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+            {data.keyMetrics.map((metric, i) => (
+              <div
+                key={i}
+                className="border border-[var(--hw-border)] bg-[var(--hw-surface)] p-3"
+                style={{ borderRadius: "4px" }}
+              >
+                <div className="font-[family-name:var(--font-jetbrains-mono)] text-lg font-bold text-[var(--hw-green)]">
+                  {metric.value}
+                </div>
+                <div className="text-xs text-[var(--hw-text-muted)]">{metric.label}</div>
+                {metric.note && (
+                  <div className="mt-1 text-xs text-[var(--hw-text-dim)]">{metric.note}</div>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Overview */}
+      {data.overview && (
+        <div>
+          <h2 className="font-[family-name:var(--font-space-grotesk)] text-lg font-semibold text-[var(--hw-text)] mb-3">
+            Overview
+          </h2>
+          <p className="text-sm leading-relaxed text-[var(--hw-text-muted)] whitespace-pre-line">
+            {data.overview}
+          </p>
+        </div>
+      )}
+
+      {/* How It Works */}
+      {data.howItWorks && (
+        <div>
+          <h2 className="font-[family-name:var(--font-space-grotesk)] text-lg font-semibold text-[var(--hw-text)] mb-3">
+            How It Works
+          </h2>
+          <div
+            className="border-l-2 border-[var(--hw-green)] pl-4"
+          >
+            <p className="text-sm leading-relaxed text-[var(--hw-text-muted)] whitespace-pre-line">
+              {data.howItWorks}
+            </p>
+          </div>
+        </div>
+      )}
+
+      {/* Tokenomics */}
+      {data.tokenomics && (
+        <div>
+          <h2 className="font-[family-name:var(--font-space-grotesk)] text-lg font-semibold text-[var(--hw-text)] mb-3">
+            Tokenomics
+          </h2>
+          <p className="text-sm leading-relaxed text-[var(--hw-text-muted)] whitespace-pre-line">
+            {data.tokenomics}
+          </p>
+        </div>
+      )}
+
+      {/* Team */}
+      {data.team && (
+        <div>
+          <h2 className="font-[family-name:var(--font-space-grotesk)] text-lg font-semibold text-[var(--hw-text)] mb-3">
+            Team
+          </h2>
+          <div
+            className="border border-[var(--hw-border)] bg-[var(--hw-surface)] p-4"
+            style={{ borderRadius: "4px" }}
+          >
+            {data.team.anonymous && (
+              <span
+                className="inline-block mb-2 px-2 py-0.5 text-xs"
+                style={{
+                  borderRadius: "2px",
+                  background: "rgba(240,180,41,0.15)",
+                  color: "var(--hw-gold)",
+                }}
+              >
+                Anonymous
+              </span>
+            )}
+            {data.team.description && (
+              <p className="text-sm text-[var(--hw-text-muted)]">{data.team.description}</p>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* Funding */}
+      {data.funding && (
+        <div>
+          <h2 className="font-[family-name:var(--font-space-grotesk)] text-lg font-semibold text-[var(--hw-text)] mb-3">
+            Funding
+          </h2>
+          <div
+            className="border border-[var(--hw-border)] bg-[var(--hw-surface)] p-4"
+            style={{ borderRadius: "4px" }}
+          >
+            {data.funding.raised && (
+              <div className="mb-2">
+                <span className="text-xs text-[var(--hw-text-dim)]">Raised</span>
+                <div className="font-[family-name:var(--font-jetbrains-mono)] text-lg font-bold text-[var(--hw-text)]">
+                  {data.funding.raised}
+                </div>
+              </div>
+            )}
+            {data.funding.investors && data.funding.investors.length > 0 && (
+              <div>
+                <span className="text-xs text-[var(--hw-text-dim)]">Investors</span>
+                <div className="mt-1 flex flex-wrap gap-2">
+                  {data.funding.investors.map((investor, i) => (
+                    <span
+                      key={i}
+                      className="border border-[var(--hw-border)] px-2 py-0.5 text-xs text-[var(--hw-text-muted)]"
+                      style={{ borderRadius: "2px" }}
+                    >
+                      {investor}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* Audit Status */}
+      {data.auditStatus && (
+        <div>
+          <h2 className="font-[family-name:var(--font-space-grotesk)] text-lg font-semibold text-[var(--hw-text)] mb-3">
+            Audit Status
+          </h2>
+          <div
+            className="inline-flex items-center gap-2 border border-[var(--hw-border)] bg-[var(--hw-surface)] px-3 py-2"
+            style={{ borderRadius: "4px" }}
+          >
+            <span
+              className="inline-block h-2 w-2 rounded-full"
+              style={{
+                background: data.auditStatus.toLowerCase().includes("audit")
+                  ? "var(--hw-green)"
+                  : "var(--hw-gold)",
+              }}
+            />
+            <span className="text-sm text-[var(--hw-text-muted)]">{data.auditStatus}</span>
+          </div>
+        </div>
+      )}
+
+      {/* Risks */}
+      {data.risks && (
+        <div>
+          <h2 className="font-[family-name:var(--font-space-grotesk)] text-lg font-semibold text-[var(--hw-text)] mb-3">
+            Risks
+          </h2>
+          <div
+            className="border border-[var(--hw-border)] bg-[var(--hw-surface)] p-4"
+            style={{ borderRadius: "4px", borderLeftWidth: "2px", borderLeftColor: "var(--hw-red)" }}
+          >
+            <p className="text-sm leading-relaxed text-[var(--hw-text-muted)] whitespace-pre-line">
+              {data.risks}
+            </p>
+          </div>
+        </div>
+      )}
+
+      {/* Verdict */}
+      {data.verdict && (
+        <div>
+          <h2 className="font-[family-name:var(--font-space-grotesk)] text-lg font-semibold text-[var(--hw-text)] mb-3">
+            Verdict
+          </h2>
+          <div
+            className="border border-[var(--hw-green)] bg-[var(--hw-green-subtle)] p-4"
+            style={{ borderRadius: "4px" }}
+          >
+            <p className="text-sm leading-relaxed text-[var(--hw-text)]">
+              {data.verdict}
+            </p>
+          </div>
+        </div>
+      )}
+
+      {/* Last Updated */}
+      {data.lastUpdated && (
+        <p className="text-xs text-[var(--hw-text-dim)]">
+          Dossier last updated: {data.lastUpdated}
+        </p>
+      )}
     </div>
   );
 }
