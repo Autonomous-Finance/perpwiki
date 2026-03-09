@@ -41,5 +41,12 @@ for f in prisma/migrations/*/migration.sql; do
 done
 echo "[entrypoint] Migrations complete"
 
+# Apply data patches (logos, etc.)
+if [ -d /app/prisma/patches ]; then
+  for patch in /app/prisma/patches/*.sql; do
+    [ -f "$patch" ] && sqlite3 "$DB_PATH" < "$patch" 2>/dev/null && echo "[entrypoint] Applied patch: $(basename "$patch")" || true
+  done
+fi
+
 echo "[entrypoint] Starting server on port ${PORT:-4001}..."
 exec node server.js
