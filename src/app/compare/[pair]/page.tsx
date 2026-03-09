@@ -29,6 +29,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: `${a.name} vs ${b.name} — Hyperliquid Ecosystem Comparison | perp.wiki`,
     description: `Compare ${a.name} and ${b.name} in the Hyperliquid ecosystem. Features, layer, and use case comparison on perp.wiki.`,
+    alternates: {
+      canonical: `https://perp.wiki/compare/${slugs[0]}-vs-${slugs[1]}`,
+    },
   };
 }
 
@@ -65,6 +68,35 @@ export default async function ComparePage({ params }: Props) {
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-8">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "ItemList",
+            "name": `${projectA.name} vs ${projectB.name} — Hyperliquid Ecosystem Comparison`,
+            "description": `Compare ${projectA.name} and ${projectB.name} on Hyperliquid. Side-by-side analysis of features, layer, category, and ecosystem role.`,
+            "url": `https://perp.wiki/compare/${projectA.slug}-vs-${projectB.slug}`,
+            "numberOfItems": 2,
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": projectA.name,
+                "url": `https://perp.wiki/projects/${projectA.slug}`,
+                "description": projectA.tagline || projectA.description || "",
+              },
+              {
+                "@type": "ListItem",
+                "position": 2,
+                "name": projectB.name,
+                "url": `https://perp.wiki/projects/${projectB.slug}`,
+                "description": projectB.tagline || projectB.description || "",
+              },
+            ],
+          }),
+        }}
+      />
       <div className="mb-6 text-sm text-[var(--hw-text-dim)]">
         <Link href="/" className="hover:text-[var(--hw-text-muted)]">Home</Link>
         {" / "}

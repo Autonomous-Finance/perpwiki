@@ -6,7 +6,42 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import type { Metadata } from "next";
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:4000";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://perp.wiki";
+
+const CATEGORY_INTROS: Record<string, { headline: string; intro: string }> = {
+  "yield-vaults": {
+    headline: "Yield & Vault Protocols on Hyperliquid",
+    intro: "Yield and vault protocols on Hyperliquid let traders earn passive returns on idle capital — from automated HLP strategies to structured yield products built natively on HyperCore and HyperEVM. With 8 projects in this category, Hyperliquid has the deepest yield infrastructure of any perp-native L1.",
+  },
+  "decentralized-exchanges": {
+    headline: "Decentralized Exchanges on Hyperliquid",
+    intro: "DEXs on Hyperliquid range from spot AMMs built on HyperEVM to aggregators routing trades across the entire ecosystem. Unlike most L1s, Hyperliquid DEXs benefit from shared order book liquidity with HyperCore — giving them a structural edge over isolated EVM chains.",
+  },
+  "lending-borrowing": {
+    headline: "Lending & Borrowing Protocols on Hyperliquid",
+    intro: "Lending protocols on HyperEVM enable traders to borrow against their perp positions and staked assets, creating a capital-efficient loop unique to Hyperliquid's unified state design. Protocols like HyperLend and Felix are building the money market infrastructure for the HL ecosystem.",
+  },
+  "trading-bots-automation": {
+    headline: "Trading Bots & Automation on Hyperliquid",
+    intro: "Hyperliquid's low-latency HyperCore L1 and open API make it one of the best chains for automated trading strategies. Bot platforms and automation tools here range from copy-trading and grid bots to full algorithmic execution suites targeting Hyperliquid's order book.",
+  },
+  "trading-terminals-interfaces": {
+    headline: "Trading Terminals & Interfaces for Hyperliquid",
+    intro: "Advanced trading terminals built for Hyperliquid give power users charting, multi-account management, and custom order types beyond the native UI. These third-party interfaces often unlock features for serious traders that aren't available on app.hyperliquid.xyz.",
+  },
+  "bridges-cross-chain": {
+    headline: "Bridges & Cross-Chain Infrastructure for Hyperliquid",
+    intro: "Bridging to Hyperliquid is a critical step for any new user — and these protocols make it seamless to move assets from Ethereum, Arbitrum, and other chains directly into HyperEVM or native USDC on HyperCore. Fast, cheap bridging is essential infrastructure for ecosystem growth.",
+  },
+  "analytics-data": {
+    headline: "Analytics & Data Tools for Hyperliquid",
+    intro: "On-chain analytics tools for Hyperliquid give traders and researchers visibility into order flow, vault performance, funding rates, and ecosystem-wide activity. As HyperEVM matures, data tooling is becoming essential for anyone making informed decisions in the ecosystem.",
+  },
+  "liquid-staking": {
+    headline: "Liquid Staking on Hyperliquid",
+    intro: "Liquid staking protocols on Hyperliquid let users stake HYPE and receive liquid tokens that can be used as collateral across HyperEVM DeFi — combining staking yield with full capital efficiency. This unlocks the classic LSTfi loop pioneered on Ethereum but native to HL.",
+  },
+};
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -99,6 +134,13 @@ export default async function CategoryPage({ params }: Props) {
       <p className="text-[var(--hw-text-muted)] mb-8">
         {projects.length} project{projects.length !== 1 ? "s" : ""} in the Hyperliquid ecosystem
       </p>
+
+      {CATEGORY_INTROS[slug] && (
+        <div className="mb-6">
+          <h2 className="text-lg font-semibold mb-2">{CATEGORY_INTROS[slug].headline}</h2>
+          <p className="text-[var(--color-text-secondary)] text-sm leading-relaxed">{CATEGORY_INTROS[slug].intro}</p>
+        </div>
+      )}
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {projects.map((project) => (
