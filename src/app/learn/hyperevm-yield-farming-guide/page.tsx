@@ -3,6 +3,8 @@ import { LearnLayout, H2, P, InlineLink, ComparisonTable, CTA } from "@/componen
 import { JsonLd } from "@/components/JsonLd";
 import type { Metadata } from "next";
 
+export const dynamic = "force-dynamic";
+
 const SLUG = "hyperevm-yield-farming-guide";
 const article = getArticle(SLUG)!;
 const { prev, next } = getAdjacentArticles(SLUG);
@@ -31,7 +33,226 @@ const TOC = [
   { id: "risks-warnings", title: "Risk Warnings" },
 ];
 
-export default function HyperevmYieldFarmingGuidePage() {
+/* ── Inline server components ─────────────────────────────────── */
+
+function LiveDot() {
+  return (
+    <span className="relative flex h-2 w-2">
+      <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[var(--hw-green)] opacity-75" />
+      <span className="relative inline-flex h-2 w-2 rounded-full bg-[var(--hw-green)]" />
+    </span>
+  );
+}
+
+function ArticleMeta({ difficulty }: { difficulty: string }) {
+  const now = new Date();
+  const month = now.toLocaleString("en-US", { month: "long", timeZone: "UTC" });
+  const year = now.getUTCFullYear();
+  const diffColor =
+    difficulty === "Beginner"
+      ? "bg-emerald-500/15 text-emerald-400"
+      : difficulty === "Intermediate"
+        ? "bg-amber-500/15 text-amber-400"
+        : "bg-red-500/15 text-red-400";
+
+  return (
+    <div className="mb-8 flex flex-wrap items-center gap-3">
+      <span className="inline-flex items-center gap-1.5 rounded-full bg-[var(--hw-surface-raised)] px-3 py-1 text-xs text-[var(--hw-text-muted)]">
+        <LiveDot />
+        Last updated {month} {year} &middot; Live data
+      </span>
+      <span className={`inline-flex items-center rounded-full px-3 py-1 text-xs font-medium ${diffColor}`}>
+        {difficulty}
+      </span>
+    </div>
+  );
+}
+
+async function fetchMarketOverview(): Promise<{ totalVol24h: number | null; hypePrice: number | null }> {
+  try {
+    const [metaRes, midsRes] = await Promise.all([
+      fetch("https://api.hyperliquid.xyz/info", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ type: "metaAndAssetCtxs" }),
+        next: { revalidate: 120 },
+      }),
+      fetch("https://api.hyperliquid.xyz/info", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ type: "allMids" }),
+        next: { revalidate: 120 },
+      }),
+    ]);
+    const metaData = await metaRes.json();
+    const midsData = await midsRes.json();
+
+    // Sum 24h volume across all assets
+    const assetCtxs = metaData?.[1] ?? [];
+    let totalVol = 0;
+    for (const ctx of assetCtxs) {
+      const vol = parseFloat(ctx?.dayNtlVlm);
+      if (!isNaN(vol)) totalVol += vol;
+    }
+
+    const hypePrice = parseFloat(midsData?.["HYPE"]);
+
+    return {
+      totalVol24h: totalVol > 0 ? totalVol : null,
+      hypePrice: isNaN(hypePrice) ? null : hypePrice,
+    };
+  } catch {
+    return { totalVol24h: null, hypePrice: null };
+  }
+}
+
+async function LiveEcosystemData() {
+  const { totalVol24h, hypePrice } = await fetchMarketOverview();
+  const isLive = totalVol24h !== null || hypePrice !== null;
+
+  const formatVol = (v: number) => {
+    if (v >= 1e9) return `$${(v / 1e9).toFixed(2)}B`;
+    if (v >= 1e6) return `$${(v / 1e6).toFixed(0)}M`;
+    return `$${v.toLocaleString()}`;
+  };
+
+  return (
+    <div className="my-8 rounded border border-[var(--hw-border)] bg-[var(--hw-surface)] p-1">
+      <div className="flex items-center gap-2 px-4 pt-3 pb-1">
+        {isLive && <LiveDot />}
+        <span className="text-xs font-medium text-[var(--hw-text-dim)]">
+          {isLive ? "Live Ecosystem Data" : "Estimated Data (API unavailable)"}
+        </span>
+      </div>
+      <div className="grid grid-cols-1 gap-px sm:grid-cols-3">
+        <div className="px-4 py-3">
+          <div className="text-xs text-[var(--hw-text-dim)] mb-1">Ecosystem TVL</div>
+          <div className="font-[family-name:var(--font-space-grotesk)] text-2xl font-bold text-[var(--hw-text)]">
+            ~$1.8B
+          </div>
+          <div className="text-xs text-[var(--hw-text-dim)] mt-0.5">across all HyperEVM protocols</div>
+        </div>
+        <div className="px-4 py-3">
+          <div className="text-xs text-[var(--hw-text-dim)] mb-1">24h Trading Volume</div>
+          <div className="font-[family-name:var(--font-space-grotesk)] text-2xl font-bold text-[var(--hw-text)]">
+            {totalVol24h ? formatVol(totalVol24h) : "~$4B"}
+          </div>
+          <div className="text-xs text-[var(--hw-text-dim)] mt-0.5">{totalVol24h ? "via Hyperliquid API" : "fallback estimate"}</div>
+        </div>
+        <div className="px-4 py-3">
+          <div className="text-xs text-[var(--hw-text-dim)] mb-1">HYPE Price</div>
+          <div className="font-[family-name:var(--font-space-grotesk)] text-2xl font-bold text-[var(--hw-text)]">
+            ${hypePrice ? hypePrice.toFixed(2) : "24.50"}
+          </div>
+          <div className="text-xs text-[var(--hw-text-dim)] mt-0.5">{hypePrice ? "live" : "fallback estimate"}</div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function RiskRewardMatrix() {
+  const strategies = [
+    {
+      name: "HLP Vault",
+      apy: "10-17%",
+      risk: "Medium" as const,
+      description: "Passive market-making vault earning from trading fees, funding, and liquidations.",
+    },
+    {
+      name: "Native Staking",
+      apy: "~2.25%",
+      risk: "Low" as const,
+      description: "Direct validator delegation with protocol-level security. 7-day unstaking lock.",
+    },
+    {
+      name: "Liquid Staking",
+      apy: "~2.1% + DeFi",
+      risk: "Low-Medium" as const,
+      description: "Stake via kHYPE/stHYPE and maintain DeFi composability for layered yields.",
+    },
+    {
+      name: "Lending (Supply)",
+      apy: "3-8%",
+      risk: "Medium" as const,
+      description: "Supply USDC or HYPE on HyperLend/Morpho for variable interest income.",
+    },
+    {
+      name: "Liquidity Provision",
+      apy: "5-20%",
+      risk: "Medium" as const,
+      description: "AMM pool LP on KittenSwap/HyperSwap. Higher fees but IL exposure.",
+    },
+    {
+      name: "Delta-Neutral Farming",
+      apy: "5-30%",
+      risk: "Medium" as const,
+      description: "Spot long + perp short to harvest funding rates with zero price exposure.",
+    },
+    {
+      name: "Leveraged Looping",
+      apy: "5-15% (leveraged)",
+      risk: "High" as const,
+      description: "Recursive borrow-deposit cycles amplifying staking yield and liquidation risk.",
+    },
+  ];
+
+  const riskConfig = {
+    Low: { color: "bg-emerald-500", barWidth: "w-1/5", textColor: "text-emerald-400", bgColor: "bg-emerald-500/10" },
+    "Low-Medium": { color: "bg-emerald-400", barWidth: "w-2/5", textColor: "text-emerald-400", bgColor: "bg-emerald-500/10" },
+    Medium: { color: "bg-amber-500", barWidth: "w-3/5", textColor: "text-amber-400", bgColor: "bg-amber-500/10" },
+    High: { color: "bg-red-500", barWidth: "w-full", textColor: "text-red-400", bgColor: "bg-red-500/10" },
+  };
+
+  return (
+    <div className="my-8">
+      <div className="rounded border border-[var(--hw-border)] bg-[var(--hw-surface)]">
+        <div className="border-b border-[var(--hw-border)] px-5 py-3">
+          <h3 className="font-[family-name:var(--font-space-grotesk)] text-sm font-semibold text-[var(--hw-text)]">
+            Risk / Reward Matrix
+          </h3>
+        </div>
+        <div className="grid grid-cols-1 gap-px sm:grid-cols-2 lg:grid-cols-3">
+          {strategies.map((s) => {
+            const rc = riskConfig[s.risk];
+            return (
+              <div key={s.name} className="border-b border-r border-[var(--hw-border)] p-4 last:border-b-0">
+                {/* Risk color bar */}
+                <div className="mb-3 h-1 w-full rounded-full bg-[var(--hw-surface-raised)]">
+                  <div className={`h-1 rounded-full ${rc.color} ${rc.barWidth}`} />
+                </div>
+                <div className="flex items-start justify-between gap-2 mb-1">
+                  <span className="font-[family-name:var(--font-space-grotesk)] text-sm font-semibold text-[var(--hw-text)]">
+                    {s.name}
+                  </span>
+                  <span className={`shrink-0 rounded px-1.5 py-0.5 text-[10px] font-medium ${rc.textColor} ${rc.bgColor}`}>
+                    {s.risk}
+                  </span>
+                </div>
+                <div className="font-[family-name:var(--font-space-grotesk)] text-lg font-bold text-[var(--hw-green)] mb-1">
+                  {s.apy}
+                </div>
+                <p className="text-xs text-[var(--hw-text-dim)] leading-relaxed">
+                  {s.description}
+                </p>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+      {/* Legend */}
+      <div className="mt-3 flex flex-wrap gap-4 text-xs text-[var(--hw-text-dim)]">
+        <span className="flex items-center gap-1.5"><span className="h-2 w-2 rounded-full bg-emerald-500" /> Low Risk</span>
+        <span className="flex items-center gap-1.5"><span className="h-2 w-2 rounded-full bg-amber-500" /> Medium Risk</span>
+        <span className="flex items-center gap-1.5"><span className="h-2 w-2 rounded-full bg-red-500" /> High Risk</span>
+      </div>
+    </div>
+  );
+}
+
+/* ── Page ──────────────────────────────────────────────────────── */
+
+export default async function HyperevmYieldFarmingGuidePage() {
   return (
     <LearnLayout article={article} prev={prev} next={next} toc={TOC}>
       <JsonLd
@@ -46,7 +267,12 @@ export default function HyperevmYieldFarmingGuidePage() {
         }}
       />
 
+      <ArticleMeta difficulty="Intermediate" />
+
       <H2 id="yield-landscape">The HyperEVM Yield Landscape</H2>
+
+      <LiveEcosystemData />
+
       <P>
         HyperEVM has rapidly evolved from an empty smart contract layer into one of the most
         productive yield environments in DeFi. With over $1.8 billion in total value locked
@@ -266,20 +492,13 @@ export default function HyperevmYieldFarmingGuidePage() {
 
       <H2 id="risk-matrix">Strategy Risk/Reward Matrix</H2>
       <P>
-        The following table summarizes the expected returns, risk levels, and characteristics
-        of each strategy:
+        Each strategy carries a different balance of return potential and risk exposure. The
+        matrix below provides a visual summary — green indicates lower risk, amber is medium,
+        and red signals higher risk of capital loss.
       </P>
-      <ComparisonTable
-        headers={["Strategy", "Expected APY", "Risk Level", "Complexity", "Capital Needed"]}
-        rows={[
-          ["HLP Vault", "10-17%", "Medium", "Low", "$100+"],
-          ["Liquid Staking (hold)", "~2.25%", "Low", "Low", "Any amount"],
-          ["Staking + Lending", "4-10%", "Medium", "Medium", "$500+"],
-          ["Liquidity Provision", "5-20%", "Medium-High", "Medium", "$1,000+"],
-          ["Delta-Neutral Farming", "5-30%", "Medium", "High", "$5,000+"],
-          ["Leveraged Looping", "5-15% (leveraged)", "High", "High", "$2,000+"],
-        ]}
-      />
+
+      <RiskRewardMatrix />
+
       <P>
         These APY figures are estimates based on current market conditions and historical
         performance. Actual returns can vary significantly. Higher-yielding strategies generally

@@ -3,6 +3,12 @@ import { BreadcrumbSchema } from "@/components/BreadcrumbSchema";
 import { prisma } from "@/lib/prisma";
 import type { LearnArticle } from "@/lib/learn-articles";
 
+/* Re-export reusable learn article components */
+export { LiveStatBanner } from "@/components/LiveStatBanner";
+export { FreshnessBadge } from "@/components/FreshnessBadge";
+export { DifficultyBadge } from "@/components/DifficultyBadge";
+export { StepByStep } from "@/components/StepByStep";
+
 interface LearnLayoutProps {
   article: LearnArticle;
   prev: LearnArticle | null;

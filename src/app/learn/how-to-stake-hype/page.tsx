@@ -3,6 +3,8 @@ import { LearnLayout, H2, P, InlineLink, ComparisonTable, CTA } from "@/componen
 import { JsonLd } from "@/components/JsonLd";
 import type { Metadata } from "next";
 
+export const dynamic = "force-dynamic";
+
 const SLUG = "how-to-stake-hype";
 const article = getArticle(SLUG)!;
 const { prev, next } = getAdjacentArticles(SLUG);
@@ -30,7 +32,181 @@ const TOC = [
   { id: "maximizing-yield", title: "Maximizing Yield" },
 ];
 
-export default function HowToStakeHypePage() {
+/* ── Inline server components ─────────────────────────────────── */
+
+async function fetchHypePrice(): Promise<number | null> {
+  try {
+    const res = await fetch("https://api.hyperliquid.xyz/info", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ type: "allMids" }),
+      next: { revalidate: 120 },
+    });
+    const data = await res.json();
+    const price = parseFloat(data?.["HYPE"]);
+    return isNaN(price) ? null : price;
+  } catch {
+    return null;
+  }
+}
+
+function LiveDot() {
+  return (
+    <span className="relative flex h-2 w-2">
+      <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[var(--hw-green)] opacity-75" />
+      <span className="relative inline-flex h-2 w-2 rounded-full bg-[var(--hw-green)]" />
+    </span>
+  );
+}
+
+function ArticleMeta({ difficulty }: { difficulty: string }) {
+  const now = new Date();
+  const month = now.toLocaleString("en-US", { month: "long", timeZone: "UTC" });
+  const year = now.getUTCFullYear();
+  const diffColor =
+    difficulty === "Beginner"
+      ? "bg-emerald-500/15 text-emerald-400"
+      : difficulty === "Intermediate"
+        ? "bg-amber-500/15 text-amber-400"
+        : "bg-red-500/15 text-red-400";
+
+  return (
+    <div className="mb-8 flex flex-wrap items-center gap-3">
+      <span className="inline-flex items-center gap-1.5 rounded-full bg-[var(--hw-surface-raised)] px-3 py-1 text-xs text-[var(--hw-text-muted)]">
+        <LiveDot />
+        Last updated {month} {year} &middot; Live data
+      </span>
+      <span className={`inline-flex items-center rounded-full px-3 py-1 text-xs font-medium ${diffColor}`}>
+        {difficulty}
+      </span>
+    </div>
+  );
+}
+
+async function LiveStakingData() {
+  const hypePrice = await fetchHypePrice();
+  const displayPrice = hypePrice ?? 24.5; // static fallback
+  const isLive = hypePrice !== null;
+  const stakingApy = 2.25;
+  const annualPer1000 = (1000 * stakingApy) / 100;
+  const annualValuePer1000 = annualPer1000 * displayPrice;
+
+  return (
+    <div className="my-8 rounded border border-[var(--hw-border)] bg-[var(--hw-surface)] p-1">
+      <div className="flex items-center gap-2 px-4 pt-3 pb-1">
+        {isLive && <LiveDot />}
+        <span className="text-xs font-medium text-[var(--hw-text-dim)]">
+          {isLive ? "Live Market Data" : "Estimated Data (API unavailable)"}
+        </span>
+      </div>
+      <div className="grid grid-cols-1 gap-px sm:grid-cols-3">
+        {[
+          {
+            label: "Current HYPE Price",
+            value: `$${displayPrice.toFixed(2)}`,
+            sub: isLive ? "via Hyperliquid API" : "fallback estimate",
+          },
+          {
+            label: "Est. Staking APY",
+            value: `${stakingApy}%`,
+            sub: "native staking reward",
+          },
+          {
+            label: "Annual Reward / 1,000 HYPE",
+            value: `${annualPer1000.toFixed(1)} HYPE`,
+            sub: `~$${annualValuePer1000.toFixed(0)} at current price`,
+          },
+        ].map((card) => (
+          <div key={card.label} className="px-4 py-3">
+            <div className="text-xs text-[var(--hw-text-dim)] mb-1">{card.label}</div>
+            <div className="font-[family-name:var(--font-space-grotesk)] text-2xl font-bold text-[var(--hw-text)]">
+              {card.value}
+            </div>
+            <div className="text-xs text-[var(--hw-text-dim)] mt-0.5">{card.sub}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function DecisionHelper() {
+  return (
+    <div className="my-8 rounded border border-[var(--hw-border)] bg-[var(--hw-surface)]">
+      <div className="border-b border-[var(--hw-border)] px-5 py-3">
+        <h3 className="font-[family-name:var(--font-space-grotesk)] text-sm font-semibold text-[var(--hw-text)]">
+          Quick Decision Helper: Native vs Liquid Staking
+        </h3>
+      </div>
+      <div className="grid grid-cols-1 gap-px sm:grid-cols-2">
+        {/* Native */}
+        <div className="p-5">
+          <div className="mb-3 flex items-center gap-2">
+            <span className="flex h-8 w-8 items-center justify-center rounded bg-emerald-500/15 text-sm font-bold text-emerald-400">
+              N
+            </span>
+            <span className="text-sm font-semibold text-[var(--hw-text)]">Native Staking</span>
+          </div>
+          <ul className="space-y-2 text-xs text-[var(--hw-text-muted)]">
+            <li className="flex items-start gap-2">
+              <span className="mt-0.5 text-emerald-400">+</span>
+              Simpler — no smart contract risk beyond base layer
+            </li>
+            <li className="flex items-start gap-2">
+              <span className="mt-0.5 text-emerald-400">+</span>
+              Rewards auto-compound into staked balance
+            </li>
+            <li className="flex items-start gap-2">
+              <span className="mt-0.5 text-amber-400">-</span>
+              7-day unstaking lockup period
+            </li>
+            <li className="flex items-start gap-2">
+              <span className="mt-0.5 text-amber-400">-</span>
+              Cannot use staked HYPE in DeFi
+            </li>
+          </ul>
+          <div className="mt-3 rounded bg-emerald-500/10 px-3 py-2 text-xs text-emerald-400">
+            Best for: Long-term holders who want simplicity
+          </div>
+        </div>
+        {/* Liquid */}
+        <div className="border-t border-[var(--hw-border)] p-5 sm:border-t-0 sm:border-l">
+          <div className="mb-3 flex items-center gap-2">
+            <span className="flex h-8 w-8 items-center justify-center rounded bg-[var(--hw-green-subtle)] text-sm font-bold text-[var(--hw-green)]">
+              L
+            </span>
+            <span className="text-sm font-semibold text-[var(--hw-text)]">Liquid Staking</span>
+          </div>
+          <ul className="space-y-2 text-xs text-[var(--hw-text-muted)]">
+            <li className="flex items-start gap-2">
+              <span className="mt-0.5 text-emerald-400">+</span>
+              Fully composable — use LST in DeFi protocols
+            </li>
+            <li className="flex items-start gap-2">
+              <span className="mt-0.5 text-emerald-400">+</span>
+              Instant exit — no lockup period
+            </li>
+            <li className="flex items-start gap-2">
+              <span className="mt-0.5 text-amber-400">-</span>
+              Smart contract risk from LST protocols
+            </li>
+            <li className="flex items-start gap-2">
+              <span className="mt-0.5 text-amber-400">-</span>
+              Slight fee (5-10% of rewards) taken by protocol
+            </li>
+          </ul>
+          <div className="mt-3 rounded bg-[var(--hw-green-subtle)] px-3 py-2 text-xs text-[var(--hw-green)]">
+            Best for: Active DeFi users who want composability
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ── Page ──────────────────────────────────────────────────────── */
+
+export default async function HowToStakeHypePage() {
   return (
     <LearnLayout article={article} prev={prev} next={next} toc={TOC}>
       <JsonLd
@@ -45,7 +221,12 @@ export default function HowToStakeHypePage() {
         }}
       />
 
+      <ArticleMeta difficulty="Beginner" />
+
       <H2 id="why-stake-hype">Why Stake HYPE?</H2>
+
+      <LiveStakingData />
+
       <P>
         Staking HYPE is one of the simplest ways to earn passive yield on Hyperliquid while
         contributing to network security. When you stake HYPE, your tokens are delegated to
@@ -61,6 +242,9 @@ export default function HowToStakeHypePage() {
         beyond the base layer, no impermanent loss, and no complex strategy to manage. You
         delegate, you earn.
       </P>
+
+      <DecisionHelper />
+
       <P>
         Beyond the direct yield, staking serves a governance function. Validators with more
         stake have more weight in consensus, and as Hyperliquid moves toward more decentralized

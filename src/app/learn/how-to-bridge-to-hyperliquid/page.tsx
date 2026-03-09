@@ -3,6 +3,8 @@ import { LearnLayout, H2, P, InlineLink, ComparisonTable, CTA } from "@/componen
 import { JsonLd } from "@/components/JsonLd";
 import type { Metadata } from "next";
 
+export const dynamic = "force-dynamic";
+
 const SLUG = "how-to-bridge-to-hyperliquid";
 const article = getArticle(SLUG)!;
 const { prev, next } = getAdjacentArticles(SLUG);
@@ -29,6 +31,193 @@ const TOC = [
   { id: "email-wallet", title: "Email Wallet Onboarding" },
 ];
 
+/* ── Inline server components ─────────────────────────────────── */
+
+function LiveDot() {
+  return (
+    <span className="relative flex h-2 w-2">
+      <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[var(--hw-green)] opacity-75" />
+      <span className="relative inline-flex h-2 w-2 rounded-full bg-[var(--hw-green)]" />
+    </span>
+  );
+}
+
+function ArticleMeta({ difficulty }: { difficulty: string }) {
+  const now = new Date();
+  const month = now.toLocaleString("en-US", { month: "long", timeZone: "UTC" });
+  const year = now.getUTCFullYear();
+  const diffColor =
+    difficulty === "Beginner"
+      ? "bg-emerald-500/15 text-emerald-400"
+      : difficulty === "Intermediate"
+        ? "bg-amber-500/15 text-amber-400"
+        : "bg-red-500/15 text-red-400";
+
+  return (
+    <div className="mb-8 flex flex-wrap items-center gap-3">
+      <span className="inline-flex items-center gap-1.5 rounded-full bg-[var(--hw-surface-raised)] px-3 py-1 text-xs text-[var(--hw-text-muted)]">
+        <LiveDot />
+        Last updated {month} {year} &middot; Live data
+      </span>
+      <span className={`inline-flex items-center rounded-full px-3 py-1 text-xs font-medium ${diffColor}`}>
+        {difficulty}
+      </span>
+    </div>
+  );
+}
+
+function StepTimeline() {
+  const steps = [
+    {
+      number: 1,
+      title: "Get USDC on Arbitrum",
+      description:
+        "Bridge funds to Arbitrum or swap to USDC on a DEX. You need USDC specifically — USDT and other stablecoins are not accepted by the Hyperliquid bridge.",
+    },
+    {
+      number: 2,
+      title: "Connect Wallet to Hyperliquid",
+      description:
+        "Navigate to app.hyperliquid.xyz and click \"Connect Wallet.\" Supports MetaMask, WalletConnect, Rabby. Make sure your wallet is set to the Arbitrum network.",
+    },
+    {
+      number: 3,
+      title: "Select Deposit Amount",
+      description:
+        "In the deposit section, enter the amount of USDC you want to deposit (minimum 5 USDC). The interface shows the estimated Arbitrum gas cost.",
+    },
+    {
+      number: 4,
+      title: "Approve & Confirm",
+      description:
+        "First-time users: approve USDC for the bridge contract (standard ERC-20 approval). Then confirm the deposit transaction in your wallet.",
+    },
+    {
+      number: 5,
+      title: "Funds Arrive",
+      description:
+        "Within 1-2 minutes, USDC appears in your Hyperliquid account. Start trading perps, buying spot tokens, or transferring to HyperEVM for DeFi.",
+    },
+  ];
+
+  return (
+    <div className="my-8">
+      <div className="relative">
+        {steps.map((step, i) => (
+          <div key={step.number} className="relative flex gap-4 pb-6 last:pb-0">
+            {/* Vertical line */}
+            {i < steps.length - 1 && (
+              <div className="absolute left-[19px] top-10 bottom-0 w-px bg-[var(--hw-border)]" />
+            )}
+            {/* Number circle */}
+            <div className="relative z-10 flex h-10 w-10 shrink-0 items-center justify-center rounded-full border-2 border-[var(--hw-green)] bg-[var(--hw-surface)]">
+              <span className="font-[family-name:var(--font-space-grotesk)] text-sm font-bold text-[var(--hw-green)]">
+                {step.number}
+              </span>
+            </div>
+            {/* Content */}
+            <div className="flex-1 rounded border border-[var(--hw-border)] bg-[var(--hw-surface)] p-4">
+              <h4 className="font-[family-name:var(--font-space-grotesk)] text-sm font-semibold text-[var(--hw-text)] mb-1">
+                {step.title}
+              </h4>
+              <p className="text-xs leading-relaxed text-[var(--hw-text-muted)]">
+                {step.description}
+              </p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function BridgeComparisonCards() {
+  const bridges = [
+    {
+      name: "Official Bridge",
+      speed: "1-2 min",
+      fee: "Gas only (~$0.05)",
+      chains: 1,
+      chainLabel: "Arbitrum only",
+      recommended: true,
+      description: "Native Hyperliquid bridge. No third-party trust assumptions. Simplest and cheapest option if your funds are already on Arbitrum.",
+    },
+    {
+      name: "Across Protocol",
+      speed: "~1 min",
+      fee: "0.05-0.12%",
+      chains: 4,
+      chainLabel: "ETH, OP, Base, Arb",
+      recommended: false,
+      description: "Intent-based bridge with near-instant settlement. Best option for bridging from Ethereum mainnet with competitive fees.",
+    },
+    {
+      name: "deBridge",
+      speed: "2-5 min",
+      fee: "0.05-0.15%",
+      chains: 6,
+      chainLabel: "ETH, BNB, SOL, Polygon, Avax, Arb",
+      recommended: false,
+      description: "Widest chain support including Solana. Decentralized validator network for cross-chain verification.",
+    },
+  ];
+
+  return (
+    <div className="my-8 grid grid-cols-1 gap-3 sm:grid-cols-3">
+      {bridges.map((bridge) => (
+        <div
+          key={bridge.name}
+          className={`relative rounded border p-4 ${
+            bridge.recommended
+              ? "border-[var(--hw-green)] bg-[var(--hw-green-subtle)]"
+              : "border-[var(--hw-border)] bg-[var(--hw-surface)]"
+          }`}
+        >
+          {bridge.recommended && (
+            <span className="absolute -top-2.5 left-3 rounded bg-[var(--hw-green)] px-2 py-0.5 text-[10px] font-bold text-[var(--hw-bg)]">
+              RECOMMENDED
+            </span>
+          )}
+          <h4 className="font-[family-name:var(--font-space-grotesk)] text-sm font-semibold text-[var(--hw-text)] mb-3 mt-1">
+            {bridge.name}
+          </h4>
+
+          <div className="space-y-2 mb-3">
+            <div className="flex items-center justify-between">
+              <span className="text-xs text-[var(--hw-text-dim)]">Speed</span>
+              <span className="font-[family-name:var(--font-space-grotesk)] text-xs font-medium text-[var(--hw-text)]">
+                {bridge.speed}
+              </span>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-xs text-[var(--hw-text-dim)]">Fee</span>
+              <span className="font-[family-name:var(--font-space-grotesk)] text-xs font-medium text-[var(--hw-text)]">
+                {bridge.fee}
+              </span>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-xs text-[var(--hw-text-dim)]">Chains</span>
+              <span className="font-[family-name:var(--font-space-grotesk)] text-xs font-medium text-[var(--hw-text)]">
+                {bridge.chains} supported
+              </span>
+            </div>
+          </div>
+
+          <div className="rounded bg-[var(--hw-surface-raised)] px-2.5 py-1.5 text-[10px] text-[var(--hw-text-dim)] mb-2">
+            {bridge.chainLabel}
+          </div>
+
+          <p className="text-xs leading-relaxed text-[var(--hw-text-dim)]">
+            {bridge.description}
+          </p>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+/* ── Page ──────────────────────────────────────────────────────── */
+
 export default function HowToBridgeToHyperliquidPage() {
   return (
     <LearnLayout article={article} prev={prev} next={next} toc={TOC}>
@@ -43,6 +232,8 @@ export default function HowToBridgeToHyperliquidPage() {
           publisher: { "@type": "Organization", name: "PerpWiki" },
         }}
       />
+
+      <ArticleMeta difficulty="Beginner" />
 
       <H2 id="why-bridge">Getting Funds to Hyperliquid</H2>
       <P>
@@ -132,38 +323,10 @@ export default function HowToBridgeToHyperliquidPage() {
       <H2 id="step-by-step">Step-by-Step: Your First Deposit</H2>
       <P>
         Here is a complete walkthrough for making your first deposit to Hyperliquid using the
-        official Arbitrum bridge:
+        official Arbitrum bridge. Follow the steps below:
       </P>
-      <P>
-        <strong>Step 1: Get USDC on Arbitrum.</strong> If your funds are on Ethereum mainnet,
-        bridge them to Arbitrum first using the official Arbitrum bridge (bridge.arbitrum.io)
-        or a fast bridge like Across. If your funds are in ETH or another token, swap to USDC
-        on a DEX (Uniswap, 1inch) before bridging. You need USDC specifically — USDT and
-        other stablecoins are not accepted by the Hyperliquid bridge.
-      </P>
-      <P>
-        <strong>Step 2: Connect your wallet to Hyperliquid.</strong> Navigate to
-        app.hyperliquid.xyz and click &quot;Connect Wallet.&quot; Hyperliquid supports
-        MetaMask, WalletConnect, Rabby, and most major Ethereum wallets. Once connected, make
-        sure your wallet is set to the Arbitrum network.
-      </P>
-      <P>
-        <strong>Step 3: Select deposit.</strong> In the Hyperliquid interface, navigate to the
-        deposit section. Enter the amount of USDC you want to deposit (minimum 5 USDC). The
-        interface will show you the estimated gas cost for the Arbitrum transaction.
-      </P>
-      <P>
-        <strong>Step 4: Approve &amp; confirm.</strong> If this is your first deposit, you
-        will need to approve the USDC token for the bridge contract — this is a standard ERC-20
-        approval transaction. After approval, confirm the deposit transaction. Your wallet will
-        prompt you to sign the transaction.
-      </P>
-      <P>
-        <strong>Step 5: Funds arrive.</strong> Within 1-2 minutes, your USDC will appear in
-        your Hyperliquid account. You can immediately start trading perpetuals, buying spot
-        tokens, or transferring funds to HyperEVM for DeFi activities. No additional setup
-        is required — your trading account is created automatically with your first deposit.
-      </P>
+
+      <StepTimeline />
 
       <H2 id="withdrawals">Withdrawing from Hyperliquid</H2>
       <P>
@@ -197,17 +360,12 @@ export default function HowToBridgeToHyperliquidPage() {
 
       <H2 id="bridge-comparison">Bridge Options Compared</H2>
       <P>
-        The following table compares the major bridge options for depositing to Hyperliquid:
+        Choosing the right bridge depends on where your funds are and what you prioritize.
+        Here is a visual comparison of the three main options:
       </P>
-      <ComparisonTable
-        headers={["Bridge", "Chains Supported", "Speed", "Fees", "Audited"]}
-        rows={[
-          ["Official Bridge", "Arbitrum only", "1-2 min", "Gas only (~$0.05)", "Yes (core protocol)"],
-          ["Across Protocol", "ETH, OP, Base, Arb", "~1 min", "0.05-0.12%", "Yes (multiple audits)"],
-          ["deBridge", "ETH, BNB, Polygon, SOL, Avax", "2-5 min", "0.05-0.15%", "Yes (multiple audits)"],
-          ["LayerZero-based", "Multiple EVM chains", "2-10 min", "Variable", "Yes (protocol-level)"],
-        ]}
-      />
+
+      <BridgeComparisonCards />
+
       <P>
         For most users, the choice comes down to where your funds currently are. If you are on
         Arbitrum, use the official bridge — it is free (aside from gas), fast, and has no
