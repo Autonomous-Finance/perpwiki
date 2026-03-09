@@ -3,7 +3,9 @@ import { categoryToSlug } from "@/lib/categories";
 import { LEARN_ARTICLES } from "@/lib/learn-articles";
 import type { MetadataRoute } from "next";
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:4000";
+export const dynamic = "force-dynamic";
+
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://perp.wiki";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const projects = await prisma.project.findMany({
@@ -31,6 +33,19 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     lastModified: new Date(article.datePublished),
     priority: 0.8 as const,
   }));
+
+  // Compare pairs — top combinations by slug (alphabetical pairs)
+  const slugs = projects.map((p) => p.slug).sort();
+  const comparePairs: MetadataRoute.Sitemap = [];
+  for (let i = 0; i < Math.min(slugs.length, 15); i++) {
+    for (let j = i + 1; j < Math.min(slugs.length, 15); j++) {
+      comparePairs.push({
+        url: `${SITE_URL}/compare/${slugs[i]}-vs-${slugs[j]}`,
+        lastModified: new Date(),
+        priority: 0.6,
+      });
+    }
+  }
 
   return [
     {
@@ -71,5 +86,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...learnEntries,
     ...categoryEntries,
     ...projectEntries,
+    ...comparePairs,
   ];
 }

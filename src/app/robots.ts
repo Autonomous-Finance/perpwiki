@@ -1,17 +1,25 @@
 import type { MetadataRoute } from "next";
 
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://perp.wiki";
+
 export default function robots(): MetadataRoute.Robots {
   return {
     rules: [
+      { userAgent: "*", allow: "/" },
       {
-        userAgent: "*",
-        allow: "/",
-      },
-      {
-        userAgent: ["GPTBot", "anthropic-ai", "ClaudeBot", "Claude-Web", "CCBot"],
+        userAgent: [
+          "GPTBot",
+          "ChatGPT-User",
+          "CCBot",
+          "anthropic-ai",
+          "Claude-Web",
+          "Google-Extended",
+          "Amazonbot",
+          "Bytespider",
+        ],
         disallow: "/",
       },
     ],
-    sitemap: `${process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:4000"}/sitemap.xml`,
+    sitemap: `${SITE_URL}/sitemap.xml`,
   };
 }
