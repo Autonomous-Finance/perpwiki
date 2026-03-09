@@ -4,7 +4,8 @@ import { SearchBar } from "@/components/SearchBar";
 import { ProjectCard } from "@/components/ProjectCard";
 import Link from "next/link";
 import { JsonLd } from "@/components/JsonLd";
-import { getHypePrice, getHlMeta, formatUsd } from "@/lib/hl-api";
+import { getHypePrice, getHlMeta, getTopMarkets, formatUsd } from "@/lib/hl-api";
+import { LEARN_ARTICLES } from "@/lib/learn-articles";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -126,6 +127,7 @@ export default async function HomePage() {
     categoryCounts,
     hypeData,
     hlMeta,
+    topMarkets,
   ] = await Promise.all([
     getStats(),
     getFeaturedSpotlight(),
@@ -137,6 +139,7 @@ export default async function HomePage() {
     getCategoryCounts(),
     getHypePrice(),
     getHlMeta(),
+    getTopMarkets(),
   ]);
 
   const layerSections = [
@@ -220,12 +223,12 @@ export default async function HomePage() {
             background: "radial-gradient(ellipse at 50% 0%, rgba(0,229,160,0.04) 0%, transparent 60%)",
           }}
         />
-        <div className="relative mx-auto max-w-7xl px-4 py-16 text-center md:py-20">
+        <div className="relative mx-auto max-w-7xl px-4 py-8 text-center md:py-12">
           <h1 className="font-[family-name:var(--font-space-grotesk)] text-4xl font-bold tracking-tight text-[var(--hw-text)] md:text-6xl">
-            The Hyperliquid Ecosystem
+            The Hyperliquid Ecosystem Intelligence Directory
           </h1>
           <p className="mx-auto mt-4 max-w-xl text-lg text-[var(--hw-text-muted)]">
-            Discover, compare, and research every project building on Hyperliquid.
+            Track every project, market, and metric in the Hyperliquid ecosystem.
           </p>
 
           {/* "Why Hyperliquid" stat block */}
@@ -239,6 +242,27 @@ export default async function HomePage() {
           {/* Search */}
           <div className="mt-10">
             <SearchBar />
+          </div>
+
+          {/* Quick nav pills */}
+          <div className="mt-6 flex flex-wrap items-center justify-center gap-2">
+            {[
+              { label: "Markets", href: "/markets" },
+              { label: "Funding Rates", href: "/funding-rates" },
+              { label: "Stats", href: "/stats" },
+              { label: "HyperCore", href: "/layer/hypercore" },
+              { label: "HyperEVM", href: "/layer/hyperevm" },
+              { label: "HIP-3", href: "/layer/hip3" },
+            ].map((pill) => (
+              <Link
+                key={pill.label}
+                href={pill.href}
+                className="px-3 py-1.5 text-xs font-medium border border-[var(--hw-green-subtle)] text-[var(--hw-green)] transition-all hover:bg-[var(--hw-green-subtle)] hover:border-[var(--hw-green)]"
+                style={{ borderRadius: "2px" }}
+              >
+                {pill.label}
+              </Link>
+            ))}
           </div>
 
           {/* Trending tags */}
@@ -313,6 +337,48 @@ export default async function HomePage() {
         </div>
       </section>
 
+      {/* Live Markets Mini-Table */}
+      <section className="mx-auto max-w-7xl px-4 py-12">
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="font-[family-name:var(--font-space-grotesk)] text-xl font-semibold text-[var(--hw-text)]">
+            Live Markets
+          </h2>
+          <Link href="/markets" className="text-sm text-[var(--hw-green)] hover:text-[var(--hw-green-dim)]">
+            View all markets &rarr;
+          </Link>
+        </div>
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b border-[var(--hw-border)] text-left text-xs text-[var(--hw-text-dim)]">
+                <th className="pb-2 pr-4">Market</th>
+                <th className="pb-2 pr-4 text-right">Price</th>
+                <th className="pb-2 pr-4 text-right">24h Change</th>
+                <th className="pb-2 pr-4 text-right hidden sm:table-cell">Funding/hr</th>
+                <th className="pb-2 text-right hidden md:table-cell">Open Interest</th>
+              </tr>
+            </thead>
+            <tbody>
+              {topMarkets.map((m) => {
+                const price = parseFloat(m.markPx);
+                const prev = parseFloat(m.prevDayPx);
+                const change = prev > 0 ? ((price - prev) / prev) * 100 : 0;
+                const funding = parseFloat(m.funding) * 100;
+                return (
+                  <tr key={m.name} className="border-b border-[var(--hw-border)] hover:bg-[var(--hw-surface)]">
+                    <td className="py-2.5 pr-4 font-[family-name:var(--font-space-grotesk)] font-medium text-[var(--hw-text)]">{m.name}</td>
+                    <td className="py-2.5 pr-4 text-right font-[family-name:var(--font-jetbrains-mono)] text-[var(--hw-text-muted)]">${price < 1 ? price.toPrecision(4) : price.toLocaleString("en-US", { maximumFractionDigits: 2 })}</td>
+                    <td className={`py-2.5 pr-4 text-right font-[family-name:var(--font-jetbrains-mono)] ${change >= 0 ? "text-[var(--hw-green)]" : "text-[var(--hw-red)]"}`}>{change >= 0 ? "+" : ""}{change.toFixed(2)}%</td>
+                    <td className={`py-2.5 pr-4 text-right font-[family-name:var(--font-jetbrains-mono)] hidden sm:table-cell ${funding >= 0 ? "text-[var(--hw-green)]" : "text-[var(--hw-red)]"}`}>{funding >= 0 ? "+" : ""}{funding.toFixed(4)}%</td>
+                    <td className="py-2.5 text-right font-[family-name:var(--font-jetbrains-mono)] text-[var(--hw-text-muted)] hidden md:table-cell">{formatUsd(m.openInterest)}</td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+      </section>
+
       {/* Layer Navigator */}
       <section className="mx-auto max-w-7xl px-4 py-12">
         <h2 className="font-[family-name:var(--font-space-grotesk)] text-xl font-semibold text-[var(--hw-text)] mb-6">
@@ -368,7 +434,7 @@ export default async function HomePage() {
       <section className="mx-auto max-w-7xl px-4 py-12">
         <div className="flex items-center justify-between mb-6">
           <h2 className="font-[family-name:var(--font-space-grotesk)] text-xl font-semibold text-[var(--hw-text)]">
-            All Projects
+            All Projects ({stats.total})
           </h2>
           <Link href="/projects" className="text-sm text-[var(--hw-green)] hover:text-[var(--hw-green-dim)]">
             View all &rarr;
@@ -411,6 +477,30 @@ export default async function HomePage() {
                 )}
               </div>
               <span className="text-xs text-[var(--hw-text-dim)]">{p.category}</span>
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      {/* Learn Hub */}
+      <section className="mx-auto max-w-7xl px-4 py-12">
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="font-[family-name:var(--font-space-grotesk)] text-xl font-semibold text-[var(--hw-text)]">
+            Learn About Hyperliquid
+          </h2>
+          <Link href="/learn" className="text-sm text-[var(--hw-green)] hover:text-[var(--hw-green-dim)]">
+            All articles &rarr;
+          </Link>
+        </div>
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {LEARN_ARTICLES.slice(0, 3).map((article) => (
+            <Link key={article.slug} href={`/learn/${article.slug}`}>
+              <div className="group border border-[var(--hw-border)] bg-[var(--hw-surface)] p-5 transition-all hover:border-[var(--hw-green)] hover:shadow-[0_0_8px_rgba(0,229,160,0.08)]" style={{ borderRadius: "4px" }}>
+                <span className="text-xs text-[var(--hw-green)]">{article.category}</span>
+                <h3 className="font-[family-name:var(--font-space-grotesk)] text-sm font-semibold text-[var(--hw-text)] mt-1 mb-2">{article.title}</h3>
+                <p className="text-xs text-[var(--hw-text-dim)] line-clamp-2">{article.description}</p>
+                <span className="text-xs text-[var(--hw-text-dim)] mt-2 block">{article.readingTime} read</span>
+              </div>
             </Link>
           ))}
         </div>

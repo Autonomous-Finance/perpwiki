@@ -108,6 +108,39 @@ export async function getHlMeta(): Promise<{ meta: HlMeta | null; live: boolean 
   }
 }
 
+export interface MarketData {
+  name: string;
+  markPx: string;
+  prevDayPx: string;
+  funding: string;
+  openInterest: string;
+  dayNtlVlm: string;
+}
+
+export async function getTopMarkets(limit = 10): Promise<MarketData[]> {
+  try {
+    const res = await fetch("https://api.hyperliquid.xyz/info", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ type: "metaAndAssetCtxs" }),
+      next: { revalidate: 30 },
+    });
+    if (!res.ok) return [];
+    const [meta, ctxs] = await res.json() as [
+      { universe: { name: string }[] },
+      { markPx: string; prevDayPx: string; funding: string; openInterest: string; dayNtlVlm: string }[]
+    ];
+    const markets = meta.universe.map((u, i) => ({
+      name: u.name,
+      ...ctxs[i],
+    }));
+    markets.sort((a, b) => parseFloat(b.openInterest) - parseFloat(a.openInterest));
+    return markets.slice(0, limit);
+  } catch {
+    return [];
+  }
+}
+
 export function formatUsd(value: string | number, compact = true): string {
   const num = typeof value === "string" ? parseFloat(value) : value;
   if (isNaN(num)) return "$0";
