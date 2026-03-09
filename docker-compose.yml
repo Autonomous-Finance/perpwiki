@@ -30,14 +30,23 @@ services:
       start_period: 60s
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.perpwiki.rule=Host(`perp.wiki`) || Host(`www.perp.wiki`)"
-      - "traefik.http.routers.perpwiki.entrypoints=websecure"
-      - "traefik.http.routers.perpwiki.tls=true"
-      - "traefik.http.routers.perpwiki.tls.certresolver=letsencrypt"
-      - "traefik.http.services.perpwiki.loadbalancer.server.port=${PORT:-4001}"
-      - "traefik.http.routers.perpwiki-http.rule=Host(`perp.wiki`) || Host(`www.perp.wiki`)"
-      - "traefik.http.routers.perpwiki-http.entrypoints=web"
-      - "traefik.http.routers.perpwiki-http.middlewares=redirect-to-https@file"
+      - "traefik.http.routers.perpwiki-1-web.entrypoints=web"
+      - "traefik.http.routers.perpwiki-1-web.rule=Host(`perp.wiki`)"
+      - "traefik.http.routers.perpwiki-1-web.middlewares=redirect-to-https@file"
+      - "traefik.http.routers.perpwiki-1-web.service=perpwiki-svc"
+      - "traefik.http.routers.perpwiki-1-websecure.entrypoints=websecure"
+      - "traefik.http.routers.perpwiki-1-websecure.rule=Host(`perp.wiki`)"
+      - "traefik.http.routers.perpwiki-1-websecure.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.perpwiki-1-websecure.service=perpwiki-svc"
+      - "traefik.http.routers.perpwiki-2-web.entrypoints=web"
+      - "traefik.http.routers.perpwiki-2-web.rule=Host(`www.perp.wiki`)"
+      - "traefik.http.routers.perpwiki-2-web.middlewares=redirect-to-https@file"
+      - "traefik.http.routers.perpwiki-2-web.service=perpwiki-svc"
+      - "traefik.http.routers.perpwiki-2-websecure.entrypoints=websecure"
+      - "traefik.http.routers.perpwiki-2-websecure.rule=Host(`www.perp.wiki`)"
+      - "traefik.http.routers.perpwiki-2-websecure.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.perpwiki-2-websecure.service=perpwiki-svc"
+      - "traefik.http.services.perpwiki-svc.loadbalancer.server.port=4001"
 
   litestream:
     image: litestream/litestream:latest
