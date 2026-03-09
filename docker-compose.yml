@@ -37,7 +37,7 @@ services:
       - "traefik.http.services.perpwiki.loadbalancer.server.port=${PORT:-4001}"
       - "traefik.http.routers.perpwiki-http.rule=Host(`perp.wiki`) || Host(`www.perp.wiki`)"
       - "traefik.http.routers.perpwiki-http.entrypoints=web"
-      - "traefik.http.routers.perpwiki-http.middlewares=https-redirect@file"
+      - "traefik.http.routers.perpwiki-http.middlewares=redirect-to-https@file"
 
   litestream:
     image: litestream/litestream:latest
