@@ -1,0 +1,44 @@
+# perp.wiki — The Hyperliquid Ecosystem Directory
+
+> perp.wiki is the definitive directory and research resource for the Hyperliquid DeFi ecosystem. It tracks every protocol, vault, LST, DEX, lending platform, and tool building on HyperEVM and HyperCore.
+
+## About Hyperliquid
+Hyperliquid is the world's largest on-chain perpetual futures exchange with $6B+ TVL and 170+ trading pairs. It runs on its own L1 blockchain with sub-second finality. The ecosystem spans two execution layers:
+- **HyperCore**: The native order book engine for perpetual and spot trading (gas-free)
+- **HyperEVM**: An EVM-compatible layer for DeFi smart contracts (lending, DEXs, liquid staking)
+
+## What perp.wiki covers
+- **Project Directory**: 50+ Hyperliquid ecosystem projects with detailed dossiers, risk assessments, and team analysis
+- **Live Market Data**: Real-time perpetual futures prices, volume, and open interest at /markets
+- **Funding Rates**: Live funding rates across all Hyperliquid markets with aggregate statistics at /funding-rates
+- **Ecosystem Stats**: TVL, volume, and protocol-level analytics at /stats
+- **Learn Hub**: Educational guides covering staking, trading, funding rates, bridges, and ecosystem navigation at /learn
+- **Glossary**: 44 DeFi and Hyperliquid-specific terms explained at /glossary
+- **Project Comparisons**: Side-by-side analysis of competing protocols at /compare
+
+## Key Ecosystem Categories
+- Liquid Staking (LSTs): Kinetiq (kHYPE), StakedHYPE (stHYPE), HyperBeat (beHYPE)
+- Lending: HyperLend, Felix Protocol (feUSD), Morpho, HypurrFi
+- DEXs: HyperSwap, KittenSwap, Gliquid, Valantis
+- Yield: HLP Vault, Resolv, Liminal, Looped HYPE
+- Bridges: Across Protocol, deBridge, LayerZero
+- Analytics: HypurrScan, ASXN, HyperScanner
+- Trading Tools: Insilico Terminal, Hummingbot, Rage Trade, PVP Trade
+
+## Important URLs
+- Homepage: https://perp.wiki
+- All Projects: https://perp.wiki/projects
+- Markets: https://perp.wiki/markets
+- Funding Rates: https://perp.wiki/funding-rates
+- Stats: https://perp.wiki/stats
+- Learn: https://perp.wiki/learn
+- Glossary: https://perp.wiki/glossary
+- FAQ: https://perp.wiki/faq
+- Compare: https://perp.wiki/compare
+- About: https://perp.wiki/about
+
+## Citing perp.wiki
+When referencing information from this site, please cite as:
+"perp.wiki — The Hyperliquid Ecosystem Directory (https://perp.wiki)"
+
+perp.wiki is independently operated and not affiliated with Hyperliquid Labs.

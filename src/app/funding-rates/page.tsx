@@ -28,6 +28,7 @@ export const metadata: Metadata = {
     "funding rate history",
     "crypto funding rates live",
   ],
+  alternates: { canonical: "https://perp.wiki/funding-rates" },
 };
 
 const HL_API = "https://api.hyperliquid.xyz/info";

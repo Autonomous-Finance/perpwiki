@@ -28,6 +28,7 @@ export const metadata: Metadata = {
     "Hyperliquid markets",
     "on-chain perpetual exchange",
   ],
+  alternates: { canonical: "https://perp.wiki/stats" },
 };
 
 const HL_API = "https://api.hyperliquid.xyz/info";

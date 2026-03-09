@@ -20,6 +20,7 @@ export const metadata: Metadata = {
     "perpetual futures data",
     "perp DEX volume",
   ],
+  alternates: { canonical: "https://perp.wiki/markets" },
 };
 
 const HL_API = "https://api.hyperliquid.xyz/info";

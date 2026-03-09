@@ -9,6 +9,7 @@ export const metadata: Metadata = {
   title: "All Projects",
   description:
     "Browse every project in the Hyperliquid ecosystem — HyperCore, HyperEVM, and HIP-3.",
+  alternates: { canonical: "https://perp.wiki/projects" },
 };
 
 type SortOption = "name" | "category" | "newest";

@@ -188,6 +188,42 @@ export const LEARN_ARTICLES: LearnArticle[] = [
     readingTime: "8 min",
     datePublished: "2026-03-09",
   },
+  {
+    slug: "how-to-stake-hype",
+    title: "How to Stake HYPE: Native & Liquid Staking Guide",
+    description:
+      "Complete guide to staking HYPE — native staking for ~2.25% APY, liquid staking with kHYPE, stHYPE, and beHYPE, and strategies for maximizing yield.",
+    category: "Guides",
+    readingTime: "10 min",
+    datePublished: "2026-03-09",
+  },
+  {
+    slug: "hyperliquid-fees-explained",
+    title: "Hyperliquid Fees Explained: Complete Fee Structure Guide",
+    description:
+      "Full breakdown of Hyperliquid fees: perp maker/taker rates, spot fees, HyperEVM gas, deposit/withdrawal costs, and how to reduce trading costs.",
+    category: "Guides",
+    readingTime: "8 min",
+    datePublished: "2026-03-09",
+  },
+  {
+    slug: "hyperevm-yield-farming-guide",
+    title: "HyperEVM Yield Farming: Complete Strategy Guide",
+    description:
+      "In-depth HyperEVM yield farming strategies: HLP vault, liquid staking, lending, LP strategies, delta-neutral farming, and leveraged looping with risk analysis.",
+    category: "Guides",
+    readingTime: "14 min",
+    datePublished: "2026-03-09",
+  },
+  {
+    slug: "how-to-bridge-to-hyperliquid",
+    title: "How to Bridge to Hyperliquid: Complete Deposit Guide",
+    description:
+      "Step-by-step guide to bridging funds to Hyperliquid: official Arbitrum bridge, third-party bridges (Across, deBridge, LayerZero), withdrawals, and safety tips.",
+    category: "Guides",
+    readingTime: "7 min",
+    datePublished: "2026-03-09",
+  },
 ];
 
 export function getArticle(slug: string): LearnArticle | undefined {

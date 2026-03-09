@@ -25,6 +25,7 @@ export const metadata: Metadata = {
     "perp DEX",
     "perpetual DEX directory",
   ],
+  alternates: { canonical: "https://perp.wiki" },
 };
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:4000";

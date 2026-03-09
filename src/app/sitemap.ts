@@ -123,9 +123,29 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: "weekly",
     },
     {
+      url: `${SITE_URL}/tools`,
+      lastModified: new Date(),
+      priority: 0.7,
+    },
+    {
+      url: `${SITE_URL}/tools/liquidation-calculator`,
+      lastModified: new Date(),
+      priority: 0.8,
+    },
+    {
+      url: `${SITE_URL}/tools/fee-calculator`,
+      lastModified: new Date(),
+      priority: 0.8,
+    },
+    {
       url: `${SITE_URL}/submit`,
       lastModified: new Date(),
       priority: 0.5,
+    },
+    {
+      url: `${SITE_URL}/sitemap-html`,
+      lastModified: new Date(),
+      priority: 0.3,
     },
     ...learnEntries,
     ...categoryEntries,

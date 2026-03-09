@@ -47,6 +47,22 @@ export const metadata: Metadata = {
     index: true,
     follow: true,
   },
+  keywords: [
+    "Hyperliquid",
+    "HyperEVM",
+    "HyperCore",
+    "perp DEX",
+    "perpetual futures",
+    "DeFi",
+    "liquid staking",
+    "HYPE token",
+    "funding rates",
+    "HLP vault",
+    "ecosystem directory",
+  ],
+  category: "DeFi",
+  creator: "perp.wiki",
+  publisher: "perp.wiki",
 };
 
 export default function RootLayout({

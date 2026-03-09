@@ -21,6 +21,7 @@ export const metadata: Metadata = {
     "Hyperliquid new projects",
     "Hyperliquid ecosystem",
   ],
+  alternates: { canonical: "https://perp.wiki/trending" },
 };
 
 const HL_API = "https://api.hyperliquid.xyz/info";
