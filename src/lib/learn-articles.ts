@@ -116,6 +116,78 @@ export const LEARN_ARTICLES: LearnArticle[] = [
     readingTime: "14 min",
     datePublished: "2026-03-08",
   },
+  {
+    slug: "hyperliquid-funding-rates-guide",
+    title: "Hyperliquid Funding Rates Explained: How to Read, Profit & Hedge",
+    description:
+      "Complete guide to Hyperliquid funding rates: 8-hour intervals, positive vs negative rates, cash-and-carry strategies, and delta-neutral farming.",
+    category: "Guides",
+    readingTime: "10 min",
+    datePublished: "2026-03-09",
+  },
+  {
+    slug: "best-hyperevm-defi-projects",
+    title: "Best HyperEVM DeFi Projects 2026: Lending, Staking & Yield",
+    description:
+      "Top HyperEVM DeFi projects: Felix Protocol (feUSD), HyperLend (lending), Kinetiq (liquid staking kHYPE), HyperBeat (yield aggregation), and Liminal (delta-neutral).",
+    category: "Ecosystem",
+    readingTime: "9 min",
+    datePublished: "2026-03-09",
+  },
+  {
+    slug: "hyperliquid-vs-binance-perps",
+    title: "Hyperliquid vs Binance Perps: On-Chain vs CEX Comparison 2026",
+    description:
+      "Detailed comparison of Hyperliquid vs Binance perpetual futures: fees, custody, transparency, speed, depth, and self-custody vs KYC.",
+    category: "Comparisons",
+    readingTime: "9 min",
+    datePublished: "2026-03-09",
+  },
+  {
+    slug: "what-is-hip-1",
+    title: "What Is HIP-1? Hyperliquid Native Token Standard Explained",
+    description:
+      "How HIP-1 governs native token creation on Hyperliquid — the PURR launch, spot trading on HyperCore, and the relationship to HIP-2 liquidity bootstrapping.",
+    category: "Protocol",
+    readingTime: "7 min",
+    datePublished: "2026-03-09",
+  },
+  {
+    slug: "how-to-earn-yield-on-hyperliquid",
+    title: "5 Ways to Earn Yield on Hyperliquid (2026 Guide)",
+    description:
+      "Complete guide to earning yield on Hyperliquid: HLP vault (15-25% APR), HYPE staking, lending on HyperLend, builder vaults, and funding rate arbitrage.",
+    category: "Guides",
+    readingTime: "9 min",
+    datePublished: "2026-03-09",
+  },
+  {
+    slug: "hyperunit-bridge-guide",
+    title: "How to Bridge to Hyperliquid with Unit Protocol",
+    description:
+      "Step-by-step guide to bridging BTC, ETH, and SOL to Hyperliquid using Unit Protocol. MPC security, fees, supported assets, and troubleshooting.",
+    category: "Guides",
+    readingTime: "6 min",
+    datePublished: "2026-03-09",
+  },
+  {
+    slug: "hyperliquid-open-interest-explained",
+    title: "Open Interest on Hyperliquid: What It Tells You About Markets",
+    description:
+      "What open interest means on Hyperliquid, how to read it, its relationship to volume, and what rising or falling OI signals about market direction.",
+    category: "Fundamentals",
+    readingTime: "7 min",
+    datePublished: "2026-03-09",
+  },
+  {
+    slug: "best-hyperliquid-trading-bots",
+    title: "Best Hyperliquid Trading Bots & Automation Tools 2026",
+    description:
+      "Top Hyperliquid trading bots: Hummingbot, Insilico Terminal, pvp.trade (copy trading), Katoshi (AI), and Growi. Features, pricing, and how to choose.",
+    category: "Ecosystem",
+    readingTime: "8 min",
+    datePublished: "2026-03-09",
+  },
 ];
 
 export function getArticle(slug: string): LearnArticle | undefined {
