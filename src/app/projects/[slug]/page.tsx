@@ -72,14 +72,6 @@ export default async function ProjectDetailPage({ params }: Props) {
     }
   })();
 
-  const links = [
-    { label: "Website", url: project.website },
-    { label: "Twitter", url: project.twitter },
-    { label: "GitHub", url: project.github },
-    { label: "Discord", url: project.discord },
-    { label: "Telegram", url: project.telegram },
-  ].filter((l) => l.url);
-
   const relatedProjects = await prisma.project.findMany({
     where: {
       approvalStatus: "APPROVED",
@@ -217,6 +209,42 @@ export default async function ProjectDetailPage({ params }: Props) {
             </a>
           )}
         </div>
+
+        {/* Social icons row */}
+        {(project.website || project.twitter || project.github || project.discord || project.telegram) && (
+          <div className="flex items-center gap-2 mt-3">
+            {project.website && (
+              <a href={project.website} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 text-xs text-[var(--hw-text-muted)] hover:text-[var(--hw-green)] transition-colors">
+                <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M12 21a9 9 0 100-18 9 9 0 000 18z" /><path strokeLinecap="round" strokeLinejoin="round" d="M3.6 9h16.8M3.6 15h16.8" /></svg>
+                {(() => { try { return new URL(project.website).hostname; } catch { return "Website"; } })()}
+              </a>
+            )}
+            {project.twitter && (
+              <a href={project.twitter} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 text-xs text-[var(--hw-text-muted)] hover:text-[var(--hw-green)] transition-colors">
+                <svg className="h-3.5 w-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                Twitter
+              </a>
+            )}
+            {project.github && (
+              <a href={project.github} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 text-xs text-[var(--hw-text-muted)] hover:text-[var(--hw-green)] transition-colors">
+                <svg className="h-3.5 w-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+                GitHub
+              </a>
+            )}
+            {project.discord && (
+              <a href={project.discord} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 text-xs text-[var(--hw-text-muted)] hover:text-[var(--hw-green)] transition-colors">
+                <svg className="h-3.5 w-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M20.317 4.37a19.791 19.791 0 00-4.885-1.515.074.074 0 00-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 00-5.487 0 12.64 12.64 0 00-.617-1.25.077.077 0 00-.079-.037A19.736 19.736 0 003.677 4.37a.07.07 0 00-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 00.031.057 19.9 19.9 0 005.993 3.03.078.078 0 00.084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 00-.041-.106 13.107 13.107 0 01-1.872-.892.077.077 0 01-.008-.128 10.2 10.2 0 00.372-.292.074.074 0 01.077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 01.078.01c.12.098.246.198.373.292a.077.077 0 01-.006.127 12.299 12.299 0 01-1.873.892.077.077 0 00-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 00.084.028 19.839 19.839 0 006.002-3.03.077.077 0 00.032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 00-.031-.03z"/></svg>
+                Discord
+              </a>
+            )}
+            {project.telegram && (
+              <a href={project.telegram} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 text-xs text-[var(--hw-text-muted)] hover:text-[var(--hw-green)] transition-colors">
+                <svg className="h-3.5 w-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M11.944 0A12 12 0 000 12a12 12 0 0012 12 12 12 0 0012-12A12 12 0 0012 0a12 12 0 00-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 01.171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.479.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+                Telegram
+              </a>
+            )}
+          </div>
+        )}
       </div>
 
       <div className="grid gap-8 md:grid-cols-3">
@@ -360,28 +388,76 @@ export default async function ProjectDetailPage({ params }: Props) {
             </dl>
           </div>
 
-          {/* Links */}
-          {links.length > 0 && (
+          {/* Social Links */}
+          {(project.website || project.twitter || project.github || project.discord || project.telegram) && (
             <div
               className="border border-[var(--hw-border)] bg-[var(--hw-surface)] p-4"
               style={{ borderRadius: "4px" }}
             >
               <h3 className="font-[family-name:var(--font-space-grotesk)] text-sm font-semibold text-[var(--hw-text)] mb-3">
-                Links
+                Links & Social
               </h3>
-              <div className="space-y-2">
-                {links.map((link) => (
+              <div className="grid grid-cols-2 gap-2">
+                {project.website && (
                   <a
-                    key={link.label}
-                    href={link.url!}
+                    href={project.website}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-2 text-sm text-[var(--hw-green)] hover:text-[var(--hw-green-dim)]"
+                    className="flex items-center gap-2 border border-[var(--hw-border)] px-3 py-2 text-xs text-[var(--hw-text-muted)] transition-all hover:border-[var(--hw-green)] hover:text-[var(--hw-green)]"
+                    style={{ borderRadius: "2px" }}
                   >
-                    <span>{link.label}</span>
-                    <span className="text-[var(--hw-text-dim)]">&nearr;</span>
+                    <svg className="h-3.5 w-3.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M12 21a9 9 0 100-18 9 9 0 000 18z" /><path strokeLinecap="round" strokeLinejoin="round" d="M3.6 9h16.8M3.6 15h16.8M12 3a15 15 0 014 9 15 15 0 01-4 9 15 15 0 01-4-9 15 15 0 014-9z" /></svg>
+                    Website
                   </a>
-                ))}
+                )}
+                {project.twitter && (
+                  <a
+                    href={project.twitter}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2 border border-[var(--hw-border)] px-3 py-2 text-xs text-[var(--hw-text-muted)] transition-all hover:border-[var(--hw-green)] hover:text-[var(--hw-green)]"
+                    style={{ borderRadius: "2px" }}
+                  >
+                    <svg className="h-3.5 w-3.5 shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                    X / Twitter
+                  </a>
+                )}
+                {project.github && (
+                  <a
+                    href={project.github}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2 border border-[var(--hw-border)] px-3 py-2 text-xs text-[var(--hw-text-muted)] transition-all hover:border-[var(--hw-green)] hover:text-[var(--hw-green)]"
+                    style={{ borderRadius: "2px" }}
+                  >
+                    <svg className="h-3.5 w-3.5 shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+                    GitHub
+                  </a>
+                )}
+                {project.discord && (
+                  <a
+                    href={project.discord}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2 border border-[var(--hw-border)] px-3 py-2 text-xs text-[var(--hw-text-muted)] transition-all hover:border-[var(--hw-green)] hover:text-[var(--hw-green)]"
+                    style={{ borderRadius: "2px" }}
+                  >
+                    <svg className="h-3.5 w-3.5 shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M20.317 4.37a19.791 19.791 0 00-4.885-1.515.074.074 0 00-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 00-5.487 0 12.64 12.64 0 00-.617-1.25.077.077 0 00-.079-.037A19.736 19.736 0 003.677 4.37a.07.07 0 00-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 00.031.057 19.9 19.9 0 005.993 3.03.078.078 0 00.084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 00-.041-.106 13.107 13.107 0 01-1.872-.892.077.077 0 01-.008-.128 10.2 10.2 0 00.372-.292.074.074 0 01.077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 01.078.01c.12.098.246.198.373.292a.077.077 0 01-.006.127 12.299 12.299 0 01-1.873.892.077.077 0 00-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 00.084.028 19.839 19.839 0 006.002-3.03.077.077 0 00.032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 00-.031-.03z"/></svg>
+                    Discord
+                  </a>
+                )}
+                {project.telegram && (
+                  <a
+                    href={project.telegram}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2 border border-[var(--hw-border)] px-3 py-2 text-xs text-[var(--hw-text-muted)] transition-all hover:border-[var(--hw-green)] hover:text-[var(--hw-green)]"
+                    style={{ borderRadius: "2px" }}
+                  >
+                    <svg className="h-3.5 w-3.5 shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M11.944 0A12 12 0 000 12a12 12 0 0012 12 12 12 0 0012-12A12 12 0 0012 0a12 12 0 00-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 01.171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.479.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+                    Telegram
+                  </a>
+                )}
               </div>
             </div>
           )}
@@ -415,147 +491,127 @@ export default async function ProjectDetailPage({ params }: Props) {
 }
 
 function DossierContent({ data }: { data: DossierData }) {
+  const renderParagraphs = (text: string) =>
+    text.split(/\n\n+/).map((para, i) => (
+      <p key={i} className="text-sm leading-relaxed text-[var(--hw-text-muted)] mb-3 last:mb-0">
+        {para}
+      </p>
+    ));
+
   return (
-    <div className="space-y-8">
-      {/* Key Metrics */}
+    <div className="space-y-6">
+      {/* Key Metrics — horizontal scrollable strip */}
       {data.keyMetrics && data.keyMetrics.length > 0 && (
-        <div>
-          <h2 className="font-[family-name:var(--font-space-grotesk)] text-lg font-semibold text-[var(--hw-text)] mb-3">
-            Key Metrics
-          </h2>
-          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-            {data.keyMetrics.map((metric, i) => (
-              <div
-                key={i}
-                className="border border-[var(--hw-border)] bg-[var(--hw-surface)] p-3"
-                style={{ borderRadius: "4px" }}
-              >
-                <div className="font-[family-name:var(--font-jetbrains-mono)] text-lg font-bold text-[var(--hw-green)]">
-                  {metric.value}
-                </div>
-                <div className="text-xs text-[var(--hw-text-muted)]">{metric.label}</div>
-                {metric.note && (
-                  <div className="mt-1 text-xs text-[var(--hw-text-dim)]">{metric.note}</div>
-                )}
+        <div className="flex gap-3 overflow-x-auto pb-1 -mx-1 px-1">
+          {data.keyMetrics.map((metric, i) => (
+            <div
+              key={i}
+              className="shrink-0 border border-[var(--hw-border)] bg-[var(--hw-surface)] px-4 py-3 min-w-[120px]"
+              style={{ borderRadius: "4px" }}
+            >
+              <div className="font-[family-name:var(--font-jetbrains-mono)] text-lg font-bold text-[var(--hw-green)]">
+                {metric.value}
               </div>
-            ))}
-          </div>
+              <div className="text-[10px] uppercase tracking-wider text-[var(--hw-text-dim)] mt-0.5">{metric.label}</div>
+              {metric.note && (
+                <div className="mt-1 text-[10px] text-[var(--hw-text-dim)] opacity-70">{metric.note}</div>
+              )}
+            </div>
+          ))}
         </div>
       )}
 
-      {/* Overview */}
+      {/* Overview — clean prose */}
       {data.overview && (
         <div>
-          <h2 className="font-[family-name:var(--font-space-grotesk)] text-lg font-semibold text-[var(--hw-text)] mb-3">
+          <h2 className="font-[family-name:var(--font-space-grotesk)] text-base font-semibold text-[var(--hw-text)] mb-3 flex items-center gap-2">
+            <span className="inline-block h-1 w-4 bg-[var(--hw-green)]" style={{ borderRadius: "1px" }} />
             Overview
           </h2>
-          <p className="text-sm leading-relaxed text-[var(--hw-text-muted)] whitespace-pre-line">
-            {data.overview}
-          </p>
+          <div>{renderParagraphs(data.overview)}</div>
         </div>
       )}
 
-      {/* How It Works */}
+      {/* How It Works — numbered steps feel if multiple paragraphs */}
       {data.howItWorks && (
-        <div>
-          <h2 className="font-[family-name:var(--font-space-grotesk)] text-lg font-semibold text-[var(--hw-text)] mb-3">
+        <div className="border border-[var(--hw-border)] bg-[var(--hw-surface)] p-5" style={{ borderRadius: "4px" }}>
+          <h2 className="font-[family-name:var(--font-space-grotesk)] text-base font-semibold text-[var(--hw-text)] mb-3 flex items-center gap-2">
+            <span className="inline-block h-1 w-4 bg-[var(--hw-cyan)]" style={{ borderRadius: "1px" }} />
             How It Works
           </h2>
-          <div
-            className="border-l-2 border-[var(--hw-green)] pl-4"
-          >
-            <p className="text-sm leading-relaxed text-[var(--hw-text-muted)] whitespace-pre-line">
-              {data.howItWorks}
-            </p>
+          <div className="border-l-2 border-[var(--hw-cyan)] pl-4">
+            {renderParagraphs(data.howItWorks)}
           </div>
         </div>
       )}
 
-      {/* Tokenomics */}
-      {data.tokenomics && (
-        <div>
-          <h2 className="font-[family-name:var(--font-space-grotesk)] text-lg font-semibold text-[var(--hw-text)] mb-3">
-            Tokenomics
-          </h2>
-          <p className="text-sm leading-relaxed text-[var(--hw-text-muted)] whitespace-pre-line">
-            {data.tokenomics}
-          </p>
+      {/* Two-column grid: Tokenomics + Team */}
+      {(data.tokenomics || data.team) && (
+        <div className="grid gap-4 sm:grid-cols-2">
+          {data.tokenomics && (
+            <div className="border border-[var(--hw-border)] bg-[var(--hw-surface)] p-4" style={{ borderRadius: "4px" }}>
+              <h3 className="font-[family-name:var(--font-space-grotesk)] text-sm font-semibold text-[var(--hw-text)] mb-2 flex items-center gap-2">
+                <span className="inline-block h-1 w-3 bg-[var(--hw-gold)]" style={{ borderRadius: "1px" }} />
+                Tokenomics
+              </h3>
+              {renderParagraphs(data.tokenomics)}
+            </div>
+          )}
+          {data.team && (
+            <div className="border border-[var(--hw-border)] bg-[var(--hw-surface)] p-4" style={{ borderRadius: "4px" }}>
+              <h3 className="font-[family-name:var(--font-space-grotesk)] text-sm font-semibold text-[var(--hw-text)] mb-2 flex items-center gap-2">
+                <span className="inline-block h-1 w-3" style={{ background: "var(--hw-tier-hip3)", borderRadius: "1px" }} />
+                Team
+                {data.team.anonymous && (
+                  <span className="ml-auto px-1.5 py-0.5 text-[10px]" style={{ borderRadius: "2px", background: "rgba(240,180,41,0.15)", color: "var(--hw-gold)" }}>
+                    Anon
+                  </span>
+                )}
+              </h3>
+              {data.team.description && (
+                <p className="text-sm text-[var(--hw-text-muted)]">{data.team.description}</p>
+              )}
+            </div>
+          )}
         </div>
       )}
 
-      {/* Team */}
-      {data.team && (
-        <div>
-          <h2 className="font-[family-name:var(--font-space-grotesk)] text-lg font-semibold text-[var(--hw-text)] mb-3">
-            Team
-          </h2>
-          <div
-            className="border border-[var(--hw-border)] bg-[var(--hw-surface)] p-4"
-            style={{ borderRadius: "4px" }}
-          >
-            {data.team.anonymous && (
-              <span
-                className="inline-block mb-2 px-2 py-0.5 text-xs"
-                style={{
-                  borderRadius: "2px",
-                  background: "rgba(240,180,41,0.15)",
-                  color: "var(--hw-gold)",
-                }}
-              >
-                Anonymous
-              </span>
-            )}
-            {data.team.description && (
-              <p className="text-sm text-[var(--hw-text-muted)]">{data.team.description}</p>
-            )}
-          </div>
-        </div>
-      )}
-
-      {/* Funding */}
-      {data.funding && (
-        <div>
-          <h2 className="font-[family-name:var(--font-space-grotesk)] text-lg font-semibold text-[var(--hw-text)] mb-3">
+      {/* Funding — prominent card */}
+      {data.funding && (data.funding.raised || (data.funding.investors && data.funding.investors.length > 0)) && (
+        <div className="border border-[var(--hw-border)] bg-[var(--hw-surface)] p-4" style={{ borderRadius: "4px" }}>
+          <h3 className="font-[family-name:var(--font-space-grotesk)] text-sm font-semibold text-[var(--hw-text)] mb-3 flex items-center gap-2">
+            <span className="inline-block h-1 w-3 bg-[var(--hw-green)]" style={{ borderRadius: "1px" }} />
             Funding
-          </h2>
-          <div
-            className="border border-[var(--hw-border)] bg-[var(--hw-surface)] p-4"
-            style={{ borderRadius: "4px" }}
-          >
+          </h3>
+          <div className="flex flex-wrap items-baseline gap-4">
             {data.funding.raised && (
-              <div className="mb-2">
-                <span className="text-xs text-[var(--hw-text-dim)]">Raised</span>
-                <div className="font-[family-name:var(--font-jetbrains-mono)] text-lg font-bold text-[var(--hw-text)]">
+              <div>
+                <span className="font-[family-name:var(--font-jetbrains-mono)] text-xl font-bold text-[var(--hw-text)]">
                   {data.funding.raised}
-                </div>
+                </span>
+                <span className="ml-1.5 text-xs text-[var(--hw-text-dim)]">raised</span>
               </div>
             )}
             {data.funding.investors && data.funding.investors.length > 0 && (
-              <div>
-                <span className="text-xs text-[var(--hw-text-dim)]">Investors</span>
-                <div className="mt-1 flex flex-wrap gap-2">
-                  {data.funding.investors.map((investor, i) => (
-                    <span
-                      key={i}
-                      className="border border-[var(--hw-border)] px-2 py-0.5 text-xs text-[var(--hw-text-muted)]"
-                      style={{ borderRadius: "2px" }}
-                    >
-                      {investor}
-                    </span>
-                  ))}
-                </div>
+              <div className="flex flex-wrap gap-1.5">
+                {data.funding.investors.map((inv, i) => (
+                  <span
+                    key={i}
+                    className="border border-[var(--hw-border)] bg-[var(--hw-bg)] px-2 py-0.5 text-[10px] text-[var(--hw-text-muted)]"
+                    style={{ borderRadius: "2px" }}
+                  >
+                    {inv}
+                  </span>
+                ))}
               </div>
             )}
           </div>
         </div>
       )}
 
-      {/* Audit Status */}
-      {data.auditStatus && (
-        <div>
-          <h2 className="font-[family-name:var(--font-space-grotesk)] text-lg font-semibold text-[var(--hw-text)] mb-3">
-            Audit Status
-          </h2>
+      {/* Audit + Competitors row */}
+      <div className="flex flex-wrap gap-3">
+        {data.auditStatus && (
           <div
             className="inline-flex items-center gap-2 border border-[var(--hw-border)] bg-[var(--hw-surface)] px-3 py-2"
             style={{ borderRadius: "4px" }}
@@ -568,50 +624,47 @@ function DossierContent({ data }: { data: DossierData }) {
                   : "var(--hw-gold)",
               }}
             />
-            <span className="text-sm text-[var(--hw-text-muted)]">{data.auditStatus}</span>
+            <span className="text-xs text-[var(--hw-text-muted)]">{data.auditStatus}</span>
           </div>
-        </div>
-      )}
+        )}
+        {data.competitors && data.competitors.length > 0 && (
+          <div className="inline-flex items-center gap-2 border border-[var(--hw-border)] bg-[var(--hw-surface)] px-3 py-2" style={{ borderRadius: "4px" }}>
+            <span className="text-xs text-[var(--hw-text-dim)]">Competitors:</span>
+            {data.competitors.map((c, i) => (
+              <span key={i} className="text-xs text-[var(--hw-text-muted)]">{c}{i < data.competitors!.length - 1 ? "," : ""}</span>
+            ))}
+          </div>
+        )}
+      </div>
 
-      {/* Risks */}
+      {/* Risks — warning-style card */}
       {data.risks && (
-        <div>
-          <h2 className="font-[family-name:var(--font-space-grotesk)] text-lg font-semibold text-[var(--hw-text)] mb-3">
-            Risks
-          </h2>
-          <div
-            className="border border-[var(--hw-border)] bg-[var(--hw-surface)] p-4"
-            style={{ borderRadius: "4px", borderLeftWidth: "2px", borderLeftColor: "var(--hw-red)" }}
-          >
-            <p className="text-sm leading-relaxed text-[var(--hw-text-muted)] whitespace-pre-line">
-              {data.risks}
-            </p>
-          </div>
+        <div
+          className="border border-[var(--hw-border)] bg-[var(--hw-surface)] p-4"
+          style={{ borderRadius: "4px", borderLeftWidth: "3px", borderLeftColor: "var(--hw-red)" }}
+        >
+          <h3 className="font-[family-name:var(--font-space-grotesk)] text-sm font-semibold text-[var(--hw-text)] mb-2">
+            Risk Factors
+          </h3>
+          {renderParagraphs(data.risks)}
         </div>
       )}
 
-      {/* Verdict */}
+      {/* Verdict — highlighted conclusion */}
       {data.verdict && (
-        <div>
-          <h2 className="font-[family-name:var(--font-space-grotesk)] text-lg font-semibold text-[var(--hw-text)] mb-3">
+        <div
+          className="border border-[var(--hw-green)] p-4 relative overflow-hidden"
+          style={{ borderRadius: "4px", background: "linear-gradient(135deg, rgba(0,229,160,0.06) 0%, rgba(0,229,160,0.02) 100%)" }}
+        >
+          <h3 className="font-[family-name:var(--font-space-grotesk)] text-sm font-semibold text-[var(--hw-green)] mb-2">
             Verdict
-          </h2>
-          <div
-            className="border border-[var(--hw-green)] bg-[var(--hw-green-subtle)] p-4"
-            style={{ borderRadius: "4px" }}
-          >
-            <p className="text-sm leading-relaxed text-[var(--hw-text)]">
-              {data.verdict}
-            </p>
-          </div>
+          </h3>
+          {renderParagraphs(data.verdict)}
         </div>
       )}
 
-      {/* Last Updated */}
       {data.lastUpdated && (
-        <p className="text-xs text-[var(--hw-text-dim)]">
-          Dossier last updated: {data.lastUpdated}
-        </p>
+        <p className="text-[10px] text-[var(--hw-text-dim)]">Last updated: {data.lastUpdated}</p>
       )}
     </div>
   );

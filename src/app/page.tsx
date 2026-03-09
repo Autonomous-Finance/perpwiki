@@ -29,17 +29,6 @@ export const metadata: Metadata = {
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:4000";
 
-const TRENDING_TAGS = [
-  { label: "HYPE Staking", href: "/learn/hyperliquid-staking-guide" },
-  { label: "HLP Vault", href: "/projects/hlp" },
-  { label: "HyperEVM", href: "/learn/what-is-hyperevm" },
-  { label: "Liquid Staking", href: "/projects?category=Liquid+Staking" },
-  { label: "Lending", href: "/projects?category=Lending+%26+Borrowing" },
-  { label: "Bridges", href: "/projects?category=Bridges+%26+Cross-Chain" },
-  { label: "DEXs", href: "/projects?category=Decentralized+Exchanges" },
-  { label: "HIP-3", href: "/layer/hip3" },
-];
-
 async function getStats() {
   const total = await prisma.project.count({ where: { approvalStatus: "APPROVED" } });
   const hypercore = await prisma.project.count({
@@ -215,78 +204,75 @@ export default async function HomePage() {
         </div>
       </div>
 
-      {/* Hero */}
-      <section className="relative overflow-hidden border-b border-[var(--hw-border)]">
-        <div
-          className="absolute inset-0"
-          style={{
-            background: "radial-gradient(ellipse at 50% 0%, rgba(0,229,160,0.04) 0%, transparent 60%)",
-          }}
-        />
-        <div className="relative mx-auto max-w-7xl px-4 py-8 text-center md:py-12">
-          <h1 className="font-[family-name:var(--font-space-grotesk)] text-4xl font-bold tracking-tight text-[var(--hw-text)] md:text-6xl">
-            The Hyperliquid Ecosystem Intelligence Directory
-          </h1>
-          <p className="mx-auto mt-4 max-w-xl text-lg text-[var(--hw-text-muted)]">
-            Track every project, market, and metric in the Hyperliquid ecosystem.
-          </p>
-
-          {/* "Why Hyperliquid" stat block */}
-          <div className="mx-auto mt-10 grid max-w-3xl grid-cols-2 gap-6 md:grid-cols-4">
-            <HeroStat value="$7.24T" label="Perp market size" />
-            <HeroStat value="10.2%" label="DEX market share" color="var(--hw-green)" />
-            <HeroStat value={meta?.marketsCount ? String(meta.marketsCount) : "229"} label="Live perp markets" />
-            <HeroStat value={`${stats.total}+`} label="Ecosystem projects" color="var(--hw-green)" />
+      {/* Hero — compact, data-rich */}
+      <section className="border-b border-[var(--hw-border)]">
+        <div className="mx-auto max-w-7xl px-4 py-6">
+          {/* Top row: title + search */}
+          <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+            <div>
+              <h1 className="font-[family-name:var(--font-space-grotesk)] text-2xl font-bold text-[var(--hw-text)] md:text-3xl">
+                Hyperliquid Ecosystem
+              </h1>
+              <p className="mt-1 text-sm text-[var(--hw-text-muted)]">
+                {stats.total} projects · {meta?.marketsCount ?? 229} markets · Live data
+              </p>
+            </div>
+            <div className="w-full md:w-80">
+              <SearchBar />
+            </div>
           </div>
 
-          {/* Search */}
-          <div className="mt-10">
-            <SearchBar />
+          {/* Data cards row */}
+          <div className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
+            <MiniStatCard
+              label="HYPE Price"
+              value={hypeData.price ? `$${parseFloat(hypeData.price).toFixed(2)}` : "—"}
+              accent
+            />
+            <MiniStatCard
+              label="24h Volume"
+              value={meta?.totalVol24h ? formatUsd(meta.totalVol24h) : "—"}
+            />
+            <MiniStatCard
+              label="Open Interest"
+              value={meta?.totalOi ? formatUsd(meta.totalOi) : "—"}
+            />
+            <MiniStatCard
+              label="Markets"
+              value={meta?.marketsCount ? String(meta.marketsCount) : "229"}
+            />
+            <MiniStatCard
+              label="Validators"
+              value={meta?.validatorCount ? String(meta.validatorCount) : "—"}
+            />
+            <MiniStatCard
+              label="DEX Share"
+              value="10.2%"
+              accent
+            />
           </div>
 
-          {/* Quick nav pills */}
-          <div className="mt-6 flex flex-wrap items-center justify-center gap-2">
+          {/* Quick nav */}
+          <div className="mt-4 flex flex-wrap items-center gap-2">
             {[
               { label: "Markets", href: "/markets" },
               { label: "Funding Rates", href: "/funding-rates" },
               { label: "Stats", href: "/stats" },
+              { label: "Trending", href: "/trending" },
               { label: "HyperCore", href: "/layer/hypercore" },
               { label: "HyperEVM", href: "/layer/hyperevm" },
               { label: "HIP-3", href: "/layer/hip3" },
+              { label: "Submit", href: "/submit" },
             ].map((pill) => (
               <Link
                 key={pill.label}
                 href={pill.href}
-                className="px-3 py-1.5 text-xs font-medium border border-[var(--hw-green-subtle)] text-[var(--hw-green)] transition-all hover:bg-[var(--hw-green-subtle)] hover:border-[var(--hw-green)]"
+                className="px-2.5 py-1 text-xs border border-[var(--hw-border)] text-[var(--hw-text-dim)] transition-all hover:border-[var(--hw-green)] hover:text-[var(--hw-green)]"
                 style={{ borderRadius: "2px" }}
               >
                 {pill.label}
               </Link>
             ))}
-          </div>
-
-          {/* Trending tags */}
-          <div className="mt-5 flex flex-wrap items-center justify-center gap-2">
-            {TRENDING_TAGS.map((tag) => (
-              <Link
-                key={tag.label}
-                href={tag.href}
-                className="px-2.5 py-1 text-xs border border-[var(--hw-border)] text-[var(--hw-text-dim)] transition-all hover:border-[var(--hw-border-bright)] hover:text-[var(--hw-text-muted)]"
-                style={{ borderRadius: "2px" }}
-              >
-                {tag.label}
-              </Link>
-            ))}
-          </div>
-
-          <div className="mt-6">
-            <Link
-              href="/submit"
-              className="inline-block border border-[var(--hw-border)] px-4 py-2 text-sm text-[var(--hw-text-dim)] transition-all hover:border-[var(--hw-green)] hover:text-[var(--hw-green)]"
-              style={{ borderRadius: "2px" }}
-            >
-              Submit a Project
-            </Link>
           </div>
         </div>
       </section>
@@ -550,16 +536,19 @@ export default async function HomePage() {
   );
 }
 
-function HeroStat({ value, label, color }: { value: string; label: string; color?: string }) {
+function MiniStatCard({ label, value, accent }: { label: string; value: string; accent?: boolean }) {
   return (
-    <div className="text-center">
+    <div
+      className="border border-[var(--hw-border)] bg-[var(--hw-surface)] px-3 py-2.5"
+      style={{ borderRadius: "4px" }}
+    >
+      <div className="text-[10px] uppercase tracking-wider text-[var(--hw-text-dim)]">{label}</div>
       <div
-        className="font-[family-name:var(--font-jetbrains-mono)] text-2xl font-bold md:text-3xl"
-        style={{ color: color || "var(--hw-text)" }}
+        className="font-[family-name:var(--font-jetbrains-mono)] text-base font-bold mt-0.5"
+        style={{ color: accent ? "var(--hw-green)" : "var(--hw-text)" }}
       >
         {value}
       </div>
-      <div className="mt-1 text-xs text-[var(--hw-text-dim)]">{label}</div>
     </div>
   );
 }
