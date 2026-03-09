@@ -2,12 +2,92 @@ import { prisma } from "@/lib/prisma";
 import { notFound } from "next/navigation";
 import { LayerBadge } from "@/components/LayerBadge";
 import { JsonLd } from "@/components/JsonLd";
+import { BreadcrumbSchema } from "@/components/BreadcrumbSchema";
 import { ReviewForm } from "@/components/ReviewForm";
 import { getMarketTicker } from "@/lib/market-map";
 import { LiveMarketCard } from "@/components/LiveMarketCard";
 import { ProjectTabs } from "@/components/ProjectTabs";
+import { LAYER_META } from "@/lib/categories";
+import { getRelatedArticlesForCategory } from "@/lib/learn-articles";
 import Link from "next/link";
 import type { Metadata } from "next";
+
+interface FaqItem {
+  question: string;
+  answer: string;
+}
+
+function generateFaqs(
+  project: {
+    name: string;
+    tagline: string | null;
+    description: string | null;
+    category: string;
+    layer: string;
+    website: string | null;
+  },
+  dossierData: DossierData | null,
+): FaqItem[] {
+  const faqs: FaqItem[] = [];
+  const layerMeta = LAYER_META[project.layer];
+  const layerLabel = layerMeta?.label ?? project.layer;
+  const layerDesc = layerMeta?.description ?? "blockchain layer";
+
+  // 1. What is {project.name}?
+  const intro =
+    project.tagline ||
+    (project.description ? project.description.split(". ")[0] + "." : null);
+  if (intro) {
+    faqs.push({
+      question: `What is ${project.name}?`,
+      answer: `${project.name} is ${intro.charAt(0).toLowerCase() === intro.charAt(0) ? intro : intro.charAt(0).toLowerCase() + intro.slice(1)}`,
+    });
+  }
+
+  // 2. What layer does it run on?
+  faqs.push({
+    question: `What layer does ${project.name} run on?`,
+    answer:
+      project.layer === "BOTH"
+        ? `${project.name} spans multiple Hyperliquid layers, operating across both HyperCore and HyperEVM.`
+        : `${project.name} runs on ${layerLabel}, Hyperliquid's ${layerDesc.charAt(0).toLowerCase() + layerDesc.slice(1)}.`,
+  });
+
+  // 3. Is it audited?
+  if (dossierData?.auditStatus) {
+    faqs.push({
+      question: `Is ${project.name} audited?`,
+      answer: dossierData.auditStatus,
+    });
+  } else {
+    faqs.push({
+      question: `Is ${project.name} audited?`,
+      answer: `Check ${project.name}'s official documentation for the latest audit status and security information.`,
+    });
+  }
+
+  // 4. What category?
+  faqs.push({
+    question: `What category is ${project.name}?`,
+    answer: `${project.name} is a ${project.category} protocol in the Hyperliquid ecosystem.`,
+  });
+
+  // 5. How do I use it?
+  if (project.website) {
+    let hostname = "the official website";
+    try {
+      hostname = new URL(project.website).hostname;
+    } catch {
+      // keep default
+    }
+    faqs.push({
+      question: `How do I use ${project.name}?`,
+      answer: `Visit ${hostname} to get started. ${project.name} is a ${project.category} application on Hyperliquid's ${layerLabel} layer.`,
+    });
+  }
+
+  return faqs;
+}
 
 interface DossierData {
   entityName?: string;
@@ -127,6 +207,21 @@ export default async function ProjectDetailPage({ params }: Props) {
                 : "Visit Website"
     : null;
 
+  const faqs = generateFaqs(project, dossierData);
+
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqs.map((faq) => ({
+      "@type": "Question",
+      name: faq.question,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: faq.answer,
+      },
+    })),
+  };
+
   return (
     <div className="mx-auto max-w-5xl px-4 py-8">
       <JsonLd
@@ -138,6 +233,13 @@ export default async function ProjectDetailPage({ params }: Props) {
           applicationCategory: "FinanceApplication",
           description: project.tagline || project.description || undefined,
         }}
+      />
+      <JsonLd data={faqSchema} />
+      <BreadcrumbSchema
+        items={[
+          { name: "Projects", href: "https://perp.wiki/projects" },
+          { name: project.name, href: `https://perp.wiki/projects/${project.slug}` },
+        ]}
       />
 
       {/* Breadcrumb */}
@@ -381,6 +483,31 @@ export default async function ProjectDetailPage({ params }: Props) {
             </div>
           )}
 
+          {/* ===== FAQ SECTION ===== */}
+          {faqs.length > 0 && (
+            <div>
+              <h2 className="font-[family-name:var(--font-space-grotesk)] text-lg font-semibold text-[var(--hw-text)] mb-4">
+                Frequently Asked Questions
+              </h2>
+              <div className="space-y-3">
+                {faqs.map((faq, i) => (
+                  <div
+                    key={i}
+                    className="border border-[var(--hw-border)] bg-[var(--hw-surface)] p-4"
+                    style={{ borderRadius: "4px" }}
+                  >
+                    <h3 className="text-sm font-semibold text-[var(--hw-text)] mb-1.5">
+                      {faq.question}
+                    </h3>
+                    <p className="text-sm text-[var(--hw-text-muted)] leading-relaxed">
+                      {faq.answer}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
           {/* ===== RELATED PROJECTS ===== */}
           {relatedProjects.length > 0 && (
             <div>
@@ -397,7 +524,7 @@ export default async function ProjectDetailPage({ params }: Props) {
                   >
                     <div className="flex items-start gap-3">
                       {rp.logoUrl ? (
-                        <img src={rp.logoUrl} alt="" className="h-8 w-8 shrink-0 rounded object-cover mt-0.5" />
+                        <img src={rp.logoUrl} alt={rp.name + " logo"} className="h-8 w-8 shrink-0 rounded object-cover mt-0.5" />
                       ) : (
                         <span
                           className="flex h-8 w-8 shrink-0 items-center justify-center rounded text-xs font-bold text-[var(--hw-bg)]"
@@ -590,6 +717,31 @@ export default async function ProjectDetailPage({ params }: Props) {
               </div>
             </div>
           )}
+
+          {/* Learn More */}
+          {(() => {
+            const learnArticles = getRelatedArticlesForCategory(project.category);
+            if (learnArticles.length === 0) return null;
+            return (
+              <div className="border border-[var(--hw-border)] bg-[var(--hw-surface)] p-4" style={{ borderRadius: "4px" }}>
+                <h3 className="font-[family-name:var(--font-space-grotesk)] text-sm font-semibold text-[var(--hw-text)] mb-3">
+                  Learn More
+                </h3>
+                <div className="space-y-2">
+                  {learnArticles.map((la) => (
+                    <Link
+                      key={la.slug}
+                      href={`/learn/${la.slug}`}
+                      className="flex items-start gap-2 text-sm text-[var(--hw-text-muted)] hover:text-[var(--hw-green)] transition-colors"
+                    >
+                      <svg className="h-4 w-4 shrink-0 mt-0.5 text-[var(--hw-text-dim)]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" /></svg>
+                      <span className="line-clamp-2">{la.title}</span>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            );
+          })()}
         </div>
       </div>
     </div>

@@ -1,4 +1,5 @@
 import { LEARN_ARTICLES } from "@/lib/learn-articles";
+import { BreadcrumbSchema } from "@/components/BreadcrumbSchema";
 import Link from "next/link";
 import type { Metadata } from "next";
 
@@ -11,6 +12,11 @@ export const metadata: Metadata = {
 export default function LearnPage() {
   return (
     <div className="mx-auto max-w-7xl px-4 py-8">
+      <BreadcrumbSchema
+        items={[
+          { name: "Learn", href: "https://perp.wiki/learn" },
+        ]}
+      />
       <div className="mb-2 text-sm text-[var(--hw-text-dim)]">
         <Link href="/" className="hover:text-[var(--hw-text-muted)]">Home</Link>
         {" / "}

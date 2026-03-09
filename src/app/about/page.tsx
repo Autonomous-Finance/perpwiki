@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { JsonLd } from "@/components/JsonLd";
+import { BreadcrumbSchema } from "@/components/BreadcrumbSchema";
 import type { Metadata } from "next";
 
 export const dynamic = "force-dynamic";
@@ -57,6 +58,11 @@ export default async function AboutPage() {
           name: "About perp.wiki",
           url: "https://perp.wiki/about",
         }}
+      />
+      <BreadcrumbSchema
+        items={[
+          { name: "About", href: "https://perp.wiki/about" },
+        ]}
       />
 
       {/* Breadcrumb */}

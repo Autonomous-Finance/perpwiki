@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { JsonLd } from "@/components/JsonLd";
+import { BreadcrumbSchema } from "@/components/BreadcrumbSchema";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -61,6 +62,11 @@ export default function CompareHubPage() {
           url: "https://perp.wiki/compare",
           description: "Side-by-side comparisons of the top protocols across every DeFi category on HyperEVM.",
         }}
+      />
+      <BreadcrumbSchema
+        items={[
+          { name: "Compare", href: "https://perp.wiki/compare" },
+        ]}
       />
 
       {/* Breadcrumb */}

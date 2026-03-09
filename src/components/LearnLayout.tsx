@@ -1,4 +1,6 @@
 import Link from "next/link";
+import { BreadcrumbSchema } from "@/components/BreadcrumbSchema";
+import { prisma } from "@/lib/prisma";
 import type { LearnArticle } from "@/lib/learn-articles";
 
 interface LearnLayoutProps {
@@ -9,9 +11,61 @@ interface LearnLayoutProps {
   children: React.ReactNode;
 }
 
-export function LearnLayout({ article, prev, next, toc, children }: LearnLayoutProps) {
+/**
+ * Maps article slug keywords to related project slugs for cross-linking.
+ */
+function getRelatedProjectSlugs(articleSlug: string): string[] {
+  const slug = articleSlug.toLowerCase();
+
+  if (slug.includes("staking") || slug.includes("earn-yield")) {
+    return ["kinetiq", "stakedhype", "hyperbeat"];
+  }
+  if (slug.includes("funding-rate")) {
+    return ["hlp", "hyperliquid"];
+  }
+  if (slug.includes("bridge") || slug.includes("hyperunit")) {
+    return ["debridge", "across-protocol", "layerzero"];
+  }
+  if (slug.includes("dex") || slug.includes("perp-dex")) {
+    return ["hyperswap", "kittenswap"];
+  }
+  if (slug.includes("lending") || slug.includes("defi-projects")) {
+    return ["hyperlend", "felix-protocol", "morpho"];
+  }
+  if (slug.includes("hlp-vault")) {
+    return ["hlp", "hyperliquid", "hyperbeat"];
+  }
+  if (slug.includes("trading-bot")) {
+    return ["pvp-trade", "insilico", "hyperliquid"];
+  }
+  // Default/general
+  return ["hyperliquid", "hlp"];
+}
+
+export async function LearnLayout({ article, prev, next, toc, children }: LearnLayoutProps) {
+  const relatedSlugs = getRelatedProjectSlugs(article.slug);
+  const relatedProjects = await prisma.project.findMany({
+    where: {
+      slug: { in: relatedSlugs },
+      approvalStatus: "APPROVED",
+    },
+    select: {
+      slug: true,
+      name: true,
+      tagline: true,
+      logoUrl: true,
+    },
+    take: 3,
+  });
+
   return (
     <div className="mx-auto max-w-7xl px-4 py-8">
+      <BreadcrumbSchema
+        items={[
+          { name: "Learn", href: "https://perp.wiki/learn" },
+          { name: article.title, href: `https://perp.wiki/learn/${article.slug}` },
+        ]}
+      />
       {/* Breadcrumb */}
       <div className="mb-6 text-sm text-[var(--hw-text-dim)]">
         <Link href="/" className="hover:text-[var(--hw-text-muted)]">Home</Link>
@@ -64,6 +118,52 @@ export function LearnLayout({ article, prev, next, toc, children }: LearnLayoutP
           </header>
 
           <div className="prose-hw">{children}</div>
+
+          {/* Related Projects */}
+          {relatedProjects.length > 0 && (
+            <div className="mt-12 border-t border-[var(--hw-border)] pt-8">
+              <h2 className="font-[family-name:var(--font-space-grotesk)] text-lg font-semibold text-[var(--hw-text)] mb-4">
+                Related Projects
+              </h2>
+              <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                {relatedProjects.map((rp) => (
+                  <Link
+                    key={rp.slug}
+                    href={`/projects/${rp.slug}`}
+                    className="group border border-[var(--hw-border)] bg-[var(--hw-surface)] p-4 transition-all hover:border-[var(--hw-border-bright)]"
+                    style={{ borderRadius: "4px" }}
+                  >
+                    <div className="flex items-start gap-3">
+                      {rp.logoUrl ? (
+                        <img
+                          src={rp.logoUrl}
+                          alt={rp.name + " logo"}
+                          className="h-8 w-8 shrink-0 rounded object-cover mt-0.5"
+                        />
+                      ) : (
+                        <span
+                          className="flex h-8 w-8 shrink-0 items-center justify-center rounded text-xs font-bold text-[var(--hw-bg)]"
+                          style={{ background: "var(--hw-text-dim)" }}
+                        >
+                          {rp.name.charAt(0)}
+                        </span>
+                      )}
+                      <div className="min-w-0">
+                        <span className="text-sm font-medium text-[var(--hw-text)] group-hover:text-[var(--hw-green)] transition-colors">
+                          {rp.name}
+                        </span>
+                        {rp.tagline && (
+                          <p className="text-xs text-[var(--hw-text-dim)] mt-0.5 line-clamp-2">
+                            {rp.tagline}
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          )}
 
           {/* Prev/Next nav */}
           <nav className="mt-12 flex justify-between border-t border-[var(--hw-border)] pt-6">

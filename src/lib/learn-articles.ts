@@ -201,3 +201,51 @@ export function getAdjacentArticles(slug: string) {
     next: idx < LEARN_ARTICLES.length - 1 ? LEARN_ARTICLES[idx + 1] : null,
   };
 }
+
+/**
+ * Given a project category string, return up to 3 related learn articles.
+ */
+export function getRelatedArticlesForCategory(category: string): LearnArticle[] {
+  const matched: LearnArticle[] = [];
+
+  const cat = category.toLowerCase();
+
+  if (cat.includes("trading") || cat.includes("perp")) {
+    const slugs = ["perp-dex-comparison", "hyperliquid-funding-rates-guide", "how-to-use-hyperliquid"];
+    for (const s of slugs) {
+      const a = getArticle(s);
+      if (a && matched.length < 3) matched.push(a);
+    }
+  }
+
+  if (cat.includes("lending") || cat.includes("yield") || cat.includes("staking") || cat.includes("vault")) {
+    const slugs = ["hyperliquid-staking-guide", "how-to-earn-yield-on-hyperliquid", "best-hyperevm-defi-projects"];
+    for (const s of slugs) {
+      const a = getArticle(s);
+      if (a && !matched.find((m) => m.slug === a.slug) && matched.length < 3) matched.push(a);
+    }
+  }
+
+  if (cat.includes("bridge")) {
+    const a = getArticle("hyperunit-bridge-guide");
+    if (a && !matched.find((m) => m.slug === a.slug) && matched.length < 3) matched.push(a);
+  }
+
+  if (cat.includes("dex")) {
+    const slugs = ["perp-dex-comparison", "best-hyperevm-projects"];
+    for (const s of slugs) {
+      const a = getArticle(s);
+      if (a && !matched.find((m) => m.slug === a.slug) && matched.length < 3) matched.push(a);
+    }
+  }
+
+  // Always fill remaining slots with "What is Hyperliquid" as fallback
+  if (matched.length < 3) {
+    const fallback = getArticle("what-is-hyperliquid");
+    if (fallback && !matched.find((m) => m.slug === fallback.slug)) {
+      matched.push(fallback);
+    }
+  }
+
+  return matched.slice(0, 3);
+}

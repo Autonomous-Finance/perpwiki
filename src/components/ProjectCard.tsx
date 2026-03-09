@@ -31,7 +31,7 @@ export function ProjectCard({
         <div className="flex items-start justify-between gap-2">
           <div className="flex items-center gap-2.5">
             {logoUrl ? (
-              <img src={logoUrl} alt="" className="h-6 w-6 shrink-0 rounded-full object-cover" />
+              <img src={logoUrl} alt={name + " logo"} className="h-6 w-6 shrink-0 rounded-full object-cover" />
             ) : (
               <span
                 className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-[10px] font-bold text-[var(--hw-bg)]"

@@ -241,7 +241,7 @@ export default async function TrendingPage() {
                     {p.logoUrl ? (
                       <img
                         src={p.logoUrl}
-                        alt=""
+                        alt={p.name + " logo"}
                         className="h-6 w-6 rounded-full object-cover"
                       />
                     ) : (

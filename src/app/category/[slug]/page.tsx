@@ -2,6 +2,7 @@ import { prisma } from "@/lib/prisma";
 import { categoryToSlug, CATEGORIES } from "@/lib/categories";
 import { ProjectCard } from "@/components/ProjectCard";
 import { JsonLd } from "@/components/JsonLd";
+import { BreadcrumbSchema } from "@/components/BreadcrumbSchema";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import type { Metadata } from "next";
@@ -120,6 +121,12 @@ export default async function CategoryPage({ params }: Props) {
         }}
       />
 
+      <BreadcrumbSchema
+        items={[
+          { name: "Categories", href: "https://perp.wiki/category" },
+          { name: category, href: `https://perp.wiki/category/${slug}` },
+        ]}
+      />
       <div className="mb-2 text-sm text-[var(--hw-text-dim)]">
         <Link href="/" className="hover:text-[var(--hw-text-muted)]">Home</Link>
         {" / "}

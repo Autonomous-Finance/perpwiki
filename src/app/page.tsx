@@ -294,7 +294,7 @@ export default async function HomePage() {
               >
                 <div className="flex items-center gap-3">
                   {p.logoUrl ? (
-                    <img src={p.logoUrl} alt="" className="h-8 w-8 rounded-full object-cover" />
+                    <img src={p.logoUrl} alt={p.name + " logo"} className="h-8 w-8 rounded-full object-cover" />
                   ) : (
                     <span
                       className="flex h-8 w-8 items-center justify-center rounded-full text-xs font-bold text-[var(--hw-bg)]"

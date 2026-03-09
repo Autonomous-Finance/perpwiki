@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { notFound } from "next/navigation";
 import { LayerBadge } from "@/components/LayerBadge";
+import { BreadcrumbSchema } from "@/components/BreadcrumbSchema";
 import Link from "next/link";
 import type { Metadata } from "next";
 
@@ -97,10 +98,18 @@ export default async function ComparePage({ params }: Props) {
           }),
         }}
       />
+      <BreadcrumbSchema
+        items={[
+          { name: "Compare", href: "https://perp.wiki/compare" },
+          { name: `${projectA.name} vs ${projectB.name}`, href: `https://perp.wiki/compare/${projectA.slug}-vs-${projectB.slug}` },
+        ]}
+      />
       <div className="mb-6 text-sm text-[var(--hw-text-dim)]">
         <Link href="/" className="hover:text-[var(--hw-text-muted)]">Home</Link>
         {" / "}
-        <span className="text-[var(--hw-text-muted)]">Compare</span>
+        <Link href="/compare" className="hover:text-[var(--hw-text-muted)]">Compare</Link>
+        {" / "}
+        <span className="text-[var(--hw-text-muted)]">{projectA.name} vs {projectB.name}</span>
       </div>
 
       <h1 className="font-[family-name:var(--font-space-grotesk)] text-3xl font-bold text-[var(--hw-text)] mb-8">

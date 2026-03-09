@@ -56,6 +56,21 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="dark">
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Organization",
+              "name": "perp.wiki",
+              "url": "https://perp.wiki",
+              "description": "The definitive Hyperliquid ecosystem directory — tracking every DeFi protocol, DEX, LST, and tool on HyperEVM and HyperCore.",
+              "sameAs": [],
+            }),
+          }}
+        />
+      </head>
       <body
         className={`${spaceGrotesk.variable} ${inter.variable} ${jetbrainsMono.variable} antialiased`}
       >
