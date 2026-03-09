@@ -21,6 +21,8 @@ type SortDir = "asc" | "desc";
 type RateFilter = "all" | "positive" | "negative";
 type OiFilter = "all" | "1m" | "10m" | "100m";
 
+const PAGE_SIZE = 25;
+
 export function FundingDashboard({ rows }: { rows: FundingRow[] }) {
   const [search, setSearch] = useState("");
   const [sortKey, setSortKey] = useState<SortKey>("rateHr");
@@ -28,6 +30,7 @@ export function FundingDashboard({ rows }: { rows: FundingRow[] }) {
   const [rateFilter, setRateFilter] = useState<RateFilter>("all");
   const [oiFilter, setOiFilter] = useState<OiFilter>("all");
   const [showHeatmap, setShowHeatmap] = useState(true);
+  const [page, setPage] = useState(0);
 
   // Aggregate stats
   const stats = useMemo(() => {
@@ -54,8 +57,9 @@ export function FundingDashboard({ rows }: { rows: FundingRow[] }) {
     };
   }, [rows]);
 
-  // Filter
+  // Filter — reset page on any filter change
   const filtered = useMemo(() => {
+    setPage(0);
     let result = rows;
     const q = search.toLowerCase();
     if (q) result = result.filter((r) => r.name.toLowerCase().includes(q));
@@ -65,6 +69,7 @@ export function FundingDashboard({ rows }: { rows: FundingRow[] }) {
     if (oiFilter === "10m") result = result.filter((r) => r.oi >= 10_000_000);
     if (oiFilter === "100m") result = result.filter((r) => r.oi >= 100_000_000);
     return result;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [rows, search, rateFilter, oiFilter]);
 
   // Sort
@@ -81,6 +86,12 @@ export function FundingDashboard({ rows }: { rows: FundingRow[] }) {
       return sortDir === "desc" ? b[sortKey] - a[sortKey] : a[sortKey] - b[sortKey];
     });
   }, [filtered, sortKey, sortDir]);
+
+  // Pagination
+  const totalPages = Math.ceil(sorted.length / PAGE_SIZE);
+  const paginated = useMemo(() => {
+    return sorted.slice(page * PAGE_SIZE, (page + 1) * PAGE_SIZE);
+  }, [sorted, page]);
 
   // Heatmap data (top 40 by OI)
   const heatmapData = useMemo(() => {
@@ -294,7 +305,7 @@ export function FundingDashboard({ rows }: { rows: FundingRow[] }) {
               </tr>
             </thead>
             <tbody>
-              {sorted.map((r) => (
+              {paginated.map((r) => (
                 <tr
                   key={r.name}
                   className="border-b border-[var(--hw-border)] transition-colors hover:bg-[var(--hw-surface-raised)]"
@@ -330,6 +341,52 @@ export function FundingDashboard({ rows }: { rows: FundingRow[] }) {
             </tbody>
           </table>
         </div>
+
+        {/* Pagination */}
+        {totalPages > 1 && (
+          <div className="flex items-center justify-between mt-4 pt-3 border-t border-[var(--hw-border)]">
+            <span className="text-xs text-[var(--hw-text-dim)]">
+              {page * PAGE_SIZE + 1}–{Math.min((page + 1) * PAGE_SIZE, sorted.length)} of {sorted.length}
+            </span>
+            <div className="flex items-center gap-1">
+              <button
+                onClick={() => setPage(0)}
+                disabled={page === 0}
+                className="px-2 py-1 text-xs transition-colors disabled:opacity-30"
+                style={{ borderRadius: 4, border: "1px solid var(--hw-border)", background: "transparent", color: "var(--hw-text-muted)", cursor: page === 0 ? "default" : "pointer" }}
+              >
+                First
+              </button>
+              <button
+                onClick={() => setPage((p) => Math.max(0, p - 1))}
+                disabled={page === 0}
+                className="px-2.5 py-1 text-xs transition-colors disabled:opacity-30"
+                style={{ borderRadius: 4, border: "1px solid var(--hw-border)", background: "transparent", color: "var(--hw-text-muted)", cursor: page === 0 ? "default" : "pointer" }}
+              >
+                ← Prev
+              </button>
+              <span className="px-3 py-1 text-xs font-[family-name:var(--font-jetbrains-mono)] text-[var(--hw-text)]">
+                {page + 1} / {totalPages}
+              </span>
+              <button
+                onClick={() => setPage((p) => Math.min(totalPages - 1, p + 1))}
+                disabled={page >= totalPages - 1}
+                className="px-2.5 py-1 text-xs transition-colors disabled:opacity-30"
+                style={{ borderRadius: 4, border: "1px solid var(--hw-border)", background: "transparent", color: "var(--hw-text-muted)", cursor: page >= totalPages - 1 ? "default" : "pointer" }}
+              >
+                Next →
+              </button>
+              <button
+                onClick={() => setPage(totalPages - 1)}
+                disabled={page >= totalPages - 1}
+                className="px-2 py-1 text-xs transition-colors disabled:opacity-30"
+                style={{ borderRadius: 4, border: "1px solid var(--hw-border)", background: "transparent", color: "var(--hw-text-muted)", cursor: page >= totalPages - 1 ? "default" : "pointer" }}
+              >
+                Last
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

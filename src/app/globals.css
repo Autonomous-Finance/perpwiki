@@ -3,10 +3,10 @@
 :root {
   /* Backgrounds — deep ink */
   --hw-bg: #080C10;
-  --hw-surface: #0D1117;
-  --hw-surface-raised: #131920;
-  --hw-border: #1E2832;
-  --hw-border-bright: #2A3A4A;
+  --hw-surface: #0F1419;
+  --hw-surface-raised: #161D25;
+  --hw-border: #283440;
+  --hw-border-bright: #3A4D5E;
 
   /* Primary accent — HL signature neon green */
   --hw-green: #00E5A0;
@@ -25,10 +25,10 @@
   --hw-gold: #F0B429;
   --hw-red: #FF4D6A;
 
-  /* Typography */
-  --hw-text: #E8F4F0;
-  --hw-text-muted: #7A9A8E;
-  --hw-text-dim: #3D5A52;
+  /* Typography — boosted contrast */
+  --hw-text: #EDF5F1;
+  --hw-text-muted: #9CB8AE;
+  --hw-text-dim: #5E7E74;
 }
 
 @theme inline {
