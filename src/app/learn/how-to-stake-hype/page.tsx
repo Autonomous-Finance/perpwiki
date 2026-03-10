@@ -10,7 +10,7 @@ const article = getArticle(SLUG)!;
 const { prev, next } = getAdjacentArticles(SLUG);
 
 export const metadata: Metadata = {
-  title: "How to Stake HYPE: Native & Liquid Staking Guide 2026 | perp.wiki",
+  title: "How to Stake HYPE: Native & Liquid Staking Guide 2026",
   description:
     "Complete guide to staking HYPE — native staking for ~2.25% APY, liquid staking with kHYPE, stHYPE, and beHYPE, and strategies for maximizing yield.",
   openGraph: {
@@ -216,8 +216,8 @@ export default async function HowToStakeHypePage() {
           headline: article.title,
           description: article.description,
           datePublished: article.datePublished,
-          author: { "@type": "Organization", name: "PerpWiki" },
-          publisher: { "@type": "Organization", name: "PerpWiki" },
+          author: { "@type": "Organization", name: "perp.wiki" },
+          publisher: { "@type": "Organization", name: "perp.wiki" },
         }}
       />
 

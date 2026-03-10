@@ -8,7 +8,7 @@ import type { Metadata } from "next";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Compare Hyperliquid Projects — LSTs, Lending, DEXs | perp.wiki",
+  title: "Compare Hyperliquid Projects — LSTs, Lending, DEXs",
   description:
     "Side-by-side comparisons of Hyperliquid ecosystem projects. Compare LSTs, lending protocols, DEXs, and yield strategies on HyperEVM.",
   alternates: { canonical: "https://perp.wiki/compare" },

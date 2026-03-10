@@ -4,7 +4,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Hyperliquid Guides & Resources 2026 | perp.wiki",
+  title: "Hyperliquid Guides & Resources 2026",
   description:
     "Learn about Hyperliquid, HyperEVM, HYPE staking, HLP vault, trading bots, and the Hyperliquid ecosystem. Guides for beginners and advanced users.",
   alternates: { canonical: "https://perp.wiki/learn" },

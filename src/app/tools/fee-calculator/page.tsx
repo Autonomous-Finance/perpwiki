@@ -5,7 +5,7 @@ import type { Metadata } from "next";
 import FeeCalc from "./FeeCalc";
 
 export const metadata: Metadata = {
-  title: "Hyperliquid Fee Calculator — Trading Cost Estimator | perp.wiki",
+  title: "Hyperliquid Fee Calculator — Trading Cost Estimator",
   description:
     "Calculate your Hyperliquid trading fees for perpetual and spot trades. Compare maker vs taker costs and estimate total expenses.",
   alternates: { canonical: "https://perp.wiki/tools/fee-calculator" },

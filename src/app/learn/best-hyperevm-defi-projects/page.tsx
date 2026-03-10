@@ -8,11 +8,11 @@ const article = getArticle(SLUG)!;
 const { prev, next } = getAdjacentArticles(SLUG);
 
 export const metadata: Metadata = {
-  title: "Best HyperEVM DeFi Projects 2026: Lending, Staking & Yield | perp.wiki",
+  title: "Best HyperEVM DeFi Projects 2026: Lending, Staking & Yield",
   description:
     "Top HyperEVM DeFi projects in 2026: Felix Protocol (feUSD stablecoin), HyperLend (lending), Kinetiq (liquid staking kHYPE), HyperBeat (yield aggregation), and Liminal (delta-neutral).",
   openGraph: {
-    title: "Best HyperEVM DeFi Projects 2026 | perp.wiki",
+    title: "Best HyperEVM DeFi Projects 2026",
     description:
       "The top DeFi protocols on HyperEVM: lending, staking, yield aggregation, and delta-neutral strategies.",
   },
@@ -68,8 +68,8 @@ export default function BestHyperEvmDefiProjectsPage() {
           headline: article.title,
           description: article.description,
           datePublished: article.datePublished,
-          author: { "@type": "Organization", name: "PerpWiki" },
-          publisher: { "@type": "Organization", name: "PerpWiki" },
+          author: { "@type": "Organization", name: "perp.wiki" },
+          publisher: { "@type": "Organization", name: "perp.wiki" },
         }}
       />
       <JsonLd

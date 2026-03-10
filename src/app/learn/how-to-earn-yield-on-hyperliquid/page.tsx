@@ -8,11 +8,11 @@ const article = getArticle(SLUG)!;
 const { prev, next } = getAdjacentArticles(SLUG);
 
 export const metadata: Metadata = {
-  title: "5 Ways to Earn Yield on Hyperliquid (2026 Guide) | perp.wiki",
+  title: "5 Ways to Earn Yield on Hyperliquid (2026 Guide)",
   description:
     "Complete guide to earning yield on Hyperliquid: HLP vault (15-25% APR), HYPE staking, lending on HyperLend, builder vaults, and funding rate arbitrage.",
   openGraph: {
-    title: "5 Ways to Earn Yield on Hyperliquid | perp.wiki",
+    title: "5 Ways to Earn Yield on Hyperliquid",
     description:
       "HLP vault, HYPE staking, lending, builder vaults, and funding rate farming — all yield options on Hyperliquid explained.",
   },
@@ -68,8 +68,8 @@ export default function HowToEarnYieldOnHyperliquidPage() {
           headline: article.title,
           description: article.description,
           datePublished: article.datePublished,
-          author: { "@type": "Organization", name: "PerpWiki" },
-          publisher: { "@type": "Organization", name: "PerpWiki" },
+          author: { "@type": "Organization", name: "perp.wiki" },
+          publisher: { "@type": "Organization", name: "perp.wiki" },
         }}
       />
       <JsonLd

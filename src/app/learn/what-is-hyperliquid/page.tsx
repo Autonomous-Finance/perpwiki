@@ -8,7 +8,7 @@ const article = getArticle(SLUG)!;
 const { prev, next } = getAdjacentArticles(SLUG);
 
 export const metadata: Metadata = {
-  title: "What Is Hyperliquid? Complete Guide 2026 | perp.wiki",
+  title: "What Is Hyperliquid? Complete Guide 2026",
   description:
     "Hyperliquid explained: how the DEX works, HYPE token, HLP vault, HyperEVM, fees, and why it dominates decentralized perp trading with $40B+ weekly volume.",
 };
@@ -37,8 +37,8 @@ export default function WhatIsHyperliquidPage() {
           headline: article.title,
           description: article.description,
           datePublished: article.datePublished,
-          author: { "@type": "Organization", name: "PerpWiki" },
-          publisher: { "@type": "Organization", name: "PerpWiki" },
+          author: { "@type": "Organization", name: "perp.wiki" },
+          publisher: { "@type": "Organization", name: "perp.wiki" },
         }}
       />
 

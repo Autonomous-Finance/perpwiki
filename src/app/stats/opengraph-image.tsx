@@ -3,7 +3,7 @@ import { OG_SIZE, HW_COLORS } from "@/lib/og-utils";
 
 export const runtime = "nodejs";
 export const revalidate = 86400;
-export const alt = "Hyperliquid Ecosystem Stats — TVL, volume, open interest and protocol analytics on PerpWiki";
+export const alt = "Hyperliquid Ecosystem Stats — TVL, volume, open interest and protocol analytics on perp.wiki";
 export const size = OG_SIZE;
 export const contentType = "image/png";
 

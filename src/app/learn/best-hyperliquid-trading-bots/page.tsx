@@ -8,11 +8,11 @@ const article = getArticle(SLUG)!;
 const { prev, next } = getAdjacentArticles(SLUG);
 
 export const metadata: Metadata = {
-  title: "Best Hyperliquid Trading Bots & Automation Tools 2026 | perp.wiki",
+  title: "Best Hyperliquid Trading Bots & Automation Tools 2026",
   description:
     "Top Hyperliquid trading bots and automation tools: Hummingbot, Insilico Terminal, pvp.trade, Katoshi AI, and Growi. Features, pricing, and how to choose.",
   openGraph: {
-    title: "Best Hyperliquid Trading Bots 2026 | perp.wiki",
+    title: "Best Hyperliquid Trading Bots 2026",
     description:
       "The top trading bots and automation tools for Hyperliquid: market making, copy trading, AI-driven strategies, and more.",
   },
@@ -69,8 +69,8 @@ export default function BestHyperliquidTradingBotsPage() {
           headline: article.title,
           description: article.description,
           datePublished: article.datePublished,
-          author: { "@type": "Organization", name: "PerpWiki" },
-          publisher: { "@type": "Organization", name: "PerpWiki" },
+          author: { "@type": "Organization", name: "perp.wiki" },
+          publisher: { "@type": "Organization", name: "perp.wiki" },
         }}
       />
       <JsonLd

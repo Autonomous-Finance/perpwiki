@@ -4,7 +4,7 @@ import { BreadcrumbSchema } from "@/components/BreadcrumbSchema";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Hyperliquid Trading Tools — Calculators & Estimators | perp.wiki",
+  title: "Hyperliquid Trading Tools — Calculators & Estimators",
   description:
     "Free trading calculators for Hyperliquid — estimate liquidation prices, calculate trading fees, and optimize your perpetual futures strategy.",
   alternates: { canonical: "https://perp.wiki/tools" },

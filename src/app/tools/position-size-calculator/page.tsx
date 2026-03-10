@@ -5,7 +5,7 @@ import type { Metadata } from "next";
 import PositionSizeCalc from "./PositionSizeCalc";
 
 export const metadata: Metadata = {
-  title: "Hyperliquid Position Size Calculator — Risk-Based Sizing | perp.wiki",
+  title: "Hyperliquid Position Size Calculator — Risk-Based Sizing",
   description:
     "Calculate optimal position size for Hyperliquid trades based on account balance, risk tolerance, and leverage.",
   alternates: { canonical: "https://perp.wiki/tools/position-size-calculator" },

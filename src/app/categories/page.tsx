@@ -10,7 +10,7 @@ export const dynamic = "force-dynamic";
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://perp.wiki";
 
 export const metadata: Metadata = {
-  title: "Hyperliquid Ecosystem Categories — All DeFi Sectors | perp.wiki",
+  title: "Hyperliquid Ecosystem Categories — All DeFi Sectors",
   description:
     "Browse all Hyperliquid ecosystem categories — liquid staking, lending, DEXs, yield vaults, trading tools, and more. Discover every DeFi sector on HyperEVM and HyperCore.",
   alternates: { canonical: `${SITE_URL}/categories` },

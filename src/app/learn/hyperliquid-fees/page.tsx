@@ -8,11 +8,11 @@ const article = getArticle(SLUG)!;
 const { prev, next } = getAdjacentArticles(SLUG);
 
 export const metadata: Metadata = {
-  title: "Hyperliquid Fees Explained — Trading Fees, Gas, Maker Rebates 2026 | perp.wiki",
+  title: "Hyperliquid Fees Explained — Trading Fees, Gas, Maker Rebates 2026",
   description:
     "Complete breakdown of Hyperliquid fees in 2026: taker fees (0.035%-0.045%), maker rebates, HyperEVM gas costs, withdrawal fees, and how to reduce your fees with higher volume.",
   openGraph: {
-    title: "Hyperliquid Fees Explained — Trading Fees, Gas, Maker Rebates 2026 | perp.wiki",
+    title: "Hyperliquid Fees Explained — Trading Fees, Gas, Maker Rebates 2026",
     description:
       "Taker fees, maker rebates, gas costs, withdrawal fees, and volume tiers — everything about Hyperliquid fees in 2026.",
   },
@@ -57,8 +57,8 @@ export default function HyperliquidFeesPage() {
           headline: article.title,
           description: article.description,
           datePublished: article.datePublished,
-          author: { "@type": "Organization", name: "PerpWiki" },
-          publisher: { "@type": "Organization", name: "PerpWiki" },
+          author: { "@type": "Organization", name: "perp.wiki" },
+          publisher: { "@type": "Organization", name: "perp.wiki" },
         }}
       />
       <JsonLd

@@ -10,7 +10,7 @@ const article = getArticle(SLUG)!;
 const { prev, next } = getAdjacentArticles(SLUG);
 
 export const metadata: Metadata = {
-  title: "How to Bridge to Hyperliquid: Complete Deposit Guide 2026 | perp.wiki",
+  title: "How to Bridge to Hyperliquid: Complete Deposit Guide 2026",
   description:
     "Step-by-step guide to bridging funds to Hyperliquid: official Arbitrum bridge, third-party bridges (Across, deBridge, LayerZero), withdrawals, and safety tips.",
   openGraph: {
@@ -228,8 +228,8 @@ export default function HowToBridgeToHyperliquidPage() {
           headline: article.title,
           description: article.description,
           datePublished: article.datePublished,
-          author: { "@type": "Organization", name: "PerpWiki" },
-          publisher: { "@type": "Organization", name: "PerpWiki" },
+          author: { "@type": "Organization", name: "perp.wiki" },
+          publisher: { "@type": "Organization", name: "perp.wiki" },
         }}
       />
 

@@ -8,11 +8,11 @@ const article = getArticle(SLUG)!;
 const { prev, next } = getAdjacentArticles(SLUG);
 
 export const metadata: Metadata = {
-  title: "What Is HIP-1? Hyperliquid Native Token Standard Explained | perp.wiki",
+  title: "What Is HIP-1? Hyperliquid Native Token Standard Explained",
   description:
     "HIP-1 is Hyperliquid's native token standard for issuing spot tokens on HyperCore. Learn how PURR was launched, how HIP-1 works, and its relationship to HyperCore.",
   openGraph: {
-    title: "What Is HIP-1? Hyperliquid Token Standard | perp.wiki",
+    title: "What Is HIP-1? Hyperliquid Token Standard",
     description:
       "How HIP-1 governs native token creation, spot trading, and token launches on Hyperliquid's HyperCore L1.",
   },
@@ -62,8 +62,8 @@ export default function WhatIsHip1Page() {
           headline: article.title,
           description: article.description,
           datePublished: article.datePublished,
-          author: { "@type": "Organization", name: "PerpWiki" },
-          publisher: { "@type": "Organization", name: "PerpWiki" },
+          author: { "@type": "Organization", name: "perp.wiki" },
+          publisher: { "@type": "Organization", name: "perp.wiki" },
         }}
       />
       <JsonLd

@@ -4,7 +4,7 @@ import { GlossarySearch } from "./GlossarySearch";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Hyperliquid Glossary — DeFi & Trading Terms Explained | perp.wiki",
+  title: "Hyperliquid Glossary — DeFi & Trading Terms Explained",
   description:
     "Complete glossary of Hyperliquid, DeFi, and perpetual trading terms. From funding rates to HyperEVM, every concept explained.",
   alternates: { canonical: "https://perp.wiki/glossary" },

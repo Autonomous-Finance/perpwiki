@@ -3,7 +3,7 @@ import { OG_SIZE } from "@/lib/og-utils";
 
 export const runtime = "nodejs";
 export const revalidate = 86400;
-export const alt = "What Is HyperEVM? | PerpWiki";
+export const alt = "What Is HyperEVM? | perp.wiki";
 export const size = OG_SIZE;
 export const contentType = "image/png";
 

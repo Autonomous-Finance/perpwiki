@@ -5,7 +5,7 @@ import type { Metadata } from "next";
 import LiquidationCalc from "./LiquidationCalc";
 
 export const metadata: Metadata = {
-  title: "Hyperliquid Liquidation Calculator — Estimate Your Liquidation Price | perp.wiki",
+  title: "Hyperliquid Liquidation Calculator — Estimate Your Liquidation Price",
   description:
     "Calculate your Hyperliquid liquidation price based on position size, leverage, and margin. Free tool for perpetual futures traders.",
   alternates: { canonical: "https://perp.wiki/tools/liquidation-calculator" },

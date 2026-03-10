@@ -8,7 +8,7 @@ const article = getArticle(SLUG)!;
 const { prev, next } = getAdjacentArticles(SLUG);
 
 export const metadata: Metadata = {
-  title: "Best HyperEVM Projects 2026 — Top Hyperliquid Ecosystem Apps | perp.wiki",
+  title: "Best HyperEVM Projects 2026 — Top Hyperliquid Ecosystem Apps",
   description:
     "The best projects building on HyperEVM in 2026: DeFi, liquid staking, lending, DEX, and infrastructure. Independent rankings on perp.wiki.",
 };
@@ -48,8 +48,8 @@ export default function BestHyperEvmProjectsPage() {
           headline: article.title,
           description: article.description,
           datePublished: article.datePublished,
-          author: { "@type": "Organization", name: "PerpWiki" },
-          publisher: { "@type": "Organization", name: "PerpWiki" },
+          author: { "@type": "Organization", name: "perp.wiki" },
+          publisher: { "@type": "Organization", name: "perp.wiki" },
         }}
       />
       <JsonLd
@@ -315,7 +315,7 @@ export default function BestHyperEvmProjectsPage() {
       <H2 id="how-to-choose">How to Choose Projects</H2>
       <P>
         When evaluating HyperEVM projects, consider TVL (a proxy for trust and usage), audit status,
-        team background, and token distribution. Projects with verified status on PerpWiki have been
+        team background, and token distribution. Projects with verified status on perp.wiki have been
         confirmed as legitimate by our research team. Always check if the protocol has been audited
         and understand the specific risks of each DeFi strategy before committing capital.
       </P>

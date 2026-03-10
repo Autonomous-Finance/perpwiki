@@ -5,7 +5,7 @@ import type { Metadata } from "next";
 import FundingArbCalc from "./FundingArbCalc";
 
 export const metadata: Metadata = {
-  title: "Funding Rate Arbitrage Calculator — Delta-Neutral Yield | perp.wiki",
+  title: "Funding Rate Arbitrage Calculator — Delta-Neutral Yield",
   description:
     "Calculate potential yield from Hyperliquid funding rate arbitrage strategies. Estimate APR from delta-neutral positions.",
   alternates: { canonical: "https://perp.wiki/tools/funding-arbitrage-calculator" },

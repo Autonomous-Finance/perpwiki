@@ -11,7 +11,7 @@ const article = getArticle(SLUG)!;
 const { prev, next } = getAdjacentArticles(SLUG);
 
 export const metadata: Metadata = {
-  title: "Hyperliquid Fees Explained: Complete Fee Structure Guide 2026 | perp.wiki",
+  title: "Hyperliquid Fees Explained: Complete Fee Structure Guide 2026",
   description:
     "Full breakdown of Hyperliquid fees: perp maker/taker rates, spot fees, HyperEVM gas, deposit/withdrawal costs, and how to reduce trading costs.",
   openGraph: {
@@ -234,8 +234,8 @@ export default async function HyperliquidFeesExplainedPage() {
           headline: article.title,
           description: article.description,
           datePublished: article.datePublished,
-          author: { "@type": "Organization", name: "PerpWiki" },
-          publisher: { "@type": "Organization", name: "PerpWiki" },
+          author: { "@type": "Organization", name: "perp.wiki" },
+          publisher: { "@type": "Organization", name: "perp.wiki" },
         }}
       />
 

@@ -8,7 +8,7 @@ const article = getArticle(SLUG)!;
 const { prev, next } = getAdjacentArticles(SLUG);
 
 export const metadata: Metadata = {
-  title: "How to Stake HYPE — Complete Staking Guide 2026 | perp.wiki",
+  title: "How to Stake HYPE — Complete Staking Guide 2026",
   description:
     "Step-by-step guide to staking HYPE tokens on Hyperliquid. Covers native staking, liquid staking (Kinetiq), APY, validators, and fee discounts. Updated 2026.",
 };
@@ -55,8 +55,8 @@ export default function StakingGuidePage() {
           headline: article.title,
           description: article.description,
           datePublished: article.datePublished,
-          author: { "@type": "Organization", name: "PerpWiki" },
-          publisher: { "@type": "Organization", name: "PerpWiki" },
+          author: { "@type": "Organization", name: "perp.wiki" },
+          publisher: { "@type": "Organization", name: "perp.wiki" },
         }}
       />
       <JsonLd

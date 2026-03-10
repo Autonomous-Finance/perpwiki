@@ -8,7 +8,7 @@ const article = getArticle(SLUG)!;
 const { prev, next } = getAdjacentArticles(SLUG);
 
 export const metadata: Metadata = {
-  title: "HYPE Token Guide — Tokenomics, Staking & Use Cases 2026 | perp.wiki",
+  title: "HYPE Token Guide — Tokenomics, Staking & Use Cases 2026",
   description:
     "Everything about the HYPE token: supply, staking mechanics, fee discounts, governance, liquid staking, and burn mechanism. Complete guide 2026.",
 };
@@ -56,8 +56,8 @@ export default function HypeTokenGuidePage() {
           headline: article.title,
           description: article.description,
           datePublished: article.datePublished,
-          author: { "@type": "Organization", name: "PerpWiki" },
-          publisher: { "@type": "Organization", name: "PerpWiki" },
+          author: { "@type": "Organization", name: "perp.wiki" },
+          publisher: { "@type": "Organization", name: "perp.wiki" },
         }}
       />
       <JsonLd

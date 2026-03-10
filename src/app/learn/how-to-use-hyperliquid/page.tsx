@@ -8,11 +8,11 @@ const article = getArticle(SLUG)!;
 const { prev, next } = getAdjacentArticles(SLUG);
 
 export const metadata: Metadata = {
-  title: "How to Use Hyperliquid — Complete Beginner's Guide 2026 | perp.wiki",
+  title: "How to Use Hyperliquid — Complete Beginner's Guide 2026",
   description:
     "Step-by-step guide to using Hyperliquid in 2026: create a wallet, bridge USDC, place your first trade, understand leverage, and withdraw funds.",
   openGraph: {
-    title: "How to Use Hyperliquid — Complete Beginner's Guide 2026 | perp.wiki",
+    title: "How to Use Hyperliquid — Complete Beginner's Guide 2026",
     description:
       "From zero to your first trade — a step-by-step walkthrough of Hyperliquid for beginners.",
   },
@@ -60,8 +60,8 @@ export default function HowToUseHyperliquidPage() {
           headline: article.title,
           description: article.description,
           datePublished: article.datePublished,
-          author: { "@type": "Organization", name: "PerpWiki" },
-          publisher: { "@type": "Organization", name: "PerpWiki" },
+          author: { "@type": "Organization", name: "perp.wiki" },
+          publisher: { "@type": "Organization", name: "perp.wiki" },
         }}
       />
       <JsonLd

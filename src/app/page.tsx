@@ -9,11 +9,11 @@ import { LEARN_ARTICLES } from "@/lib/learn-articles";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "PerpWiki — Hyperliquid Ecosystem Directory 2026",
+  title: "perp.wiki — Hyperliquid Ecosystem Directory 2026",
   description:
     "Independent directory of 48+ Hyperliquid ecosystem projects. Browse HyperCore, HyperEVM, and HIP-3 apps — trading tools, DeFi, liquid staking, analytics and more. perp.wiki",
   openGraph: {
-    title: "PerpWiki — Hyperliquid Ecosystem Directory 2026",
+    title: "perp.wiki — Hyperliquid Ecosystem Directory 2026",
     description:
       "Independent directory of 48+ Hyperliquid ecosystem projects. Browse HyperCore, HyperEVM, and HIP-3 apps — trading tools, DeFi, liquid staking, analytics and more. perp.wiki",
   },
@@ -147,7 +147,7 @@ export default async function HomePage() {
         data={{
           "@context": "https://schema.org",
           "@type": "WebSite",
-          name: "PerpWiki",
+          name: "perp.wiki",
           url: SITE_URL,
           description: "The independent intelligence directory for the Hyperliquid ecosystem.",
           potentialAction: {

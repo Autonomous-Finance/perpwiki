@@ -34,7 +34,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 
   return {
-    title: `${project.name} on Hyperliquid — Overview, Features & Analysis | perp.wiki`,
+    title: `${project.name} on Hyperliquid — Overview, Features & Analysis`,
     description: `Everything you need to know about ${project.name} on Hyperliquid. ${project.tagline || ""}. Layer, category, features, and ecosystem context.`,
     alternates: {
       canonical: `${SITE_URL}/ecosystem/${project.slug}`,

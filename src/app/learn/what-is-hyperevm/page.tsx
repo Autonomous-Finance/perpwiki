@@ -8,7 +8,7 @@ const article = getArticle(SLUG)!;
 const { prev, next } = getAdjacentArticles(SLUG);
 
 export const metadata: Metadata = {
-  title: "What Is HyperEVM? Hyperliquid's Ethereum Layer Explained 2026 | perp.wiki",
+  title: "What Is HyperEVM? Hyperliquid's Ethereum Layer Explained 2026",
   description:
     "HyperEVM is Hyperliquid's EVM-compatible smart contract layer. Learn how it connects to HyperCore, which projects are building on it, and how to use HyperEVM apps.",
 };
@@ -55,8 +55,8 @@ export default function WhatIsHyperEvmPage() {
           headline: article.title,
           description: article.description,
           datePublished: article.datePublished,
-          author: { "@type": "Organization", name: "PerpWiki" },
-          publisher: { "@type": "Organization", name: "PerpWiki" },
+          author: { "@type": "Organization", name: "perp.wiki" },
+          publisher: { "@type": "Organization", name: "perp.wiki" },
         }}
       />
       <JsonLd

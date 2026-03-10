@@ -8,7 +8,7 @@ const article = getArticle(SLUG)!;
 const { prev, next } = getAdjacentArticles(SLUG);
 
 export const metadata: Metadata = {
-  title: "Hyperliquid vs Binance & Bybit — DEX vs CEX Comparison 2026 | perp.wiki",
+  title: "Hyperliquid vs Binance & Bybit — DEX vs CEX Comparison 2026",
   description:
     "Hyperliquid vs centralized exchanges: fees, speed, custody, leverage, and available markets compared. Is Hyperliquid better than Binance or Bybit for perp trading?",
 };
@@ -57,8 +57,8 @@ export default function HyperliquidVsCexPage() {
           headline: article.title,
           description: article.description,
           datePublished: article.datePublished,
-          author: { "@type": "Organization", name: "PerpWiki" },
-          publisher: { "@type": "Organization", name: "PerpWiki" },
+          author: { "@type": "Organization", name: "perp.wiki" },
+          publisher: { "@type": "Organization", name: "perp.wiki" },
         }}
       />
       <JsonLd

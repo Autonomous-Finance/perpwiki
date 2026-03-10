@@ -8,7 +8,7 @@ const article = getArticle(SLUG)!;
 const { prev, next } = getAdjacentArticles(SLUG);
 
 export const metadata: Metadata = {
-  title: "What Is HIP-3? Hyperliquid External Assets Explained | perp.wiki",
+  title: "What Is HIP-3? Hyperliquid External Assets Explained",
   description:
     "HIP-3 brings external blockchain assets to Hyperliquid. Learn how HIP-3 works, which tokens are listed, and how it differs from HIP-1 and HyperEVM projects.",
 };
@@ -37,8 +37,8 @@ export default function WhatIsHIP3Page() {
           headline: article.title,
           description: article.description,
           datePublished: article.datePublished,
-          author: { "@type": "Organization", name: "PerpWiki" },
-          publisher: { "@type": "Organization", name: "PerpWiki" },
+          author: { "@type": "Organization", name: "perp.wiki" },
+          publisher: { "@type": "Organization", name: "perp.wiki" },
         }}
       />
 

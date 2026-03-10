@@ -8,11 +8,11 @@ const article = getArticle(SLUG)!;
 const { prev, next } = getAdjacentArticles(SLUG);
 
 export const metadata: Metadata = {
-  title: "Open Interest on Hyperliquid: What It Tells You About Markets | perp.wiki",
+  title: "Open Interest on Hyperliquid: What It Tells You About Markets",
   description:
     "Learn what open interest means on Hyperliquid, how to read it, its relationship to volume, and what rising or falling OI signals about market direction.",
   openGraph: {
-    title: "Open Interest on Hyperliquid Explained | perp.wiki",
+    title: "Open Interest on Hyperliquid Explained",
     description:
       "What open interest tells you about Hyperliquid markets: how to read OI, volume relationships, and trading signals.",
   },
@@ -67,8 +67,8 @@ export default function HyperliquidOpenInterestExplainedPage() {
           headline: article.title,
           description: article.description,
           datePublished: article.datePublished,
-          author: { "@type": "Organization", name: "PerpWiki" },
-          publisher: { "@type": "Organization", name: "PerpWiki" },
+          author: { "@type": "Organization", name: "perp.wiki" },
+          publisher: { "@type": "Organization", name: "perp.wiki" },
         }}
       />
       <JsonLd

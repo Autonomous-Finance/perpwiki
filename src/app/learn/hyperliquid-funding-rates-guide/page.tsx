@@ -8,11 +8,11 @@ const article = getArticle(SLUG)!;
 const { prev, next } = getAdjacentArticles(SLUG);
 
 export const metadata: Metadata = {
-  title: "Hyperliquid Funding Rates Explained: How to Read, Profit & Hedge | perp.wiki",
+  title: "Hyperliquid Funding Rates Explained: How to Read, Profit & Hedge",
   description:
     "Complete guide to Hyperliquid funding rates: how 8-hour intervals work, positive vs negative rates, cash-and-carry strategies, and delta-neutral farming.",
   openGraph: {
-    title: "Hyperliquid Funding Rates Explained | perp.wiki",
+    title: "Hyperliquid Funding Rates Explained",
     description:
       "How funding rates work on Hyperliquid, how to read them, and strategies for profiting from rate differentials.",
   },
@@ -68,8 +68,8 @@ export default function HyperliquidFundingRatesGuidePage() {
           headline: article.title,
           description: article.description,
           datePublished: article.datePublished,
-          author: { "@type": "Organization", name: "PerpWiki" },
-          publisher: { "@type": "Organization", name: "PerpWiki" },
+          author: { "@type": "Organization", name: "perp.wiki" },
+          publisher: { "@type": "Organization", name: "perp.wiki" },
         }}
       />
       <JsonLd

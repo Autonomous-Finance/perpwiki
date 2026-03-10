@@ -3,7 +3,7 @@ import { OG_SIZE, HW_COLORS } from "@/lib/og-utils";
 
 export const runtime = "nodejs";
 export const revalidate = 86400;
-export const alt = "Live Hyperliquid Markets — real-time prices, volume and open interest on PerpWiki";
+export const alt = "Live Hyperliquid Markets — real-time prices, volume and open interest on perp.wiki";
 export const size = OG_SIZE;
 export const contentType = "image/png";
 

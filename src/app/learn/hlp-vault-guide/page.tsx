@@ -8,11 +8,11 @@ const article = getArticle(SLUG)!;
 const { prev, next } = getAdjacentArticles(SLUG);
 
 export const metadata: Metadata = {
-  title: "HLP Vault Guide — Hyperliquid Liquidity Provider 2026 | perp.wiki",
+  title: "HLP Vault Guide — Hyperliquid Liquidity Provider 2026",
   description:
     "How the HLP vault works: deposit USDC, earn yield from market-making, liquidations, and trading fees. HLP APY, risks, TVL, and how it compares to HYPE staking.",
   openGraph: {
-    title: "HLP Vault Guide — Hyperliquid Liquidity Provider 2026 | perp.wiki",
+    title: "HLP Vault Guide — Hyperliquid Liquidity Provider 2026",
     description:
       "Earn yield on Hyperliquid by depositing to the HLP vault. APY, risks, and full guide 2026.",
   },
@@ -67,8 +67,8 @@ export default function HlpVaultGuidePage() {
           headline: article.title,
           description: article.description,
           datePublished: article.datePublished,
-          author: { "@type": "Organization", name: "PerpWiki" },
-          publisher: { "@type": "Organization", name: "PerpWiki" },
+          author: { "@type": "Organization", name: "perp.wiki" },
+          publisher: { "@type": "Organization", name: "perp.wiki" },
         }}
       />
       <JsonLd
@@ -471,7 +471,7 @@ export default function HlpVaultGuidePage() {
         <InlineLink href="/learn/what-is-hyperliquid">What Is Hyperliquid?</InlineLink> overview.
       </P>
 
-      <CTA href="/projects/hlp">View HLP on PerpWiki &rarr;</CTA>
+      <CTA href="/projects/hlp">View HLP on perp.wiki &rarr;</CTA>
     </LearnLayout>
   );
 }

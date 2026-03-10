@@ -8,11 +8,11 @@ const article = getArticle(SLUG)!;
 const { prev, next } = getAdjacentArticles(SLUG);
 
 export const metadata: Metadata = {
-  title: "How to Bridge to Hyperliquid with Unit Protocol | perp.wiki",
+  title: "How to Bridge to Hyperliquid with Unit Protocol",
   description:
     "Step-by-step guide to bridging BTC, ETH, and SOL to Hyperliquid using Unit Protocol. Covers MPC security, fees, supported assets, and troubleshooting.",
   openGraph: {
-    title: "Bridge to Hyperliquid with Unit Protocol | perp.wiki",
+    title: "Bridge to Hyperliquid with Unit Protocol",
     description:
       "Bridge BTC, ETH, SOL and more to Hyperliquid via Unit Protocol. Complete walkthrough with fees and security details.",
   },
@@ -67,8 +67,8 @@ export default function HyperunitBridgeGuidePage() {
           headline: article.title,
           description: article.description,
           datePublished: article.datePublished,
-          author: { "@type": "Organization", name: "PerpWiki" },
-          publisher: { "@type": "Organization", name: "PerpWiki" },
+          author: { "@type": "Organization", name: "perp.wiki" },
+          publisher: { "@type": "Organization", name: "perp.wiki" },
         }}
       />
       <JsonLd

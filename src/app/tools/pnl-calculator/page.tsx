@@ -5,7 +5,7 @@ import type { Metadata } from "next";
 import PnlCalc from "./PnlCalc";
 
 export const metadata: Metadata = {
-  title: "Hyperliquid PnL Calculator — Profit & Loss Estimator | perp.wiki",
+  title: "Hyperliquid PnL Calculator — Profit & Loss Estimator",
   description:
     "Calculate profit and loss for Hyperliquid perpetual trades. Estimate PnL, ROE, and fees before entering a position.",
   alternates: { canonical: "https://perp.wiki/tools/pnl-calculator" },

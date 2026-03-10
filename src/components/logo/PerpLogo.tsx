@@ -1,5 +1,5 @@
 /**
- * PerpWiki Logo — Infinity arrow mark + wordmark
+ * perp.wiki Logo — Infinity arrow mark + wordmark
  *
  * Two arrows forming a perpetual loop, representing perpetual futures.
  * Clean, geometric, crypto-native.

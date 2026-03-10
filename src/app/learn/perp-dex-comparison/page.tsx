@@ -8,11 +8,11 @@ const article = getArticle(SLUG)!;
 const { prev, next } = getAdjacentArticles(SLUG);
 
 export const metadata: Metadata = {
-  title: "Best Perp DEX in 2026 — Hyperliquid vs dYdX vs GMX vs Drift Compared | perp.wiki",
+  title: "Best Perp DEX in 2026 — Hyperliquid vs dYdX vs GMX vs Drift Compared",
   description:
     "Detailed comparison of the top perpetual DEXs in 2026: Hyperliquid, dYdX, GMX, Drift, and Lighter. Volume, fees, leverage, user experience, and which suits different trader types.",
   openGraph: {
-    title: "Best Perp DEX in 2026 — Hyperliquid vs dYdX vs GMX vs Drift Compared | perp.wiki",
+    title: "Best Perp DEX in 2026 — Hyperliquid vs dYdX vs GMX vs Drift Compared",
     description:
       "Comprehensive comparison of top perp DEXs: Hyperliquid, dYdX, GMX, Drift, Lighter — fees, volume, and features.",
   },
@@ -60,8 +60,8 @@ export default function PerpDexComparisonPage() {
           headline: article.title,
           description: article.description,
           datePublished: article.datePublished,
-          author: { "@type": "Organization", name: "PerpWiki" },
-          publisher: { "@type": "Organization", name: "PerpWiki" },
+          author: { "@type": "Organization", name: "perp.wiki" },
+          publisher: { "@type": "Organization", name: "perp.wiki" },
         }}
       />
       <JsonLd

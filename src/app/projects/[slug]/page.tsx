@@ -111,7 +111,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const project = await prisma.project.findUnique({ where: { slug } });
   if (!project) return { title: "Not Found" };
-  const seoTitle = `${project.name} — Hyperliquid Ecosystem | perp.wiki`;
+  const seoTitle = `${project.name} — Hyperliquid Ecosystem`;
   const seoDesc = `${project.name} on Hyperliquid: overview, features, layer, and ecosystem context. Independent profile on perp.wiki.`;
   return {
     title: seoTitle,

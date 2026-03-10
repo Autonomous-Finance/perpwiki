@@ -7,7 +7,7 @@ import type { Metadata } from "next";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Trending on Hyperliquid — Top Markets & New Projects | perp.wiki",
+  title: "Trending on Hyperliquid — Top Markets & New Projects",
   description:
     "See what is trending on Hyperliquid: top markets by volume and open interest, recently added ecosystem projects, and editorial highlights.",
   openGraph: {

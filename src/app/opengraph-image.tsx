@@ -4,7 +4,7 @@ import { prisma } from "@/lib/prisma";
 
 export const runtime = "nodejs";
 export const revalidate = 86400;
-export const alt = "PerpWiki — Hyperliquid Ecosystem Intelligence";
+export const alt = "perp.wiki — Hyperliquid Ecosystem Intelligence";
 export const size = OG_SIZE;
 export const contentType = "image/png";
 

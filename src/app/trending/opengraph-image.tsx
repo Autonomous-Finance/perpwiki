@@ -5,7 +5,7 @@ const GOLD = "#F0B429";
 
 export const runtime = "nodejs";
 export const revalidate = 86400;
-export const alt = "Trending on Hyperliquid — hot markets and rising ecosystem projects on PerpWiki";
+export const alt = "Trending on Hyperliquid — hot markets and rising ecosystem projects on perp.wiki";
 export const size = OG_SIZE;
 export const contentType = "image/png";
 

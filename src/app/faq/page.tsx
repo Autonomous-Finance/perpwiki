@@ -5,7 +5,7 @@ import type { Metadata } from "next";
 import { FaqAccordion } from "./FaqAccordion";
 
 export const metadata: Metadata = {
-  title: "Hyperliquid FAQ — Common Questions Answered | perp.wiki",
+  title: "Hyperliquid FAQ — Common Questions Answered",
   description:
     "Answers to the most common questions about Hyperliquid, HyperEVM, HYPE staking, funding rates, and the DeFi ecosystem.",
   alternates: { canonical: "https://perp.wiki/faq" },

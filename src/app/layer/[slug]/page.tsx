@@ -25,12 +25,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!layer) return { title: "Not Found" };
   const meta = LAYER_META[layer];
   const layerTitles: Record<string, string> = {
-    HYPERCORE: "Best HyperCore Projects 2026 — Hyperliquid Native | perp.wiki",
-    HYPEREVM: "Best HyperEVM Projects 2026 — Ethereum-Compatible on Hyperliquid | perp.wiki",
-    HIP3: "HIP-3 Projects 2026 — Hyperliquid External Assets | perp.wiki",
+    HYPERCORE: "Best HyperCore Projects 2026 — Hyperliquid Native",
+    HYPEREVM: "Best HyperEVM Projects 2026 — Ethereum-Compatible on Hyperliquid",
+    HIP3: "HIP-3 Projects 2026 — Hyperliquid External Assets",
   };
   return {
-    title: layerTitles[layer] || `${meta.label} Projects | perp.wiki`,
+    title: layerTitles[layer] || `${meta.label} Projects`,
     description: `Browse all ${meta.label} projects in the Hyperliquid ecosystem. Independent directory on perp.wiki.`,
   };
 }

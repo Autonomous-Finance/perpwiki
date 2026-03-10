@@ -8,11 +8,11 @@ const article = getArticle(SLUG)!;
 const { prev, next } = getAdjacentArticles(SLUG);
 
 export const metadata: Metadata = {
-  title: "Hyperliquid vs Binance Perps: On-Chain vs CEX Comparison 2026 | perp.wiki",
+  title: "Hyperliquid vs Binance Perps: On-Chain vs CEX Comparison 2026",
   description:
     "Detailed comparison of Hyperliquid vs Binance perpetual futures: fees, custody, transparency, speed, depth, and self-custody vs KYC requirements.",
   openGraph: {
-    title: "Hyperliquid vs Binance Perps 2026 | perp.wiki",
+    title: "Hyperliquid vs Binance Perps 2026",
     description:
       "On-chain vs CEX perpetuals: how Hyperliquid compares to Binance on fees, speed, custody, and transparency.",
   },
@@ -68,8 +68,8 @@ export default function HyperliquidVsBinancePerpsPage() {
           headline: article.title,
           description: article.description,
           datePublished: article.datePublished,
-          author: { "@type": "Organization", name: "PerpWiki" },
-          publisher: { "@type": "Organization", name: "PerpWiki" },
+          author: { "@type": "Organization", name: "perp.wiki" },
+          publisher: { "@type": "Organization", name: "perp.wiki" },
         }}
       />
       <JsonLd

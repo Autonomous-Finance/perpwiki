@@ -8,7 +8,7 @@ import type { Metadata } from "next";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Hyperliquid Stats — Volume, Open Interest & Ecosystem Growth | perp.wiki",
+  title: "Hyperliquid Stats — Volume, Open Interest & Ecosystem Growth",
   description:
     "Hyperliquid ecosystem statistics: $1B+ weekly volume, 200+ perpetual markets, live open interest, funding rate heatmap, and DEX market share. The most comprehensive Hyperliquid analytics dashboard.",
   openGraph: {

@@ -8,7 +8,7 @@ const article = getArticle(SLUG)!;
 const { prev, next } = getAdjacentArticles(SLUG);
 
 export const metadata: Metadata = {
-  title: "HyperCore vs HyperEVM — What's the Difference? | perp.wiki",
+  title: "HyperCore vs HyperEVM — What's the Difference?",
   description:
     "HyperCore is Hyperliquid's native trading layer; HyperEVM is the EVM-compatible smart contract layer. Full comparison of features, speed, and use cases.",
 };
@@ -37,8 +37,8 @@ export default function HyperCoreVsHyperEVMPage() {
           headline: article.title,
           description: article.description,
           datePublished: article.datePublished,
-          author: { "@type": "Organization", name: "PerpWiki" },
-          publisher: { "@type": "Organization", name: "PerpWiki" },
+          author: { "@type": "Organization", name: "perp.wiki" },
+          publisher: { "@type": "Organization", name: "perp.wiki" },
         }}
       />
 

@@ -10,7 +10,7 @@ const article = getArticle(SLUG)!;
 const { prev, next } = getAdjacentArticles(SLUG);
 
 export const metadata: Metadata = {
-  title: "HyperEVM Yield Farming: Complete Strategy Guide 2026 | perp.wiki",
+  title: "HyperEVM Yield Farming: Complete Strategy Guide 2026",
   description:
     "In-depth HyperEVM yield farming strategies: HLP vault, liquid staking, lending, LP strategies, delta-neutral farming, and leveraged looping with risk analysis.",
   openGraph: {
@@ -262,8 +262,8 @@ export default async function HyperevmYieldFarmingGuidePage() {
           headline: article.title,
           description: article.description,
           datePublished: article.datePublished,
-          author: { "@type": "Organization", name: "PerpWiki" },
-          publisher: { "@type": "Organization", name: "PerpWiki" },
+          author: { "@type": "Organization", name: "perp.wiki" },
+          publisher: { "@type": "Organization", name: "perp.wiki" },
         }}
       />
 
