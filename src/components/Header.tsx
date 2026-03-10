@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import { PerpLogo } from "@/components/logo/PerpLogo";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 const NAV_LINKS = [
   { href: "/markets", label: "Markets" },
@@ -25,7 +26,7 @@ export function Header() {
         </Link>
 
         {/* Desktop nav */}
-        <nav className="hidden items-center gap-6 md:flex">
+        <nav className="hidden items-center gap-5 md:flex">
           {NAV_LINKS.map((link) => (
             <Link
               key={link.href}
@@ -41,24 +42,28 @@ export function Header() {
           >
             Submit
           </Link>
+          <ThemeToggle />
         </nav>
 
-        {/* Mobile hamburger */}
-        <button
-          className="flex flex-col gap-1 md:hidden"
-          onClick={() => setMenuOpen(!menuOpen)}
-          aria-label="Toggle menu"
-        >
-          <span
-            className={`block h-0.5 w-5 bg-[var(--hw-text-muted)] transition-transform ${menuOpen ? "translate-y-1.5 rotate-45" : ""}`}
-          />
-          <span
-            className={`block h-0.5 w-5 bg-[var(--hw-text-muted)] transition-opacity ${menuOpen ? "opacity-0" : ""}`}
-          />
-          <span
-            className={`block h-0.5 w-5 bg-[var(--hw-text-muted)] transition-transform ${menuOpen ? "-translate-y-1.5 -rotate-45" : ""}`}
-          />
-        </button>
+        {/* Mobile: theme toggle + hamburger */}
+        <div className="flex items-center gap-3 md:hidden">
+          <ThemeToggle />
+          <button
+            className="flex flex-col gap-1"
+            onClick={() => setMenuOpen(!menuOpen)}
+            aria-label="Toggle menu"
+          >
+            <span
+              className={`block h-0.5 w-5 bg-[var(--hw-text-muted)] transition-transform ${menuOpen ? "translate-y-1.5 rotate-45" : ""}`}
+            />
+            <span
+              className={`block h-0.5 w-5 bg-[var(--hw-text-muted)] transition-opacity ${menuOpen ? "opacity-0" : ""}`}
+            />
+            <span
+              className={`block h-0.5 w-5 bg-[var(--hw-text-muted)] transition-transform ${menuOpen ? "-translate-y-1.5 -rotate-45" : ""}`}
+            />
+          </button>
+        </div>
       </div>
 
       {/* Mobile menu */}

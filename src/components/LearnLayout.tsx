@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { BreadcrumbSchema } from "@/components/BreadcrumbSchema";
+import { ProjectLogo } from "@/components/ProjectLogo";
 import { prisma } from "@/lib/prisma";
 import type { LearnArticle } from "@/lib/learn-articles";
 
@@ -91,36 +92,72 @@ export async function LearnLayout({ article, prev, next, toc, children }: LearnL
             >
               &larr; Back to Learn
             </Link>
-            <nav className="space-y-2">
+            <div className="mb-4 text-[10px] uppercase tracking-wider text-[var(--hw-text-dim)] font-[family-name:var(--font-jetbrains-mono)]">
+              On this page
+            </div>
+            <nav className="space-y-1.5 border-l border-[var(--hw-border)] pl-3">
               {toc.map((item) => (
                 <a
                   key={item.id}
                   href={`#${item.id}`}
-                  className="block text-xs text-[var(--hw-text-dim)] hover:text-[var(--hw-text-muted)] transition-colors"
+                  className="block text-xs text-[var(--hw-text-dim)] hover:text-[var(--hw-green)] transition-colors py-0.5"
                 >
                   {item.title}
                 </a>
               ))}
             </nav>
+
+            {/* Quick links sidebar */}
+            <div className="mt-8 border-t border-[var(--hw-border)] pt-6">
+              <div className="text-[10px] uppercase tracking-wider text-[var(--hw-text-dim)] font-[family-name:var(--font-jetbrains-mono)] mb-3">
+                Quick links
+              </div>
+              <div className="space-y-1.5">
+                <Link href="/projects" className="block text-xs text-[var(--hw-text-dim)] hover:text-[var(--hw-green)] transition-colors">
+                  Browse Projects &rarr;
+                </Link>
+                <Link href="/markets" className="block text-xs text-[var(--hw-text-dim)] hover:text-[var(--hw-green)] transition-colors">
+                  Live Markets &rarr;
+                </Link>
+                <Link href="/tools" className="block text-xs text-[var(--hw-text-dim)] hover:text-[var(--hw-green)] transition-colors">
+                  Trading Tools &rarr;
+                </Link>
+              </div>
+            </div>
           </div>
         </aside>
 
         {/* Main content */}
         <article className="min-w-0 flex-1 max-w-3xl">
-          <header className="mb-8 border-b border-[var(--hw-border)] pb-6">
-            <div className="flex items-center gap-3 mb-3">
-              <span
-                className="bg-[var(--hw-green-subtle)] px-2 py-0.5 text-xs text-[var(--hw-green)]"
-                style={{ borderRadius: "2px" }}
-              >
-                {article.category}
-              </span>
-              <span className="text-xs text-[var(--hw-text-dim)]">{article.readingTime} read</span>
+          <header
+            className="mb-8 pb-6 border-b border-[var(--hw-border)] relative overflow-hidden"
+          >
+            <div
+              className="absolute top-0 right-0 w-[300px] h-[300px] pointer-events-none opacity-10"
+              style={{
+                background: "radial-gradient(circle at top right, var(--hw-green-glow), transparent 70%)",
+              }}
+            />
+            <div className="relative">
+              <div className="flex flex-wrap items-center gap-3 mb-3">
+                <span
+                  className="bg-[var(--hw-green-subtle)] px-2.5 py-1 text-xs font-medium text-[var(--hw-green)]"
+                  style={{ borderRadius: "2px" }}
+                >
+                  {article.category}
+                </span>
+                <span className="text-xs text-[var(--hw-text-dim)]">{article.readingTime} read</span>
+                {article.datePublished && (
+                  <span className="text-xs text-[var(--hw-text-dim)]">
+                    Updated {article.datePublished}
+                  </span>
+                )}
+              </div>
+              <h1 className="font-[family-name:var(--font-space-grotesk)] text-3xl font-bold text-[var(--hw-text)] md:text-4xl">
+                {article.title}
+              </h1>
+              <p className="mt-3 text-[var(--hw-text-muted)] max-w-2xl">{article.description}</p>
             </div>
-            <h1 className="font-[family-name:var(--font-space-grotesk)] text-3xl font-bold text-[var(--hw-text)] md:text-4xl">
-              {article.title}
-            </h1>
-            <p className="mt-3 text-[var(--hw-text-muted)]">{article.description}</p>
           </header>
 
           <div className="prose-hw">{children}</div>
@@ -136,24 +173,11 @@ export async function LearnLayout({ article, prev, next, toc, children }: LearnL
                   <Link
                     key={rp.slug}
                     href={`/projects/${rp.slug}`}
-                    className="group border border-[var(--hw-border)] bg-[var(--hw-surface)] p-4 transition-all hover:border-[var(--hw-border-bright)]"
+                    className="group border border-[var(--hw-border)] bg-[var(--hw-surface)] p-4 transition-all hover:border-[var(--hw-green)]"
                     style={{ borderRadius: "4px" }}
                   >
                     <div className="flex items-start gap-3">
-                      {rp.logoUrl ? (
-                        <img
-                          src={rp.logoUrl}
-                          alt={rp.name + " logo"}
-                          className="h-8 w-8 shrink-0 rounded object-cover mt-0.5"
-                        />
-                      ) : (
-                        <span
-                          className="flex h-8 w-8 shrink-0 items-center justify-center rounded text-xs font-bold text-[var(--hw-bg)]"
-                          style={{ background: "var(--hw-text-dim)" }}
-                        >
-                          {rp.name.charAt(0)}
-                        </span>
-                      )}
+                      <ProjectLogo name={rp.name} logoUrl={rp.logoUrl} size="sm" className="mt-0.5" />
                       <div className="min-w-0">
                         <span className="text-sm font-medium text-[var(--hw-text)] group-hover:text-[var(--hw-green)] transition-colors">
                           {rp.name}
@@ -171,25 +195,67 @@ export async function LearnLayout({ article, prev, next, toc, children }: LearnL
             </div>
           )}
 
+          {/* CTA Banner */}
+          <div
+            className="mt-10 border border-[var(--hw-border)] p-6 flex flex-col sm:flex-row items-center justify-between gap-4"
+            style={{
+              borderRadius: "4px",
+              background: "linear-gradient(135deg, var(--hw-surface) 0%, rgba(0,229,160,0.03) 100%)",
+            }}
+          >
+            <div>
+              <p className="text-sm font-medium text-[var(--hw-text)]">
+                Explore the Hyperliquid ecosystem
+              </p>
+              <p className="text-xs text-[var(--hw-text-dim)] mt-0.5">
+                Discover projects, track markets, and compare protocols
+              </p>
+            </div>
+            <div className="flex gap-2">
+              <Link
+                href="/projects"
+                className="inline-flex items-center gap-2 px-4 py-2 text-xs font-semibold transition-all hover:opacity-90"
+                style={{ borderRadius: "4px", background: "var(--hw-green)", color: "var(--hw-bg)" }}
+              >
+                Browse Projects
+              </Link>
+              <Link
+                href="/learn"
+                className="inline-flex items-center gap-2 px-4 py-2 text-xs font-medium border border-[var(--hw-border)] text-[var(--hw-text-muted)] hover:border-[var(--hw-border-bright)] transition-all"
+                style={{ borderRadius: "4px" }}
+              >
+                More Articles
+              </Link>
+            </div>
+          </div>
+
           {/* Prev/Next nav */}
-          <nav className="mt-12 flex justify-between border-t border-[var(--hw-border)] pt-6">
+          <nav className="mt-10 grid grid-cols-2 gap-4 border-t border-[var(--hw-border)] pt-6">
             <div>
               {prev ? (
                 <Link
                   href={`/learn/${prev.slug}`}
-                  className="text-sm text-[var(--hw-text-muted)] hover:text-[var(--hw-text)]"
+                  className="group block border border-[var(--hw-border)] bg-[var(--hw-surface)] p-4 transition-all hover:border-[var(--hw-border-bright)]"
+                  style={{ borderRadius: "4px" }}
                 >
-                  &larr; {prev.title}
+                  <span className="text-[10px] text-[var(--hw-text-dim)] uppercase tracking-wider">Previous</span>
+                  <span className="block text-sm text-[var(--hw-text-muted)] group-hover:text-[var(--hw-text)] transition-colors mt-1">
+                    &larr; {prev.title}
+                  </span>
                 </Link>
               ) : null}
             </div>
-            <div>
+            <div className="text-right">
               {next ? (
                 <Link
                   href={`/learn/${next.slug}`}
-                  className="text-sm text-[var(--hw-text-muted)] hover:text-[var(--hw-text)]"
+                  className="group block border border-[var(--hw-border)] bg-[var(--hw-surface)] p-4 transition-all hover:border-[var(--hw-border-bright)]"
+                  style={{ borderRadius: "4px" }}
                 >
-                  {next.title} &rarr;
+                  <span className="text-[10px] text-[var(--hw-text-dim)] uppercase tracking-wider">Next</span>
+                  <span className="block text-sm text-[var(--hw-text-muted)] group-hover:text-[var(--hw-text)] transition-colors mt-1">
+                    {next.title} &rarr;
+                  </span>
                 </Link>
               ) : null}
             </div>
@@ -200,13 +266,17 @@ export async function LearnLayout({ article, prev, next, toc, children }: LearnL
   );
 }
 
-/* Reusable prose components for learn articles */
+/* ============================================================ */
+/* Reusable prose components for learn articles                  */
+/* ============================================================ */
+
 export function H2({ id, children }: { id: string; children: React.ReactNode }) {
   return (
     <h2
       id={id}
-      className="font-[family-name:var(--font-space-grotesk)] text-xl font-semibold text-[var(--hw-text)] mt-10 mb-4 scroll-mt-20"
+      className="font-[family-name:var(--font-space-grotesk)] text-xl font-semibold text-[var(--hw-text)] mt-10 mb-4 scroll-mt-20 flex items-center gap-2"
     >
+      <span className="inline-block h-1 w-5 bg-[var(--hw-green)]" style={{ borderRadius: 1 }} />
       {children}
     </h2>
   );
@@ -226,6 +296,72 @@ export function InlineLink({ href, children }: { href: string; children: React.R
   );
 }
 
+/** Highlighted callout box for key facts or warnings */
+export function Callout({
+  type = "info",
+  title,
+  children,
+}: {
+  type?: "info" | "warning" | "tip";
+  title?: string;
+  children: React.ReactNode;
+}) {
+  const colors = {
+    info: { border: "var(--hw-cyan)", bg: "rgba(0,200,224,0.05)", icon: "i" },
+    warning: { border: "var(--hw-gold)", bg: "rgba(240,180,41,0.05)", icon: "!" },
+    tip: { border: "var(--hw-green)", bg: "rgba(0,229,160,0.05)", icon: "✓" },
+  };
+  const c = colors[type];
+  return (
+    <div
+      className="my-6 border-l-3 p-4"
+      style={{
+        borderLeftWidth: "3px",
+        borderLeftColor: c.border,
+        background: c.bg,
+        borderRadius: "0 4px 4px 0",
+      }}
+    >
+      {title && (
+        <div className="text-sm font-semibold text-[var(--hw-text)] mb-1.5 flex items-center gap-2">
+          <span
+            className="inline-flex h-5 w-5 items-center justify-center text-[10px] font-bold shrink-0"
+            style={{ borderRadius: "4px", background: c.border, color: "var(--hw-bg)" }}
+          >
+            {c.icon}
+          </span>
+          {title}
+        </div>
+      )}
+      <div className="text-sm text-[var(--hw-text-muted)] leading-relaxed">{children}</div>
+    </div>
+  );
+}
+
+/** Key facts box with outlined items */
+export function KeyFacts({ facts }: { facts: { label: string; value: string }[] }) {
+  return (
+    <div
+      className="my-6 border border-[var(--hw-border)] bg-[var(--hw-surface)] p-5"
+      style={{ borderRadius: "4px" }}
+    >
+      <div className="text-[10px] uppercase tracking-wider text-[var(--hw-text-dim)] mb-3 font-[family-name:var(--font-jetbrains-mono)]">
+        Key Facts
+      </div>
+      <div className="grid gap-3 sm:grid-cols-2">
+        {facts.map((f) => (
+          <div key={f.label} className="flex items-baseline justify-between gap-2">
+            <span className="text-xs text-[var(--hw-text-dim)]">{f.label}</span>
+            <span className="font-[family-name:var(--font-jetbrains-mono)] text-sm font-medium text-[var(--hw-text)]">
+              {f.value}
+            </span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 export function ComparisonTable({
   headers,
   rows,
@@ -234,14 +370,14 @@ export function ComparisonTable({
   rows: string[][];
 }) {
   return (
-    <div className="my-6 overflow-x-auto">
+    <div className="my-6 overflow-x-auto border border-[var(--hw-border)]" style={{ borderRadius: "4px" }}>
       <table className="w-full text-sm border-collapse">
         <thead>
           <tr>
             {headers.map((h) => (
               <th
                 key={h}
-                className="border border-[var(--hw-border)] bg-[var(--hw-surface)] px-4 py-2 text-left text-[var(--hw-text)] font-medium"
+                className="border-b border-[var(--hw-border)] bg-[var(--hw-surface)] px-4 py-3 text-left text-[var(--hw-text)] font-medium"
               >
                 {h}
               </th>
@@ -250,11 +386,11 @@ export function ComparisonTable({
         </thead>
         <tbody>
           {rows.map((row, i) => (
-            <tr key={i}>
+            <tr key={i} className={i % 2 === 1 ? "bg-[var(--hw-surface)]" : ""}>
               {row.map((cell, j) => (
                 <td
                   key={j}
-                  className="border border-[var(--hw-border)] px-4 py-2 text-[var(--hw-text-muted)]"
+                  className="border-b border-[var(--hw-border)] last:border-b-0 px-4 py-2.5 text-[var(--hw-text-muted)]"
                 >
                   {cell}
                 </td>
@@ -272,10 +408,31 @@ export function CTA({ href, children }: { href: string; children: React.ReactNod
     <div className="my-8">
       <Link
         href={href}
-        className="inline-block border border-[var(--hw-green)] px-5 py-2 text-sm font-medium text-[var(--hw-green)] hover:bg-[var(--hw-green-subtle)] transition-colors"
-        style={{ borderRadius: "2px" }}
+        className="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-semibold transition-all hover:opacity-90"
+        style={{ borderRadius: "4px", background: "var(--hw-green)", color: "var(--hw-bg)" }}
       >
         {children}
+        <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+        </svg>
+      </Link>
+    </div>
+  );
+}
+
+/** Secondary outlined CTA button */
+export function CTAOutline({ href, children }: { href: string; children: React.ReactNode }) {
+  return (
+    <div className="my-6">
+      <Link
+        href={href}
+        className="inline-flex items-center gap-2 border border-[var(--hw-green)] px-5 py-2 text-sm font-medium text-[var(--hw-green)] hover:bg-[var(--hw-green-subtle)] transition-colors"
+        style={{ borderRadius: "4px" }}
+      >
+        {children}
+        <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+        </svg>
       </Link>
     </div>
   );

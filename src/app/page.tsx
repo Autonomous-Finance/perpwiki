@@ -1,7 +1,8 @@
 import { prisma } from "@/lib/prisma";
 import { LAYER_META } from "@/lib/categories";
-import { SearchBar } from "@/components/SearchBar";
+import { HomeSearch } from "@/components/HomeSearch";
 import { ProjectCard } from "@/components/ProjectCard";
+import { ProjectLogo } from "@/components/ProjectLogo";
 import Link from "next/link";
 import { JsonLd } from "@/components/JsonLd";
 import { getHypePrice, getHlMeta, getTopMarkets, formatUsd } from "@/lib/hl-api";
@@ -29,6 +30,58 @@ export const metadata: Metadata = {
 };
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:4000";
+
+// Category icons for Browse by Category
+const CATEGORY_ICONS: Record<string, string> = {
+  "Trading Terminals & Interfaces": "📊",
+  "Trading Bots & Automation": "🤖",
+  "Analytics & Data": "📈",
+  "Portfolio Trackers": "💼",
+  "Liquid Staking": "💧",
+  "Lending & Borrowing": "🏦",
+  "Decentralized Exchanges": "🔄",
+  "Yield & Vaults": "🌾",
+  "Bridges & Cross-Chain": "🌉",
+  "Wallets & Account Abstraction": "👛",
+  "Prediction Markets": "🔮",
+  "RWA Perps": "🏢",
+  "Event Contracts": "📅",
+  "Meme Perps": "🎭",
+  "Oracles": "🔗",
+  "SDKs & Developer Tools": "🛠️",
+  "Security & Audits": "🛡️",
+  "Data APIs": "⚡",
+  "NFTs & Collectibles": "🎨",
+  "Communities & DAOs": "👥",
+  "Media & Education": "📚",
+  "Airdrop Trackers": "🎯",
+};
+
+// Category accent colors
+const CATEGORY_COLORS: Record<string, string> = {
+  "Trading Terminals & Interfaces": "var(--hw-green)",
+  "Trading Bots & Automation": "var(--hw-green)",
+  "Analytics & Data": "var(--hw-cyan)",
+  "Portfolio Trackers": "var(--hw-cyan)",
+  "Liquid Staking": "#00C8E0",
+  "Lending & Borrowing": "#A78BFA",
+  "Decentralized Exchanges": "var(--hw-green)",
+  "Yield & Vaults": "var(--hw-gold)",
+  "Bridges & Cross-Chain": "#A78BFA",
+  "Wallets & Account Abstraction": "var(--hw-cyan)",
+  "Prediction Markets": "#A78BFA",
+  "RWA Perps": "var(--hw-gold)",
+  "Event Contracts": "var(--hw-gold)",
+  "Meme Perps": "var(--hw-red)",
+  "Oracles": "var(--hw-green)",
+  "SDKs & Developer Tools": "var(--hw-cyan)",
+  "Security & Audits": "var(--hw-green)",
+  "Data APIs": "var(--hw-cyan)",
+  "NFTs & Collectibles": "#A78BFA",
+  "Communities & DAOs": "var(--hw-gold)",
+  "Media & Education": "var(--hw-green)",
+  "Airdrop Trackers": "var(--hw-gold)",
+};
 
 async function getStats() {
   const total = await prisma.project.count({ where: { approvalStatus: "APPROVED" } });
@@ -60,12 +113,10 @@ async function getLayerProjects(layer: string, limit = 3) {
 }
 
 async function getFeaturedSpotlight() {
-  // Curated featured projects by slug
   const slugs = ["hlp", "purr", "felix-protocol", "kinetiq"];
   const projects = await prisma.project.findMany({
     where: { slug: { in: slugs }, approvalStatus: "APPROVED" },
   });
-  // Sort by the order in slugs
   return slugs.map((s) => projects.find((p) => p.slug === s)).filter(Boolean) as typeof projects;
 }
 
@@ -98,12 +149,26 @@ async function getCategoryCounts() {
   return counts;
 }
 
-// Known stats for spotlight cards
+async function getAllProjectsForSearch() {
+  return prisma.project.findMany({
+    where: { approvalStatus: "APPROVED" },
+    select: { slug: true, name: true, tagline: true, category: true, layer: true, logoUrl: true },
+    orderBy: [{ isFeatured: "desc" }, { name: "asc" }],
+  });
+}
+
 const SPOTLIGHT_STATS: Record<string, string> = {
   hlp: "15-25% APR",
   purr: "First HIP-1 Token",
   "felix-protocol": "$1B+ TVL",
   kinetiq: "$470M+ Staked",
+};
+
+const SPOTLIGHT_COLORS: Record<string, string> = {
+  hlp: "var(--hw-green)",
+  purr: "var(--hw-gold)",
+  "felix-protocol": "var(--hw-cyan)",
+  kinetiq: "#A78BFA",
 };
 
 export default async function HomePage() {
@@ -119,6 +184,7 @@ export default async function HomePage() {
     hypeData,
     hlMeta,
     topMarkets,
+    allProjects,
   ] = await Promise.all([
     getStats(),
     getFeaturedSpotlight(),
@@ -131,6 +197,7 @@ export default async function HomePage() {
     getHypePrice(),
     getHlMeta(),
     getTopMarkets(),
+    getAllProjectsForSearch(),
   ]);
 
   const layerSections = [
@@ -157,6 +224,9 @@ export default async function HomePage() {
           },
         }}
       />
+
+      {/* Command Search (always mounted, triggered by Cmd+K) */}
+      <HomeSearch projects={allProjects} />
 
       {/* Live Stats Ticker */}
       <div className="border-b border-[var(--hw-border)] bg-[var(--hw-surface)]">
@@ -206,10 +276,9 @@ export default async function HomePage() {
         </div>
       </div>
 
-      {/* Hero — compact, data-rich */}
+      {/* Hero */}
       <section className="border-b border-[var(--hw-border)]">
         <div className="mx-auto max-w-7xl px-4 py-6">
-          {/* Top row: title + search */}
           <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
             <div>
               <h1 className="font-[family-name:var(--font-space-grotesk)] text-2xl font-bold text-[var(--hw-text)] md:text-3xl">
@@ -220,7 +289,7 @@ export default async function HomePage() {
               </p>
             </div>
             <div className="w-full md:w-80">
-              <SearchBar />
+              <SearchTriggerBar />
             </div>
           </div>
 
@@ -230,14 +299,17 @@ export default async function HomePage() {
               label="HYPE Price"
               value={hypeData.price ? `$${parseFloat(hypeData.price).toFixed(2)}` : "—"}
               accent
+              live
             />
             <MiniStatCard
               label="24h Volume"
               value={meta?.totalVol24h ? formatUsd(meta.totalVol24h) : "—"}
+              live
             />
             <MiniStatCard
               label="Open Interest"
               value={meta?.totalOi ? formatUsd(meta.totalOi) : "—"}
+              live
             />
             <MiniStatCard
               label="Markets"
@@ -279,7 +351,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* Featured Spotlight */}
+      {/* Featured Spotlight — equal-height cards with color accents */}
       <section className="mx-auto max-w-7xl px-4 py-12">
         <div className="flex items-center justify-between mb-6">
           <h2 className="font-[family-name:var(--font-space-grotesk)] text-xl font-semibold text-[var(--hw-text)]">
@@ -288,77 +360,164 @@ export default async function HomePage() {
           <span className="text-xs text-[var(--hw-text-dim)]">Curated by community interest</span>
         </div>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {spotlight.map((p) => (
-            <Link key={p.slug} href={`/projects/${p.slug}`}>
-              <div
-                className="group flex flex-col gap-3 border border-[var(--hw-border)] bg-[var(--hw-surface)] p-5 transition-all hover:border-[var(--hw-green)] hover:shadow-[0_0_8px_rgba(0,229,160,0.08)]"
-                style={{ borderRadius: "4px" }}
-              >
-                <div className="flex items-center gap-3">
-                  {p.logoUrl ? (
-                    <img src={p.logoUrl} alt={p.name + " logo"} className="h-8 w-8 rounded-full object-cover" />
-                  ) : (
-                    <span
-                      className="flex h-8 w-8 items-center justify-center rounded-full text-xs font-bold text-[var(--hw-bg)]"
-                      style={{ background: "var(--hw-green)" }}
-                    >
-                      {p.name.charAt(0)}
-                    </span>
+          {spotlight.map((p) => {
+            const accentColor = SPOTLIGHT_COLORS[p.slug] || "var(--hw-green)";
+            return (
+              <Link key={p.slug} href={`/projects/${p.slug}`}>
+                <div
+                  className="group relative flex h-full min-h-[140px] flex-col justify-between border border-[var(--hw-border)] bg-[var(--hw-surface)] p-5 transition-all hover:border-[var(--hw-border-bright)] hover:shadow-[0_0_12px_rgba(0,229,160,0.06)] overflow-hidden"
+                  style={{ borderRadius: "4px" }}
+                >
+                  {/* Top accent line */}
+                  <div
+                    className="absolute top-0 left-0 right-0 h-[2px]"
+                    style={{ background: accentColor }}
+                  />
+                  <div className="flex items-center gap-3">
+                    <ProjectLogo name={p.name} logoUrl={p.logoUrl} size="sm" />
+                    <div className="min-w-0">
+                      <h3 className="font-[family-name:var(--font-space-grotesk)] text-sm font-semibold text-[var(--hw-text)] group-hover:text-[var(--hw-green)] transition-colors">
+                        {p.name}
+                      </h3>
+                      {SPOTLIGHT_STATS[p.slug] && (
+                        <span
+                          className="font-[family-name:var(--font-jetbrains-mono)] text-xs font-medium"
+                          style={{ color: accentColor }}
+                        >
+                          {SPOTLIGHT_STATS[p.slug]}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                  {p.tagline && (
+                    <p className="line-clamp-2 text-xs text-[var(--hw-text-muted)] mt-3">{p.tagline}</p>
                   )}
-                  <div>
-                    <h3 className="font-[family-name:var(--font-space-grotesk)] text-sm font-semibold text-[var(--hw-text)]">
-                      {p.name}
-                    </h3>
-                    {SPOTLIGHT_STATS[p.slug] && (
-                      <span className="font-[family-name:var(--font-jetbrains-mono)] text-xs text-[var(--hw-green)]">
-                        {SPOTLIGHT_STATS[p.slug]}
-                      </span>
-                    )}
+                  <div className="mt-3 flex items-center justify-between">
+                    <span className="text-[10px] text-[var(--hw-text-dim)]">{p.category}</span>
+                    <svg className="h-3.5 w-3.5 text-[var(--hw-text-dim)] group-hover:text-[var(--hw-green)] transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                    </svg>
                   </div>
                 </div>
-                {p.tagline && (
-                  <p className="line-clamp-2 text-xs text-[var(--hw-text-muted)]">{p.tagline}</p>
-                )}
-              </div>
-            </Link>
-          ))}
+              </Link>
+            );
+          })}
         </div>
       </section>
 
-      {/* Live Markets Mini-Table */}
+      {/* Live Markets — enhanced with CTAs and visual indicators */}
       <section className="mx-auto max-w-7xl px-4 py-12">
         <div className="flex items-center justify-between mb-6">
-          <h2 className="font-[family-name:var(--font-space-grotesk)] text-xl font-semibold text-[var(--hw-text)]">
-            Live Markets
-          </h2>
+          <div className="flex items-center gap-3">
+            <h2 className="font-[family-name:var(--font-space-grotesk)] text-xl font-semibold text-[var(--hw-text)]">
+              Live Markets
+            </h2>
+            <span className="inline-flex items-center gap-1.5 px-2 py-0.5 text-[10px] text-[var(--hw-green)]" style={{ borderRadius: 2, background: "var(--hw-green-subtle)" }}>
+              <span className="inline-block h-1.5 w-1.5 rounded-full bg-[var(--hw-green)] animate-pulse" />
+              LIVE
+            </span>
+          </div>
           <Link href="/markets" className="text-sm text-[var(--hw-green)] hover:text-[var(--hw-green-dim)]">
             View all markets &rarr;
           </Link>
         </div>
-        <div className="overflow-x-auto">
+
+        {/* Market cards grid for top 4 */}
+        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4 mb-6">
+          {topMarkets.slice(0, 4).map((m) => {
+            const price = parseFloat(m.markPx);
+            const prev = parseFloat(m.prevDayPx);
+            const change = prev > 0 ? ((price - prev) / prev) * 100 : 0;
+            const isUp = change >= 0;
+            return (
+              <a
+                key={m.name}
+                href={`https://app.hyperliquid.xyz/trade/${m.name}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group border border-[var(--hw-border)] bg-[var(--hw-surface)] p-4 transition-all hover:border-[var(--hw-border-bright)]"
+                style={{ borderRadius: "4px" }}
+              >
+                <div className="flex items-center justify-between mb-2">
+                  <span className="font-[family-name:var(--font-space-grotesk)] text-sm font-semibold text-[var(--hw-text)]">{m.name}</span>
+                  <svg className="h-3.5 w-3.5 text-[var(--hw-text-dim)] group-hover:text-[var(--hw-green)] transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25" />
+                  </svg>
+                </div>
+                <div className="font-[family-name:var(--font-jetbrains-mono)] text-lg font-bold text-[var(--hw-text)]">
+                  ${price < 1 ? price.toPrecision(4) : price.toLocaleString("en-US", { maximumFractionDigits: 2 })}
+                </div>
+                {/* Mini sparkline visual */}
+                <div className="flex items-center gap-2 mt-2">
+                  <MiniSparkline up={isUp} />
+                  <span className={`font-[family-name:var(--font-jetbrains-mono)] text-xs font-medium ${isUp ? "text-[var(--hw-green)]" : "text-[var(--hw-red)]"}`}>
+                    {isUp ? "+" : ""}{change.toFixed(2)}%
+                  </span>
+                </div>
+                <div className="flex items-center justify-between mt-2 text-[10px] text-[var(--hw-text-dim)]">
+                  <span>OI: {formatUsd(m.openInterest)}</span>
+                  <span className="group-hover:text-[var(--hw-green)] transition-colors">Trade &rarr;</span>
+                </div>
+              </a>
+            );
+          })}
+        </div>
+
+        {/* Full table for remaining markets */}
+        <div className="overflow-x-auto border border-[var(--hw-border)] bg-[var(--hw-surface)]" style={{ borderRadius: "4px" }}>
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-[var(--hw-border)] text-left text-xs text-[var(--hw-text-dim)]">
-                <th className="pb-2 pr-4">Market</th>
-                <th className="pb-2 pr-4 text-right">Price</th>
-                <th className="pb-2 pr-4 text-right">24h Change</th>
-                <th className="pb-2 pr-4 text-right hidden sm:table-cell">Funding/hr</th>
-                <th className="pb-2 text-right hidden md:table-cell">Open Interest</th>
+                <th className="px-4 py-3 pr-4">#</th>
+                <th className="px-4 py-3 pr-4">Market</th>
+                <th className="px-4 py-3 pr-4 text-right">Price</th>
+                <th className="px-4 py-3 pr-4 text-right">24h</th>
+                <th className="px-4 py-3 pr-4 text-right hidden sm:table-cell">Funding/hr</th>
+                <th className="px-4 py-3 text-right hidden md:table-cell">Open Interest</th>
+                <th className="px-4 py-3 text-right">Trade</th>
               </tr>
             </thead>
             <tbody>
-              {topMarkets.map((m) => {
+              {topMarkets.map((m, i) => {
                 const price = parseFloat(m.markPx);
                 const prev = parseFloat(m.prevDayPx);
                 const change = prev > 0 ? ((price - prev) / prev) * 100 : 0;
                 const funding = parseFloat(m.funding) * 100;
                 return (
-                  <tr key={m.name} className="border-b border-[var(--hw-border)] hover:bg-[var(--hw-surface)]">
-                    <td className="py-2.5 pr-4 font-[family-name:var(--font-space-grotesk)] font-medium text-[var(--hw-text)]">{m.name}</td>
-                    <td className="py-2.5 pr-4 text-right font-[family-name:var(--font-jetbrains-mono)] text-[var(--hw-text-muted)]">${price < 1 ? price.toPrecision(4) : price.toLocaleString("en-US", { maximumFractionDigits: 2 })}</td>
-                    <td className={`py-2.5 pr-4 text-right font-[family-name:var(--font-jetbrains-mono)] ${change >= 0 ? "text-[var(--hw-green)]" : "text-[var(--hw-red)]"}`}>{change >= 0 ? "+" : ""}{change.toFixed(2)}%</td>
-                    <td className={`py-2.5 pr-4 text-right font-[family-name:var(--font-jetbrains-mono)] hidden sm:table-cell ${funding >= 0 ? "text-[var(--hw-green)]" : "text-[var(--hw-red)]"}`}>{funding >= 0 ? "+" : ""}{funding.toFixed(4)}%</td>
-                    <td className="py-2.5 text-right font-[family-name:var(--font-jetbrains-mono)] text-[var(--hw-text-muted)] hidden md:table-cell">{formatUsd(m.openInterest)}</td>
+                  <tr key={m.name} className="border-b border-[var(--hw-border)] last:border-0 hover:bg-[var(--hw-surface-raised)] transition-colors">
+                    <td className="px-4 py-3 pr-4 text-xs text-[var(--hw-text-dim)]">{i + 1}</td>
+                    <td className="px-4 py-3 pr-4">
+                      <div className="flex items-center gap-2">
+                        <span className="font-[family-name:var(--font-space-grotesk)] font-medium text-[var(--hw-text)]">{m.name}</span>
+                        <MiniSparkline up={change >= 0} />
+                      </div>
+                    </td>
+                    <td className="px-4 py-3 pr-4 text-right font-[family-name:var(--font-jetbrains-mono)] text-[var(--hw-text-muted)]">
+                      ${price < 1 ? price.toPrecision(4) : price.toLocaleString("en-US", { maximumFractionDigits: 2 })}
+                    </td>
+                    <td className={`px-4 py-3 pr-4 text-right font-[family-name:var(--font-jetbrains-mono)] ${change >= 0 ? "text-[var(--hw-green)]" : "text-[var(--hw-red)]"}`}>
+                      {change >= 0 ? "+" : ""}{change.toFixed(2)}%
+                    </td>
+                    <td className={`px-4 py-3 pr-4 text-right font-[family-name:var(--font-jetbrains-mono)] hidden sm:table-cell ${funding >= 0 ? "text-[var(--hw-green)]" : "text-[var(--hw-red)]"}`}>
+                      {funding >= 0 ? "+" : ""}{funding.toFixed(4)}%
+                    </td>
+                    <td className="px-4 py-3 text-right font-[family-name:var(--font-jetbrains-mono)] text-[var(--hw-text-muted)] hidden md:table-cell">
+                      {formatUsd(m.openInterest)}
+                    </td>
+                    <td className="px-4 py-3 text-right">
+                      <a
+                        href={`https://app.hyperliquid.xyz/trade/${m.name}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1 px-2.5 py-1 text-[10px] font-medium text-[var(--hw-green)] border border-[var(--hw-green)]/20 hover:bg-[var(--hw-green-subtle)] transition-colors"
+                        style={{ borderRadius: "2px" }}
+                      >
+                        Trade
+                        <svg className="h-2.5 w-2.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25" />
+                        </svg>
+                      </a>
+                    </td>
                   </tr>
                 );
               })}
@@ -378,17 +537,18 @@ export default async function HomePage() {
             return (
               <div
                 key={section.key}
-                className="border border-[var(--hw-border)] bg-[var(--hw-surface)] p-5 transition-all hover:border-[var(--hw-border-bright)]"
+                className="relative border border-[var(--hw-border)] bg-[var(--hw-surface)] p-5 transition-all hover:border-[var(--hw-border-bright)] overflow-hidden"
                 style={{ borderRadius: "4px" }}
               >
+                <div className="absolute top-0 left-0 right-0 h-[2px]" style={{ background: lm.color }} />
                 <div className="flex items-center justify-between mb-3">
                   <div className="flex items-center gap-2">
-                    <span className="h-2 w-2 rounded-full" style={{ background: lm.color }} />
+                    <span className="h-2.5 w-2.5 rounded-full" style={{ background: lm.color }} />
                     <h3 className="font-[family-name:var(--font-space-grotesk)] text-lg font-semibold text-[var(--hw-text)]">
                       {section.label}
                     </h3>
                   </div>
-                  <span className="font-[family-name:var(--font-jetbrains-mono)] text-sm" style={{ color: lm.color }}>
+                  <span className="font-[family-name:var(--font-jetbrains-mono)] text-sm font-bold" style={{ color: lm.color }}>
                     {section.count}
                   </span>
                 </div>
@@ -398,9 +558,12 @@ export default async function HomePage() {
                     <Link
                       key={p.slug}
                       href={`/projects/${p.slug}`}
-                      className="flex items-center justify-between py-1 text-sm text-[var(--hw-text-muted)] hover:text-[var(--hw-text)] transition-colors"
+                      className="flex items-center justify-between py-1.5 text-sm text-[var(--hw-text-muted)] hover:text-[var(--hw-text)] transition-colors"
                     >
-                      <span>{p.name}</span>
+                      <div className="flex items-center gap-2">
+                        <ProjectLogo name={p.name} logoUrl={p.logoUrl} size="sm" />
+                        <span>{p.name}</span>
+                      </div>
                       <span className="text-xs text-[var(--hw-text-dim)]">{p.category}</span>
                     </Link>
                   ))}
@@ -410,7 +573,7 @@ export default async function HomePage() {
                   className="text-sm font-medium transition-colors hover:text-[var(--hw-text)]"
                   style={{ color: lm.color }}
                 >
-                  Explore &rarr;
+                  Explore {section.label} &rarr;
                 </Link>
               </div>
             );
@@ -445,26 +608,39 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* Recently Added */}
+      {/* Recently Added — with logos and better styling */}
       <section className="mx-auto max-w-7xl px-4 py-12">
-        <h2 className="font-[family-name:var(--font-space-grotesk)] text-xl font-semibold text-[var(--hw-text)] mb-6">
-          Recently Added
-        </h2>
-        <div className="space-y-2">
+        <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center gap-3">
+            <h2 className="font-[family-name:var(--font-space-grotesk)] text-xl font-semibold text-[var(--hw-text)]">
+              Recently Added
+            </h2>
+            <span className="px-2 py-0.5 text-[10px] font-medium text-[var(--hw-gold)] border border-[var(--hw-gold)]/20" style={{ borderRadius: 2, background: "rgba(240,180,41,0.08)" }}>
+              NEW
+            </span>
+          </div>
+          <Link href="/projects?sort=newest" className="text-sm text-[var(--hw-green)] hover:text-[var(--hw-green-dim)]">
+            View newest &rarr;
+          </Link>
+        </div>
+        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
           {recentProjects.map((p) => (
             <Link
               key={p.slug}
               href={`/projects/${p.slug}`}
-              className="flex items-center justify-between border border-[var(--hw-border)] bg-[var(--hw-surface)] px-4 py-3 transition-all hover:border-[var(--hw-border-bright)]"
-              style={{ borderRadius: "2px" }}
+              className="group flex flex-col gap-3 border border-[var(--hw-border)] bg-[var(--hw-surface)] p-4 transition-all hover:border-[var(--hw-border-bright)]"
+              style={{ borderRadius: "4px" }}
             >
-              <div className="flex items-center gap-3">
-                <span className="text-sm font-medium text-[var(--hw-text)]">{p.name}</span>
-                {p.tagline && (
-                  <span className="hidden text-sm text-[var(--hw-text-dim)] sm:inline">{p.tagline}</span>
-                )}
+              <div className="flex items-center gap-2.5">
+                <ProjectLogo name={p.name} logoUrl={p.logoUrl} size="sm" />
+                <div className="min-w-0">
+                  <span className="block text-sm font-medium text-[var(--hw-text)] group-hover:text-[var(--hw-green)] transition-colors truncate">{p.name}</span>
+                  <span className="block text-[10px] text-[var(--hw-text-dim)]">{p.category}</span>
+                </div>
               </div>
-              <span className="text-xs text-[var(--hw-text-dim)]">{p.category}</span>
+              {p.tagline && (
+                <p className="text-xs text-[var(--hw-text-dim)] line-clamp-2">{p.tagline}</p>
+              )}
             </Link>
           ))}
         </div>
@@ -494,27 +670,47 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* Category Browse */}
+      {/* Browse by Category — with icons and better grid */}
       <section className="mx-auto max-w-7xl px-4 py-12">
-        <h2 className="font-[family-name:var(--font-space-grotesk)] text-xl font-semibold text-[var(--hw-text)] mb-6">
-          Browse by Category
-        </h2>
-        <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="font-[family-name:var(--font-space-grotesk)] text-xl font-semibold text-[var(--hw-text)]">
+            Browse by Category
+          </h2>
+          <span className="text-xs text-[var(--hw-text-dim)]">{Object.keys(categoryCounts).length} categories</span>
+        </div>
+        <div className="grid gap-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
           {Object.entries(categoryCounts)
             .sort(([, a], [, b]) => b - a)
-            .map(([category, count]) => (
-              <Link
-                key={category}
-                href={`/projects?category=${encodeURIComponent(category)}`}
-                className="flex items-center justify-between border border-[var(--hw-border)] bg-[var(--hw-surface)] px-4 py-3 text-sm text-[var(--hw-text-muted)] transition-all hover:border-[var(--hw-border-bright)] hover:text-[var(--hw-text)]"
-                style={{ borderRadius: "2px" }}
-              >
-                <span>{category}</span>
-                <span className="font-[family-name:var(--font-jetbrains-mono)] text-xs text-[var(--hw-text-dim)]">
-                  {count}
-                </span>
-              </Link>
-            ))}
+            .map(([category, count]) => {
+              const icon = CATEGORY_ICONS[category] || "📦";
+              const color = CATEGORY_COLORS[category] || "var(--hw-green)";
+              return (
+                <Link
+                  key={category}
+                  href={`/projects?category=${encodeURIComponent(category)}`}
+                  className="group flex items-center gap-3 border border-[var(--hw-border)] bg-[var(--hw-surface)] px-4 py-3 transition-all hover:border-[var(--hw-border-bright)]"
+                  style={{ borderRadius: "4px" }}
+                >
+                  <span
+                    className="cat-icon shrink-0"
+                    style={{ background: `color-mix(in srgb, ${color} 10%, transparent)` }}
+                  >
+                    {icon}
+                  </span>
+                  <div className="min-w-0 flex-1">
+                    <span className="block text-sm text-[var(--hw-text-muted)] group-hover:text-[var(--hw-text)] transition-colors truncate">
+                      {category}
+                    </span>
+                    <span className="font-[family-name:var(--font-jetbrains-mono)] text-xs text-[var(--hw-text-dim)]">
+                      {count} project{count !== 1 ? "s" : ""}
+                    </span>
+                  </div>
+                  <svg className="h-3.5 w-3.5 shrink-0 text-[var(--hw-text-dim)] group-hover:text-[var(--hw-green)] transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                  </svg>
+                </Link>
+              );
+            })}
         </div>
       </section>
 
@@ -538,13 +734,40 @@ export default async function HomePage() {
   );
 }
 
-function MiniStatCard({ label, value, accent }: { label: string; value: string; accent?: boolean }) {
+/* ---- Helper Components ---- */
+
+function SearchTriggerBar() {
+  return (
+    <div className="glass border border-[var(--hw-border)] hover:border-[var(--hw-border-bright)] transition-colors cursor-pointer" style={{ borderRadius: "4px" }}>
+      <div className="flex items-center gap-2 px-4 py-3">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="shrink-0 text-[var(--hw-text-dim)]">
+          <circle cx="7" cy="7" r="5.5" stroke="currentColor" strokeWidth="1.5" />
+          <line x1="11" y1="11" x2="14.5" y2="14.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+        </svg>
+        <span className="text-sm text-[var(--hw-text-dim)]">Search projects...</span>
+        <kbd className="hidden text-[10px] text-[var(--hw-text-dim)] border border-[var(--hw-border)] px-1.5 py-0.5 sm:inline-block" style={{ borderRadius: "2px" }}>
+          ⌘K
+        </kbd>
+      </div>
+    </div>
+  );
+}
+
+function MiniStatCard({ label, value, accent, live }: { label: string; value: string; accent?: boolean; live?: boolean }) {
   return (
     <div
       className="border border-[var(--hw-border)] bg-[var(--hw-surface)] px-3 py-2.5"
       style={{ borderRadius: "4px" }}
     >
-      <div className="text-[10px] uppercase tracking-wider text-[var(--hw-text-dim)]">{label}</div>
+      <div className="flex items-center gap-1.5">
+        <span className="text-[10px] uppercase tracking-wider text-[var(--hw-text-dim)]">{label}</span>
+        {live && (
+          <span className="relative flex h-1 w-1">
+            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[var(--hw-green)] opacity-75" />
+            <span className="relative inline-flex h-1 w-1 rounded-full bg-[var(--hw-green)]" />
+          </span>
+        )}
+      </div>
       <div
         className="font-[family-name:var(--font-jetbrains-mono)] text-base font-bold mt-0.5"
         style={{ color: accent ? "var(--hw-green)" : "var(--hw-text)" }}
@@ -552,5 +775,31 @@ function MiniStatCard({ label, value, accent }: { label: string; value: string; 
         {value}
       </div>
     </div>
+  );
+}
+
+function MiniSparkline({ up }: { up: boolean }) {
+  return (
+    <svg width="40" height="16" viewBox="0 0 40 16" fill="none" className="shrink-0">
+      {up ? (
+        <polyline
+          points="0,12 8,10 16,11 24,7 32,5 40,2"
+          stroke="var(--hw-green)"
+          strokeWidth="1.5"
+          fill="none"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      ) : (
+        <polyline
+          points="0,4 8,6 16,5 24,9 32,11 40,14"
+          stroke="var(--hw-red)"
+          strokeWidth="1.5"
+          fill="none"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      )}
+    </svg>
   );
 }

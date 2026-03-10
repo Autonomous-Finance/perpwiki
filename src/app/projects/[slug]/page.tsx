@@ -10,6 +10,7 @@ import { HelpfulButton } from "@/components/HelpfulButton";
 import { getMarketTicker } from "@/lib/market-map";
 import { LiveMarketCard } from "@/components/LiveMarketCard";
 import { ProjectTabs } from "@/components/ProjectTabs";
+import { WebsitePreview } from "@/components/WebsitePreview";
 import { LAYER_META } from "@/lib/categories";
 import { getRelatedArticlesForCategory } from "@/lib/learn-articles";
 import { getCtaLabel, getStatusColor, getHostname } from "@/lib/format";
@@ -458,6 +459,16 @@ export default async function ProjectDetailPage({ params }: Props) {
                   <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
                 </svg>
               </a>
+            </div>
+          )}
+
+          {/* ===== WEBSITE PREVIEW ===== */}
+          {project.website && (
+            <div>
+              <h2 className="font-[family-name:var(--font-space-grotesk)] text-lg font-semibold text-[var(--hw-text)] mb-4">
+                Website Preview
+              </h2>
+              <WebsitePreview url={project.website} name={project.name} />
             </div>
           )}
 

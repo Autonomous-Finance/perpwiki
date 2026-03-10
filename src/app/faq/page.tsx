@@ -460,6 +460,50 @@ const FAQ_SECTIONS: FaqSection[] = [
   },
 ];
 
+// Section metadata for icons and colors
+const SECTION_META: Record<string, { icon: React.ReactNode; color: string }> = {
+  "getting-started": {
+    icon: (
+      <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M15.59 14.37a6 6 0 01-5.84 7.38v-4.8m5.84-2.58a14.98 14.98 0 006.16-12.12A14.98 14.98 0 009.63 8.41m5.96 5.96a14.926 14.926 0 01-5.84 2.58m0 0a14.926 14.926 0 01-5.96-2.58m5.96 2.58v4.8m-5.96-7.38a6 6 0 015.84-7.38" />
+      </svg>
+    ),
+    color: "var(--hw-green)",
+  },
+  "staking-yield": {
+    icon: (
+      <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 18L9 11.25l4.306 4.307a11.95 11.95 0 015.814-5.519l2.74-1.22m0 0l-5.94-2.281m5.94 2.28l-2.28 5.941" />
+      </svg>
+    ),
+    color: "var(--hw-gold)",
+  },
+  trading: {
+    icon: (
+      <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M3 7.5L7.5 3m0 0L12 7.5M7.5 3v13.5m13.5 0L16.5 21m0 0L12 16.5m4.5 4.5V7.5" />
+      </svg>
+    ),
+    color: "var(--hw-cyan)",
+  },
+  ecosystem: {
+    icon: (
+      <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M21 7.5l-9-5.25L3 7.5m18 0l-9 5.25m9-5.25v9l-9 5.25M3 7.5l9 5.25M3 7.5v9l9 5.25m0-9v9" />
+      </svg>
+    ),
+    color: "var(--hw-tier-hip3)",
+  },
+  "security-risks": {
+    icon: (
+      <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
+      </svg>
+    ),
+    color: "var(--hw-red)",
+  },
+};
+
 // Flatten all Q&As for JSON-LD
 const allFaqs = FAQ_SECTIONS.flatMap((s) => s.items);
 
@@ -476,7 +520,56 @@ const faqJsonLd = {
   })),
 };
 
+const RELATED_RESOURCES = [
+  {
+    title: "Learn Hub",
+    description: "In-depth guides on trading, staking, and DeFi strategies",
+    href: "/learn",
+    icon: (
+      <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
+      </svg>
+    ),
+    color: "var(--hw-green)",
+  },
+  {
+    title: "Glossary",
+    description: "Definitions for key Hyperliquid and DeFi terms",
+    href: "/glossary",
+    icon: (
+      <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z" />
+      </svg>
+    ),
+    color: "var(--hw-cyan)",
+  },
+  {
+    title: "Ecosystem Stats",
+    description: "Live TVL, volume, and protocol metrics across Hyperliquid",
+    href: "/stats",
+    icon: (
+      <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z" />
+      </svg>
+    ),
+    color: "var(--hw-gold)",
+  },
+  {
+    title: "All Projects",
+    description: "Browse 170+ protocols building on Hyperliquid",
+    href: "/projects",
+    icon: (
+      <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25a2.25 2.25 0 01-2.25-2.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z" />
+      </svg>
+    ),
+    color: "var(--hw-tier-hip3)",
+  },
+];
+
 export default function FaqPage() {
+  const totalQuestions = allFaqs.length;
+
   return (
     <div className="mx-auto max-w-4xl px-4 py-8">
       <JsonLd data={faqJsonLd} />
@@ -498,100 +591,292 @@ export default function FaqPage() {
 
       {/* Hero */}
       <div
-        className="relative border border-[var(--hw-border)] bg-[var(--hw-surface)] p-8 sm:p-10 mb-10 overflow-hidden"
+        className="relative border border-[var(--hw-border)] bg-[var(--hw-surface)] p-8 sm:p-12 mb-12 overflow-hidden"
         style={{ borderRadius: "4px" }}
       >
+        {/* Decorative gradients */}
         <div
-          className="absolute top-0 right-0 w-[400px] h-[400px] pointer-events-none opacity-20"
+          className="absolute top-0 right-0 w-[500px] h-[500px] pointer-events-none opacity-15"
           style={{
             background:
               "radial-gradient(circle at top right, var(--hw-green-glow), transparent 70%)",
           }}
         />
-        <div className="relative">
-          <h1 className="font-[family-name:var(--font-space-grotesk)] text-3xl sm:text-4xl font-bold text-[var(--hw-text)] mb-3">
-            Frequently Asked Questions
-          </h1>
-          <p className="text-base text-[var(--hw-text-muted)] max-w-2xl">
-            Answers to the most common questions about Hyperliquid, HyperEVM,
-            HYPE staking, funding rates, and the DeFi ecosystem.
-          </p>
+        <div
+          className="absolute bottom-0 left-0 w-[300px] h-[300px] pointer-events-none opacity-10"
+          style={{
+            background:
+              "radial-gradient(circle at bottom left, var(--hw-cyan), transparent 70%)",
+          }}
+        />
+
+        <div className="relative flex flex-col sm:flex-row items-start gap-6">
+          {/* Large icon */}
+          <div
+            className="flex-shrink-0 w-16 h-16 flex items-center justify-center border border-[var(--hw-green-dim)]"
+            style={{
+              borderRadius: "4px",
+              background: "var(--hw-green-subtle)",
+            }}
+          >
+            <svg className="w-8 h-8 text-[var(--hw-green)]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9 5.25h.008v.008H12v-.008z" />
+            </svg>
+          </div>
+
+          <div className="flex-1">
+            <h1 className="font-[family-name:var(--font-space-grotesk)] text-3xl sm:text-4xl font-bold text-[var(--hw-text)] mb-3">
+              Frequently Asked Questions
+            </h1>
+            <p className="text-base text-[var(--hw-text-muted)] max-w-2xl mb-4 leading-relaxed">
+              Everything you need to know about Hyperliquid, from getting started
+              with your first trade to understanding HyperEVM, staking HYPE,
+              navigating funding rates, and exploring the DeFi ecosystem. This
+              page covers the most commonly asked questions across{" "}
+              <span className="font-[family-name:var(--font-jetbrains-mono)] text-[var(--hw-green)]">
+                {FAQ_SECTIONS.length}
+              </span>{" "}
+              topics with{" "}
+              <span className="font-[family-name:var(--font-jetbrains-mono)] text-[var(--hw-green)]">
+                {totalQuestions}
+              </span>{" "}
+              detailed answers.
+            </p>
+            <p className="text-sm text-[var(--hw-text-dim)] leading-relaxed max-w-2xl">
+              Can&apos;t find what you&apos;re looking for? Check the{" "}
+              <Link href="/glossary" className="text-[var(--hw-green)] hover:underline">
+                glossary
+              </Link>{" "}
+              for term definitions or browse our{" "}
+              <Link href="/learn" className="text-[var(--hw-green)] hover:underline">
+                learn hub
+              </Link>{" "}
+              for in-depth guides.
+            </p>
+          </div>
         </div>
       </div>
 
-      {/* Section quick links */}
-      <nav className="mb-8 flex flex-wrap gap-2">
-        {FAQ_SECTIONS.map((section) => (
-          <a
-            key={section.id}
-            href={`#${section.id}`}
-            className="px-3 py-1.5 text-xs font-medium text-[var(--hw-text-muted)] border border-[var(--hw-border)] hover:border-[var(--hw-border-bright)] hover:text-[var(--hw-green)] transition-all"
-            style={{ borderRadius: "2px", background: "var(--hw-surface)" }}
-          >
-            {section.title}
-          </a>
-        ))}
+      {/* Section navigation */}
+      <nav className="mb-12 grid grid-cols-2 sm:grid-cols-5 gap-2">
+        {FAQ_SECTIONS.map((section) => {
+          const meta = SECTION_META[section.id];
+          return (
+            <a
+              key={section.id}
+              href={`#${section.id}`}
+              className="group flex flex-col items-center gap-2 px-3 py-4 text-center border border-[var(--hw-border)] hover:border-[var(--hw-border-bright)] transition-all"
+              style={{ borderRadius: "4px", background: "var(--hw-surface)" }}
+            >
+              <span
+                className="flex items-center justify-center w-9 h-9 transition-colors"
+                style={{
+                  borderRadius: "4px",
+                  color: meta?.color ?? "var(--hw-text-muted)",
+                  background: `color-mix(in srgb, ${meta?.color ?? "var(--hw-text-muted)"} 10%, transparent)`,
+                }}
+              >
+                {meta?.icon}
+              </span>
+              <span className="text-xs font-medium text-[var(--hw-text-muted)] group-hover:text-[var(--hw-text)] transition-colors">
+                {section.title}
+              </span>
+              <span
+                className="text-[10px] font-[family-name:var(--font-jetbrains-mono)]"
+                style={{ color: meta?.color ?? "var(--hw-text-dim)" }}
+              >
+                {section.items.length} questions
+              </span>
+            </a>
+          );
+        })}
       </nav>
 
       {/* FAQ Sections */}
-      {FAQ_SECTIONS.map((section) => (
-        <section key={section.id} id={section.id} className="mb-10">
-          <h2 className="font-[family-name:var(--font-space-grotesk)] text-xl font-semibold text-[var(--hw-text)] mb-4">
-            {section.title}
-          </h2>
-          <div className="space-y-2">
-            {section.items.map((item) => (
-              <FaqAccordion key={item.question} question={item.question}>
-                {item.answerJsx}
-              </FaqAccordion>
-            ))}
-          </div>
-        </section>
-      ))}
+      {FAQ_SECTIONS.map((section) => {
+        const meta = SECTION_META[section.id];
+        return (
+          <section key={section.id} id={section.id} className="mb-14">
+            {/* Section header */}
+            <div className="flex items-center gap-3 mb-5">
+              <div
+                className="flex items-center justify-center w-8 h-8 flex-shrink-0"
+                style={{
+                  borderRadius: "4px",
+                  color: meta?.color ?? "var(--hw-text-muted)",
+                  background: `color-mix(in srgb, ${meta?.color ?? "var(--hw-text-muted)"} 12%, transparent)`,
+                }}
+              >
+                {meta?.icon}
+              </div>
+              <h2 className="font-[family-name:var(--font-space-grotesk)] text-xl font-semibold text-[var(--hw-text)]">
+                {section.title}
+              </h2>
+              <div
+                className="flex-1 h-px ml-2"
+                style={{
+                  background: `linear-gradient(to right, ${meta?.color ?? "var(--hw-border)"}, transparent)`,
+                  opacity: 0.3,
+                }}
+              />
+              <span
+                className="text-xs font-[family-name:var(--font-jetbrains-mono)] flex-shrink-0 px-2 py-0.5"
+                style={{
+                  borderRadius: "2px",
+                  color: meta?.color ?? "var(--hw-text-dim)",
+                  background: `color-mix(in srgb, ${meta?.color ?? "var(--hw-text-dim)"} 8%, transparent)`,
+                }}
+              >
+                {section.items.length}
+              </span>
+            </div>
 
-      {/* CTA */}
+            {/* Section accent border */}
+            <div
+              className="space-y-2 pl-4"
+              style={{
+                borderLeft: `2px solid color-mix(in srgb, ${meta?.color ?? "var(--hw-border)"} 30%, transparent)`,
+              }}
+            >
+              {section.items.map((item) => (
+                <FaqAccordion key={item.question} question={item.question}>
+                  {item.answerJsx}
+                </FaqAccordion>
+              ))}
+            </div>
+          </section>
+        );
+      })}
+
+      {/* Still have questions? */}
       <div
-        className="border border-[var(--hw-border)] p-6 text-center mb-10"
+        className="border border-[var(--hw-border)] p-8 sm:p-10 mb-12 text-center overflow-hidden relative"
         style={{
           borderRadius: "4px",
           background:
-            "linear-gradient(135deg, var(--hw-surface) 0%, rgba(0,229,160,0.03) 100%)",
+            "linear-gradient(135deg, var(--hw-surface) 0%, rgba(0,229,160,0.04) 100%)",
         }}
       >
-        <p className="text-sm font-medium text-[var(--hw-text)] mb-3">
-          Dive deeper into the Hyperliquid ecosystem
-        </p>
-        <div className="flex flex-wrap justify-center gap-3">
-          <Link
-            href="/learn"
-            className="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-semibold transition-all hover:opacity-90"
+        <div
+          className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[200px] pointer-events-none opacity-10"
+          style={{
+            background:
+              "radial-gradient(ellipse at center, var(--hw-green-glow), transparent 70%)",
+          }}
+        />
+        <div className="relative">
+          <div
+            className="mx-auto w-12 h-12 flex items-center justify-center mb-4 border border-[var(--hw-green-dim)]"
             style={{
               borderRadius: "4px",
-              background: "var(--hw-green)",
-              color: "var(--hw-bg)",
+              background: "var(--hw-green-subtle)",
             }}
           >
-            Learn Hub
-          </Link>
-          <Link
-            href="/projects"
-            className="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-semibold transition-all hover:opacity-90 border border-[var(--hw-border)] text-[var(--hw-text-muted)] hover:border-[var(--hw-border-bright)]"
-            style={{ borderRadius: "4px" }}
-          >
-            Browse Projects
-          </Link>
-          <Link
-            href="/glossary"
-            className="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-semibold transition-all hover:opacity-90 border border-[var(--hw-border)] text-[var(--hw-text-muted)] hover:border-[var(--hw-border-bright)]"
-            style={{ borderRadius: "4px" }}
-          >
-            Glossary
-          </Link>
+            <svg className="w-6 h-6 text-[var(--hw-green)]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M20.25 8.511c.884.284 1.5 1.128 1.5 2.097v4.286c0 1.136-.847 2.1-1.98 2.193-.34.027-.68.052-1.02.072v3.091l-3-3c-1.354 0-2.694-.055-4.02-.163a2.115 2.115 0 01-.825-.242m9.345-8.334a2.126 2.126 0 00-.476-.095 48.64 48.64 0 00-8.048 0c-1.131.094-1.976 1.057-1.976 2.192v4.286c0 .837.46 1.58 1.155 1.951m9.345-8.334V6.637c0-1.621-1.152-3.026-2.76-3.235A48.455 48.455 0 0011.25 3c-2.115 0-4.198.137-6.24.402-1.608.209-2.76 1.614-2.76 3.235v6.226c0 1.621 1.152 3.026 2.76 3.235.577.075 1.157.14 1.74.194V21l4.155-4.155" />
+            </svg>
+          </div>
+          <h3 className="font-[family-name:var(--font-space-grotesk)] text-lg font-semibold text-[var(--hw-text)] mb-2">
+            Still have questions?
+          </h3>
+          <p className="text-sm text-[var(--hw-text-muted)] mb-6 max-w-md mx-auto">
+            Join the Hyperliquid community to get help from experienced users
+            and stay up to date with the latest developments.
+          </p>
+          <div className="flex flex-wrap justify-center gap-3">
+            <a
+              href="https://discord.gg/hyperliquid"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-semibold transition-all hover:opacity-90"
+              style={{
+                borderRadius: "4px",
+                background: "var(--hw-green)",
+                color: "var(--hw-bg)",
+              }}
+            >
+              <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M20.317 4.37a19.791 19.791 0 00-4.885-1.515.074.074 0 00-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 00-5.487 0 12.64 12.64 0 00-.617-1.25.077.077 0 00-.079-.037A19.736 19.736 0 003.677 4.37a.07.07 0 00-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 00.031.057 19.9 19.9 0 005.993 3.03.078.078 0 00.084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 00-.041-.106 13.107 13.107 0 01-1.872-.892.077.077 0 01-.008-.128 10.2 10.2 0 00.372-.292.074.074 0 01.077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 01.078.01c.12.098.246.198.373.292a.077.077 0 01-.006.127 12.299 12.299 0 01-1.873.892.077.077 0 00-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 00.084.028 19.839 19.839 0 006.002-3.03.077.077 0 00.032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 00-.031-.03z" />
+              </svg>
+              Discord
+            </a>
+            <a
+              href="https://x.com/HyperliquidX"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-semibold transition-all hover:opacity-90 border border-[var(--hw-border)] text-[var(--hw-text-muted)] hover:border-[var(--hw-border-bright)] hover:text-[var(--hw-text)]"
+              style={{ borderRadius: "4px", background: "var(--hw-surface)" }}
+            >
+              <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+              </svg>
+              Follow on X
+            </a>
+            <a
+              href="https://t.me/hyperliquid"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-semibold transition-all hover:opacity-90 border border-[var(--hw-border)] text-[var(--hw-text-muted)] hover:border-[var(--hw-border-bright)] hover:text-[var(--hw-text)]"
+              style={{ borderRadius: "4px", background: "var(--hw-surface)" }}
+            >
+              <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M11.944 0A12 12 0 000 12a12 12 0 0012 12 12 12 0 0012-12A12 12 0 0012 0a12 12 0 00-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 01.171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.479.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z" />
+              </svg>
+              Telegram
+            </a>
+          </div>
+        </div>
+      </div>
+
+      {/* Related Resources */}
+      <div className="mb-12">
+        <h2 className="font-[family-name:var(--font-space-grotesk)] text-lg font-semibold text-[var(--hw-text)] mb-5">
+          Related Resources
+        </h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          {RELATED_RESOURCES.map((resource) => (
+            <Link
+              key={resource.href}
+              href={resource.href}
+              className="group flex items-start gap-4 p-5 border border-[var(--hw-border)] hover:border-[var(--hw-border-bright)] transition-all"
+              style={{ borderRadius: "4px", background: "var(--hw-surface)" }}
+            >
+              <div
+                className="flex-shrink-0 w-10 h-10 flex items-center justify-center transition-colors"
+                style={{
+                  borderRadius: "4px",
+                  color: resource.color,
+                  background: `color-mix(in srgb, ${resource.color} 10%, transparent)`,
+                }}
+              >
+                {resource.icon}
+              </div>
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-2">
+                  <span className="font-[family-name:var(--font-space-grotesk)] text-sm font-semibold text-[var(--hw-text)] group-hover:text-[var(--hw-green)] transition-colors">
+                    {resource.title}
+                  </span>
+                  <svg
+                    className="w-3.5 h-3.5 text-[var(--hw-text-dim)] group-hover:text-[var(--hw-green)] group-hover:translate-x-0.5 transition-all"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth={2}
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                  </svg>
+                </div>
+                <p className="text-xs text-[var(--hw-text-dim)] mt-1 leading-relaxed">
+                  {resource.description}
+                </p>
+              </div>
+            </Link>
+          ))}
         </div>
       </div>
 
       {/* Footer note */}
-      <p className="text-xs text-[var(--hw-text-dim)] text-center">
+      <p className="text-xs text-[var(--hw-text-dim)] text-center pb-4">
         perp.wiki is independently operated. Not affiliated with Hyperliquid
         Labs.
       </p>
