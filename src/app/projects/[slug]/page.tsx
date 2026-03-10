@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { notFound } from "next/navigation";
 import { LayerBadge } from "@/components/LayerBadge";
+import { ProjectLogo } from "@/components/ProjectLogo";
 import { JsonLd } from "@/components/JsonLd";
 import { BreadcrumbSchema } from "@/components/BreadcrumbSchema";
 import { ReviewForm } from "@/components/ReviewForm";
@@ -11,6 +12,7 @@ import { LiveMarketCard } from "@/components/LiveMarketCard";
 import { ProjectTabs } from "@/components/ProjectTabs";
 import { LAYER_META } from "@/lib/categories";
 import { getRelatedArticlesForCategory } from "@/lib/learn-articles";
+import { getCtaLabel, getStatusColor, getHostname } from "@/lib/format";
 import Link from "next/link";
 import type { Metadata } from "next";
 
@@ -76,15 +78,9 @@ function generateFaqs(
 
   // 5. How do I use it?
   if (project.website) {
-    let hostname = "the official website";
-    try {
-      hostname = new URL(project.website).hostname;
-    } catch {
-      // keep default
-    }
     faqs.push({
       question: `How do I use ${project.name}?`,
-      answer: `Visit ${hostname} to get started. ${project.name} is a ${project.category} application on Hyperliquid's ${layerLabel} layer.`,
+      answer: `Visit ${getHostname(project.website, "the official website")} to get started. ${project.name} is a ${project.category} application on Hyperliquid's ${layerLabel} layer.`,
     });
   }
 
@@ -195,28 +191,8 @@ export default async function ProjectDetailPage({ params }: Props) {
 
   const ticker = getMarketTicker(project.slug);
 
-  const statusColor =
-    project.status === "ACTIVE"
-      ? "var(--hw-green)"
-      : project.status === "BETA"
-        ? "var(--hw-gold)"
-        : "var(--hw-red)";
-
-  const ctaLabel = project.website
-    ? project.category.includes("Trading")
-      ? "Start Trading"
-      : project.category.includes("Lending") || project.category.includes("Yield") || project.category.includes("Staking")
-        ? "Launch App"
-        : project.category.includes("NFT")
-          ? "Explore NFTs"
-          : project.category.includes("Bridge")
-            ? "Bridge Now"
-            : project.category.includes("Analytics") || project.category.includes("Data")
-              ? "View Dashboard"
-              : project.category.includes("SDK")
-                ? "View Docs"
-                : "Visit Website"
-    : null;
+  const statusColor = getStatusColor(project.status);
+  const ctaLabel = project.website ? getCtaLabel(project.category) : null;
 
   const faqs = generateFaqs(project, dossierData);
 
@@ -281,21 +257,12 @@ export default async function ProjectDetailPage({ params }: Props) {
 
         <div className="relative flex flex-col sm:flex-row items-start gap-5">
           {/* Logo */}
-          {project.logoUrl ? (
-            <img
-              src={project.logoUrl}
-              alt={`${project.name} logo`}
-              className="h-16 w-16 shrink-0 rounded-lg object-cover"
-              style={{ border: "2px solid var(--hw-border)" }}
-            />
-          ) : (
-            <span
-              className="flex h-16 w-16 shrink-0 items-center justify-center rounded-lg text-xl font-bold text-[var(--hw-bg)]"
-              style={{ background: "var(--hw-text-dim)", border: "2px solid var(--hw-border)" }}
-            >
-              {project.name.charAt(0)}
-            </span>
-          )}
+          <ProjectLogo
+            name={project.name}
+            logoUrl={project.logoUrl}
+            size="lg"
+            className="border-2 border-[var(--hw-border)]"
+          />
 
           <div className="flex-1 min-w-0">
             <div className="flex items-start justify-between gap-3 flex-wrap">
@@ -534,16 +501,7 @@ export default async function ProjectDetailPage({ params }: Props) {
                     style={{ borderRadius: "4px" }}
                   >
                     <div className="flex items-start gap-3">
-                      {rp.logoUrl ? (
-                        <img src={rp.logoUrl} alt={rp.name + " logo"} className="h-8 w-8 shrink-0 rounded object-cover mt-0.5" />
-                      ) : (
-                        <span
-                          className="flex h-8 w-8 shrink-0 items-center justify-center rounded text-xs font-bold text-[var(--hw-bg)]"
-                          style={{ background: "var(--hw-text-dim)" }}
-                        >
-                          {rp.name.charAt(0)}
-                        </span>
-                      )}
+                      <ProjectLogo name={rp.name} logoUrl={rp.logoUrl} size="md" className="mt-0.5" />
                       <div className="min-w-0">
                         <div className="flex items-center gap-2">
                           <span className="text-sm font-medium text-[var(--hw-text)] group-hover:text-[var(--hw-green)] transition-colors">
@@ -736,7 +694,7 @@ export default async function ProjectDetailPage({ params }: Props) {
                   style={{ borderRadius: "2px" }}
                 >
                   <svg className="h-4 w-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M12 21a9 9 0 100-18 9 9 0 000 18z" /><path strokeLinecap="round" strokeLinejoin="round" d="M3.6 9h16.8M3.6 15h16.8M12 3a15 15 0 014 9 15 15 0 01-4 9 15 15 0 01-4-9 15 15 0 014-9z" /></svg>
-                  <span className="truncate">{(() => { try { return new URL(project.website).hostname; } catch { return "Website"; } })()}</span>
+                  <span className="truncate">{getHostname(project.website)}</span>
                   <svg className="h-3 w-3 ml-auto shrink-0 text-[var(--hw-text-dim)]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25" /></svg>
                 </a>
               )}

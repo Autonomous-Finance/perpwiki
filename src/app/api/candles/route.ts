@@ -2,9 +2,10 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
   const coin = req.nextUrl.searchParams.get("coin");
-  const days = parseInt(req.nextUrl.searchParams.get("days") || "7");
+  const rawDays = parseInt(req.nextUrl.searchParams.get("days") || "7");
   if (!coin) return NextResponse.json({ error: "Missing coin param" }, { status: 400 });
 
+  const days = Math.max(1, Math.min(rawDays || 7, 90));
   const endTime = Date.now();
   const startTime = endTime - days * 86400 * 1000;
 
@@ -28,7 +29,9 @@ export async function GET(req: NextRequest) {
       c: parseFloat(c.c),
       v: parseFloat(c.v),
     }));
-    return NextResponse.json(candles);
+    return NextResponse.json(candles, {
+      headers: { "Cache-Control": "public, max-age=300, s-maxage=300" },
+    });
   } catch {
     return NextResponse.json({ error: "Failed to fetch" }, { status: 500 });
   }

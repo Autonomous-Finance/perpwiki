@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useMemo } from "react";
+import { formatCompactUsd, formatPrice } from "@/lib/format";
 
 export interface MarketRow {
   name: string;
@@ -54,21 +55,8 @@ export function MarketsTable({ markets }: { markets: MarketRow[] }) {
     setPage(0);
   }
 
-  function fmt(n: number, compact = true): string {
-    if (compact) {
-      if (n >= 1e12) return `$${(n / 1e12).toFixed(2)}T`;
-      if (n >= 1e9) return `$${(n / 1e9).toFixed(2)}B`;
-      if (n >= 1e6) return `$${(n / 1e6).toFixed(1)}M`;
-      if (n >= 1e3) return `$${(n / 1e3).toFixed(0)}K`;
-    }
-    return `$${n.toLocaleString("en-US", { maximumFractionDigits: 0 })}`;
-  }
-
-  function fmtPrice(n: number): string {
-    if (n >= 1000) return `$${n.toLocaleString("en-US", { maximumFractionDigits: 2 })}`;
-    if (n >= 1) return `$${n.toFixed(4)}`;
-    return `$${n.toFixed(6)}`;
-  }
+  const fmt = formatCompactUsd;
+  const fmtPrice = formatPrice;
 
   const sortArrow = (key: SortKey) => {
     if (sortKey !== key) return "";

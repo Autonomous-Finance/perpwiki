@@ -49,6 +49,7 @@ CREATE TABLE "Review" (
     "content" TEXT,
     "authorId" TEXT,
     "isPublished" BOOLEAN NOT NULL DEFAULT false,
+    "helpfulCount" INTEGER NOT NULL DEFAULT 0,
     "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT "Review_projectId_fkey" FOREIGN KEY ("projectId") REFERENCES "Project" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
 );
@@ -68,9 +69,23 @@ CREATE TABLE "Suggestion" (
 -- CreateIndex
 CREATE UNIQUE INDEX "Project_slug_key" ON "Project"("slug");
 
+-- CreateIndex: common query filters
+CREATE INDEX "Project_approvalStatus_idx" ON "Project"("approvalStatus");
+CREATE INDEX "Project_approvalStatus_category_idx" ON "Project"("approvalStatus", "category");
+CREATE INDEX "Project_approvalStatus_layer_idx" ON "Project"("approvalStatus", "layer");
+CREATE INDEX "Project_category_idx" ON "Project"("category");
+CREATE INDEX "Project_layer_idx" ON "Project"("layer");
+
 -- CreateIndex
 CREATE UNIQUE INDEX "Dossier_projectId_key" ON "Dossier"("projectId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Dossier_seedId_key" ON "Dossier"("seedId");
+
+-- CreateIndex: review lookups
+CREATE INDEX "Review_projectId_idx" ON "Review"("projectId");
+CREATE INDEX "Review_isPublished_idx" ON "Review"("isPublished");
+
+-- CreateIndex: suggestion queries
+CREATE INDEX "Suggestion_status_idx" ON "Suggestion"("status");
 

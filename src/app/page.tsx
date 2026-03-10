@@ -86,13 +86,14 @@ async function getRecentProjects() {
 }
 
 async function getCategoryCounts() {
-  const projects = await prisma.project.findMany({
+  const groups = await prisma.project.groupBy({
+    by: ["category"],
     where: { approvalStatus: "APPROVED" },
-    select: { category: true },
+    _count: true,
   });
   const counts: Record<string, number> = {};
-  for (const p of projects) {
-    counts[p.category] = (counts[p.category] || 0) + 1;
+  for (const g of groups) {
+    counts[g.category] = g._count;
   }
   return counts;
 }

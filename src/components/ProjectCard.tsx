@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { LayerBadge } from "./LayerBadge";
+import { ProjectLogo } from "./ProjectLogo";
 
 interface ProjectCardProps {
   slug: string;
@@ -30,16 +31,7 @@ export function ProjectCard({
       >
         <div className="flex items-start justify-between gap-2">
           <div className="flex items-center gap-2.5">
-            {logoUrl ? (
-              <img src={logoUrl} alt={name + " logo"} className="h-6 w-6 shrink-0 rounded-full object-cover" />
-            ) : (
-              <span
-                className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-[10px] font-bold text-[var(--hw-bg)]"
-                style={{ background: "var(--hw-text-dim)" }}
-              >
-                {name.charAt(0)}
-              </span>
-            )}
+            <ProjectLogo name={name} logoUrl={logoUrl} size="sm" />
             <h3 className="font-[family-name:var(--font-space-grotesk)] text-base font-semibold text-[var(--hw-text)]">
               {name}
               {isVerified && (

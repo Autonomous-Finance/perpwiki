@@ -16,14 +16,17 @@ export async function GET(req: NextRequest) {
     const idx = meta.universe.findIndex((u: { name: string }) => u.name === coin);
     if (idx === -1) return NextResponse.json({ error: "Coin not found" }, { status: 404 });
     const ctx = ctxs[idx];
-    return NextResponse.json({
-      coin,
-      markPx: ctx.markPx,
-      prevDayPx: ctx.prevDayPx,
-      funding: ctx.funding,
-      openInterest: ctx.openInterest,
-      dayNtlVlm: ctx.dayNtlVlm,
-    });
+    return NextResponse.json(
+      {
+        coin,
+        markPx: ctx.markPx,
+        prevDayPx: ctx.prevDayPx,
+        funding: ctx.funding,
+        openInterest: ctx.openInterest,
+        dayNtlVlm: ctx.dayNtlVlm,
+      },
+      { headers: { "Cache-Control": "public, max-age=30, s-maxage=30" } },
+    );
   } catch {
     return NextResponse.json({ error: "Failed to fetch" }, { status: 500 });
   }

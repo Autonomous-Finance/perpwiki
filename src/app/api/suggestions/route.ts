@@ -39,6 +39,13 @@ export async function POST(request: Request) {
       );
     }
 
+    if (value.length > 2000) {
+      return NextResponse.json(
+        { error: "Value too long (max 2000 characters)." },
+        { status: 400 }
+      );
+    }
+
     // Verify project exists
     const project = await prisma.project.findUnique({
       where: { id: projectId },
@@ -58,7 +65,7 @@ export async function POST(request: Request) {
         field,
         value: value.trim(),
         type: reason ? reason.trim().slice(0, 500) : null,
-        status: "PENDING",
+        status: "pending",
       },
     });
 

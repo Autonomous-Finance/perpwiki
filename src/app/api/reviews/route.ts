@@ -37,7 +37,7 @@ export async function POST(request: Request) {
       data: {
         projectId,
         rating,
-        content: typeof content === "string" ? content.trim() || null : null,
+        content: typeof content === "string" ? (content.trim().slice(0, 2000) || null) : null,
         isPublished: false,
       },
     });

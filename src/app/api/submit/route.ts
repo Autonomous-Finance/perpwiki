@@ -6,10 +6,17 @@ export async function POST(request: Request) {
     const body = await request.json();
     const { name, website, twitter, category, layer, description, email } = body;
 
-    // Validate required fields
+    // Validate required fields and lengths
     if (!name?.trim() || !website?.trim() || !category?.trim() || !layer?.trim()) {
       return NextResponse.json(
         { error: "Name, website, category, and layer are required." },
+        { status: 400 }
+      );
+    }
+
+    if (name.trim().length > 100 || (description && description.length > 5000)) {
+      return NextResponse.json(
+        { error: "Field too long." },
         { status: 400 }
       );
     }
