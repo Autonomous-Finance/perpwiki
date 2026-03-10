@@ -41,26 +41,16 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.8 as const,
   }));
 
-  // Compare pairs — all same-category project pairs
-  const byCategory = new Map<string, string[]>();
-  for (const p of projects) {
-    const existing = byCategory.get(p.category) || [];
-    existing.push(p.slug);
-    byCategory.set(p.category, existing);
-  }
-
+  // Compare pairs — full N×(N-1)/2 matrix across all projects
+  const allSlugs = projects.map((p) => p.slug).sort();
   const comparePairs: MetadataRoute.Sitemap = [];
-  for (const [, slugs] of byCategory) {
-    if (slugs.length < 2) continue;
-    slugs.sort();
-    for (let i = 0; i < slugs.length; i++) {
-      for (let j = i + 1; j < slugs.length; j++) {
-        comparePairs.push({
-          url: `${SITE_URL}/compare/${slugs[i]}-vs-${slugs[j]}`,
-          lastModified: new Date(),
-          priority: 0.6,
-        });
-      }
+  for (let i = 0; i < allSlugs.length; i++) {
+    for (let j = i + 1; j < allSlugs.length; j++) {
+      comparePairs.push({
+        url: `${SITE_URL}/compare/${allSlugs[i]}-vs-${allSlugs[j]}`,
+        lastModified: new Date(),
+        priority: 0.6,
+      });
     }
   }
 
@@ -178,6 +168,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       url: `${SITE_URL}/submit`,
       lastModified: new Date(),
       priority: 0.5,
+    },
+    {
+      url: `${SITE_URL}/feed.xml`,
+      lastModified: new Date(),
+      priority: 0.3,
     },
     {
       url: `${SITE_URL}/sitemap-html`,

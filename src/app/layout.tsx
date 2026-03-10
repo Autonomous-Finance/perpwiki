@@ -88,13 +88,17 @@ export default function RootLayout({
             }),
           }}
         />
+        <link rel="alternate" type="application/rss+xml" title="perp.wiki RSS Feed" href="/feed.xml" />
       </head>
       <body
         className={`${spaceGrotesk.variable} ${inter.variable} ${jetbrainsMono.variable} antialiased`}
       >
         <ThemeProvider>
+          <a href="#main-content" className="skip-link">
+            Skip to content
+          </a>
           <Header />
-          <main className="min-h-screen">{children}</main>
+          <main id="main-content" className="min-h-screen">{children}</main>
           <Footer />
         </ThemeProvider>
       </body>
