@@ -45,8 +45,21 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     alternates: {
       canonical: `https://perp.wiki/compare/${slugs[0]}-vs-${slugs[1]}`,
     },
-    openGraph: { title, description, type: "website" },
-    twitter: { card: "summary_large_image" },
+    openGraph: {
+      title,
+      description,
+      url: `https://perp.wiki/compare/${slugs[0]}-vs-${slugs[1]}`,
+      siteName: "perp.wiki",
+      images: [{ url: `/compare/${slugs[0]}-vs-${slugs[1]}/opengraph-image`, width: 1200, height: 630 }],
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image" as const,
+      site: "@perpwiki",
+      title,
+      description,
+      images: [`/compare/${slugs[0]}-vs-${slugs[1]}/opengraph-image`],
+    },
   };
 }
 

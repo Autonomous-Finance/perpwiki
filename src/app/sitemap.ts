@@ -17,13 +17,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     url: `${SITE_URL}/projects/${p.slug}`,
     lastModified: p.updatedAt,
     priority: 0.8 as const,
+    changeFrequency: "weekly" as const,
   }));
 
   // Ecosystem landing pages — one per approved project
   const ecosystemEntries = projects.map((p) => ({
     url: `${SITE_URL}/ecosystem/${p.slug}`,
     lastModified: p.updatedAt,
-    priority: 0.7 as const,
+    priority: 0.75 as const,
+    changeFrequency: "weekly" as const,
   }));
 
   // Unique categories
@@ -31,14 +33,16 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const categoryEntries = categories.map((cat) => ({
     url: `${SITE_URL}/category/${categoryToSlug(cat)}`,
     lastModified: new Date(),
-    priority: 0.7 as const,
+    priority: 0.8 as const,
+    changeFrequency: "weekly" as const,
   }));
 
   // Learn articles
   const learnEntries = LEARN_ARTICLES.map((article) => ({
     url: `${SITE_URL}/learn/${article.slug}`,
     lastModified: new Date(article.datePublished),
-    priority: 0.8 as const,
+    priority: 0.85 as const,
+    changeFrequency: "monthly" as const,
   }));
 
   // Compare pairs — full N×(N-1)/2 matrix across all projects
@@ -49,7 +53,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       comparePairs.push({
         url: `${SITE_URL}/compare/${allSlugs[i]}-vs-${allSlugs[j]}`,
         lastModified: new Date(),
-        priority: 0.6,
+        priority: 0.75,
+        changeFrequency: "weekly",
       });
     }
   }
@@ -59,16 +64,19 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       url: SITE_URL,
       lastModified: new Date(),
       priority: 1.0,
+      changeFrequency: "daily",
     },
     {
       url: `${SITE_URL}/projects`,
       lastModified: new Date(),
       priority: 0.9,
+      changeFrequency: "daily",
     },
     {
       url: `${SITE_URL}/categories`,
       lastModified: new Date(),
-      priority: 0.8,
+      priority: 0.9,
+      changeFrequency: "weekly",
     },
     {
       url: `${SITE_URL}/layer/hypercore`,
@@ -88,27 +96,32 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     {
       url: `${SITE_URL}/learn`,
       lastModified: new Date(),
-      priority: 0.7,
+      priority: 0.9,
+      changeFrequency: "weekly",
     },
     {
       url: `${SITE_URL}/markets`,
       lastModified: new Date(),
-      priority: 0.9,
+      priority: 0.8,
+      changeFrequency: "hourly",
     },
     {
       url: `${SITE_URL}/funding-rates`,
       lastModified: new Date(),
       priority: 0.8,
+      changeFrequency: "hourly",
     },
     {
       url: `${SITE_URL}/stats`,
       lastModified: new Date(),
-      priority: 0.7,
+      priority: 0.8,
+      changeFrequency: "hourly",
     },
     {
       url: `${SITE_URL}/trending`,
       lastModified: new Date(),
-      priority: 0.7,
+      priority: 0.8,
+      changeFrequency: "daily",
     },
     {
       url: `${SITE_URL}/glossary`,
@@ -137,32 +150,38 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     {
       url: `${SITE_URL}/tools`,
       lastModified: new Date(),
-      priority: 0.7,
+      priority: 0.75,
+      changeFrequency: "monthly",
     },
     {
       url: `${SITE_URL}/tools/liquidation-calculator`,
       lastModified: new Date(),
-      priority: 0.8,
+      priority: 0.75,
+      changeFrequency: "monthly",
     },
     {
       url: `${SITE_URL}/tools/fee-calculator`,
       lastModified: new Date(),
-      priority: 0.8,
+      priority: 0.75,
+      changeFrequency: "monthly",
     },
     {
       url: `${SITE_URL}/tools/position-size-calculator`,
       lastModified: new Date(),
-      priority: 0.8,
+      priority: 0.75,
+      changeFrequency: "monthly",
     },
     {
       url: `${SITE_URL}/tools/pnl-calculator`,
       lastModified: new Date(),
-      priority: 0.8,
+      priority: 0.75,
+      changeFrequency: "monthly",
     },
     {
       url: `${SITE_URL}/tools/funding-arbitrage-calculator`,
       lastModified: new Date(),
-      priority: 0.8,
+      priority: 0.75,
+      changeFrequency: "monthly",
     },
     {
       url: `${SITE_URL}/submit`,

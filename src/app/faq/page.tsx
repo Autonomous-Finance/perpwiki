@@ -13,9 +13,19 @@ export const metadata: Metadata = {
     title: "Hyperliquid FAQ — Common Questions Answered",
     description:
       "Answers to the most common questions about Hyperliquid, HyperEVM, HYPE staking, funding rates, and the DeFi ecosystem.",
+    url: "https://perp.wiki/faq",
+    siteName: "perp.wiki",
+    images: [{ url: "/faq/opengraph-image", width: 1200, height: 630 }],
     type: "website",
   },
-  twitter: { card: "summary_large_image" },
+  twitter: {
+    card: "summary_large_image",
+    site: "@perpwiki",
+    title: "Hyperliquid FAQ — Common Questions Answered",
+    description:
+      "Answers to the most common questions about Hyperliquid, HyperEVM, HYPE staking, funding rates, and the DeFi ecosystem.",
+    images: ["/faq/opengraph-image"],
+  },
 };
 
 type FaqItem = {

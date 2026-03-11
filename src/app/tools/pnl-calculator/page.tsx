@@ -9,6 +9,23 @@ export const metadata: Metadata = {
   description:
     "Calculate profit and loss for Hyperliquid perpetual trades. Estimate PnL, ROE, and fees before entering a position.",
   alternates: { canonical: "https://perp.wiki/tools/pnl-calculator" },
+  openGraph: {
+    title: "Hyperliquid PnL Calculator — Profit & Loss Estimator",
+    description:
+      "Calculate profit and loss for Hyperliquid perpetual trades. Estimate PnL, ROE, and fees before entering a position.",
+    url: "https://perp.wiki/tools/pnl-calculator",
+    siteName: "perp.wiki",
+    images: [{ url: "/tools/pnl-calculator/opengraph-image", width: 1200, height: 630 }],
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    site: "@perpwiki",
+    title: "Hyperliquid PnL Calculator — Profit & Loss Estimator",
+    description:
+      "Calculate profit and loss for Hyperliquid perpetual trades. Estimate PnL, ROE, and fees before entering a position.",
+    images: ["/tools/pnl-calculator/opengraph-image"],
+  },
 };
 
 export default function PnlCalculatorPage() {

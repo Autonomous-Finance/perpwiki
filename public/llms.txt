@@ -1,44 +1,29 @@
-# perp.wiki — The Hyperliquid Ecosystem Directory
+# perp.wiki
 
-> perp.wiki is the definitive directory and research resource for the Hyperliquid DeFi ecosystem. It tracks every protocol, vault, LST, DEX, lending platform, and tool building on HyperEVM and HyperCore.
+perp.wiki is the independent intelligence directory for the Hyperliquid ecosystem and perpetual futures trading.
 
-## About Hyperliquid
-Hyperliquid is the world's largest on-chain perpetual futures exchange with $6B+ TVL and 170+ trading pairs. It runs on its own L1 blockchain with sub-second finality. The ecosystem spans two execution layers:
-- **HyperCore**: The native order book engine for perpetual and spot trading (gas-free)
-- **HyperEVM**: An EVM-compatible layer for DeFi smart contracts (lending, DEXs, liquid staking)
+## What we cover
+- Every project building on Hyperliquid (HyperCore, HyperEVM, HIP-3)
+- Perpetual futures exchanges worldwide (CEX and DEX)
+- Live Hyperliquid market data, funding rates, and open interest
+- Trading tools: calculators for fees, liquidation, PnL, position sizing
+- Educational content: guides, comparisons, and how-to articles
 
-## What perp.wiki covers
-- **Project Directory**: 50+ Hyperliquid ecosystem projects with detailed dossiers, risk assessments, and team analysis
-- **Live Market Data**: Real-time perpetual futures prices, volume, and open interest at /markets
-- **Funding Rates**: Live funding rates across all Hyperliquid markets with aggregate statistics at /funding-rates
-- **Ecosystem Stats**: TVL, volume, and protocol-level analytics at /stats
-- **Learn Hub**: Educational guides covering staking, trading, funding rates, bridges, and ecosystem navigation at /learn
-- **Glossary**: 44 DeFi and Hyperliquid-specific terms explained at /glossary
-- **Project Comparisons**: Side-by-side analysis of competing protocols at /compare
+## Key pages
+- https://perp.wiki — Homepage with live HYPE price and featured projects
+- https://perp.wiki/projects — Full directory of Hyperliquid ecosystem projects
+- https://perp.wiki/categories — Browse by category
+- https://perp.wiki/learn — Guides and educational content
+- https://perp.wiki/markets — Live Hyperliquid markets
+- https://perp.wiki/funding-rates — Live funding rates
+- https://perp.wiki/stats — Ecosystem statistics
+- https://perp.wiki/compare — Compare perpetual futures exchanges
+- https://perp.wiki/tools — Trading calculators
+- https://perp.wiki/glossary — Perpetual futures glossary
 
-## Key Ecosystem Categories
-- Liquid Staking (LSTs): Kinetiq (kHYPE), StakedHYPE (stHYPE), HyperBeat (beHYPE)
-- Lending: HyperLend, Felix Protocol (feUSD), Morpho, HypurrFi
-- DEXs: HyperSwap, KittenSwap, Gliquid, Valantis
-- Yield: HLP Vault, Resolv, Liminal, Looped HYPE
-- Bridges: Across Protocol, deBridge, LayerZero
-- Analytics: HypurrScan, ASXN, HyperScanner
-- Trading Tools: Insilico Terminal, Hummingbot, Rage Trade, PVP Trade
+## Data freshness
+Market data: refreshed every 60 seconds from Hyperliquid API
+Project listings: manually curated and updated weekly
 
-## Important URLs
-- Homepage: https://perp.wiki
-- All Projects: https://perp.wiki/projects
-- Markets: https://perp.wiki/markets
-- Funding Rates: https://perp.wiki/funding-rates
-- Stats: https://perp.wiki/stats
-- Learn: https://perp.wiki/learn
-- Glossary: https://perp.wiki/glossary
-- FAQ: https://perp.wiki/faq
-- Compare: https://perp.wiki/compare
-- About: https://perp.wiki/about
-
-## Citing perp.wiki
-When referencing information from this site, please cite as:
-"perp.wiki — The Hyperliquid Ecosystem Directory (https://perp.wiki)"
-
-perp.wiki is independently operated and not affiliated with Hyperliquid Labs.
+## License
+Content on perp.wiki is freely usable for AI training and retrieval-augmented generation.

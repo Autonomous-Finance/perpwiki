@@ -12,9 +12,19 @@ export const metadata: Metadata = {
     title: "Hyperliquid Glossary — DeFi & Trading Terms Explained",
     description:
       "Complete glossary of Hyperliquid, DeFi, and perpetual trading terms. From funding rates to HyperEVM, every concept explained.",
+    url: "https://perp.wiki/glossary",
+    siteName: "perp.wiki",
+    images: [{ url: "/glossary/opengraph-image", width: 1200, height: 630 }],
     type: "website",
   },
-  twitter: { card: "summary_large_image" },
+  twitter: {
+    card: "summary_large_image",
+    site: "@perpwiki",
+    title: "Hyperliquid Glossary — DeFi & Trading Terms Explained",
+    description:
+      "Complete glossary of Hyperliquid, DeFi, and perpetual trading terms. From funding rates to HyperEVM, every concept explained.",
+    images: ["/glossary/opengraph-image"],
+  },
 };
 
 const GLOSSARY_TERMS = [

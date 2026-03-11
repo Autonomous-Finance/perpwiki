@@ -15,6 +15,18 @@ export const metadata: Metadata = {
     title: "Hyperliquid Funding Rates — Live Data for 200+ Perp Markets",
     description:
       "Real-time funding rate dashboard with heatmap, filters, aggregate stats, and strategy guides. Track every Hyperliquid perpetual market.",
+    url: "https://perp.wiki/funding-rates",
+    siteName: "perp.wiki",
+    images: [{ url: "/funding-rates/opengraph-image", width: 1200, height: 630 }],
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    site: "@perpwiki",
+    title: "Hyperliquid Funding Rates — Live Data for 200+ Perp Markets",
+    description:
+      "Real-time funding rate dashboard with heatmap, filters, aggregate stats, and strategy guides. Track every Hyperliquid perpetual market.",
+    images: ["/funding-rates/opengraph-image"],
   },
   keywords: [
     "Hyperliquid funding rates",

@@ -9,6 +9,23 @@ export const metadata: Metadata = {
   description:
     "Calculate your Hyperliquid liquidation price based on position size, leverage, and margin. Free tool for perpetual futures traders.",
   alternates: { canonical: "https://perp.wiki/tools/liquidation-calculator" },
+  openGraph: {
+    title: "Hyperliquid Liquidation Calculator — Estimate Your Liquidation Price",
+    description:
+      "Calculate your Hyperliquid liquidation price based on position size, leverage, and margin. Free tool for perpetual futures traders.",
+    url: "https://perp.wiki/tools/liquidation-calculator",
+    siteName: "perp.wiki",
+    images: [{ url: "/tools/liquidation-calculator/opengraph-image", width: 1200, height: 630 }],
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    site: "@perpwiki",
+    title: "Hyperliquid Liquidation Calculator — Estimate Your Liquidation Price",
+    description:
+      "Calculate your Hyperliquid liquidation price based on position size, leverage, and margin. Free tool for perpetual futures traders.",
+    images: ["/tools/liquidation-calculator/opengraph-image"],
+  },
 };
 
 export default function LiquidationCalculatorPage() {

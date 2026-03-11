@@ -16,9 +16,19 @@ export const metadata: Metadata = {
     title: "Compare Hyperliquid Projects — LSTs, Lending, DEXs",
     description:
       "Side-by-side comparisons of Hyperliquid ecosystem projects. Compare LSTs, lending protocols, DEXs, and yield strategies on HyperEVM.",
+    url: "https://perp.wiki/compare",
+    siteName: "perp.wiki",
+    images: [{ url: "/compare/opengraph-image", width: 1200, height: 630 }],
     type: "website",
   },
-  twitter: { card: "summary_large_image" },
+  twitter: {
+    card: "summary_large_image",
+    site: "@perpwiki",
+    title: "Compare Hyperliquid Projects — LSTs, Lending, DEXs",
+    description:
+      "Side-by-side comparisons of Hyperliquid ecosystem projects. Compare LSTs, lending protocols, DEXs, and yield strategies on HyperEVM.",
+    images: ["/compare/opengraph-image"],
+  },
 };
 
 interface GroupedCategory {

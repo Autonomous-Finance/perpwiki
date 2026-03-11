@@ -9,6 +9,23 @@ export const metadata: Metadata = {
   description:
     "Calculate optimal position size for Hyperliquid trades based on account balance, risk tolerance, and leverage.",
   alternates: { canonical: "https://perp.wiki/tools/position-size-calculator" },
+  openGraph: {
+    title: "Hyperliquid Position Size Calculator — Risk-Based Sizing",
+    description:
+      "Calculate optimal position size for Hyperliquid trades based on account balance, risk tolerance, and leverage.",
+    url: "https://perp.wiki/tools/position-size-calculator",
+    siteName: "perp.wiki",
+    images: [{ url: "/tools/position-size-calculator/opengraph-image", width: 1200, height: 630 }],
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    site: "@perpwiki",
+    title: "Hyperliquid Position Size Calculator — Risk-Based Sizing",
+    description:
+      "Calculate optimal position size for Hyperliquid trades based on account balance, risk tolerance, and leverage.",
+    images: ["/tools/position-size-calculator/opengraph-image"],
+  },
 };
 
 export default function PositionSizeCalculatorPage() {

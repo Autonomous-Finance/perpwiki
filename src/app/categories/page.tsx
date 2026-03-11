@@ -14,6 +14,23 @@ export const metadata: Metadata = {
   description:
     "Browse all Hyperliquid ecosystem categories — liquid staking, lending, DEXs, yield vaults, trading tools, and more. Discover every DeFi sector on HyperEVM and HyperCore.",
   alternates: { canonical: `${SITE_URL}/categories` },
+  openGraph: {
+    title: "Hyperliquid Ecosystem Categories — All DeFi Sectors",
+    description:
+      "Browse all Hyperliquid ecosystem categories — liquid staking, lending, DEXs, yield vaults, trading tools, and more. Discover every DeFi sector on HyperEVM and HyperCore.",
+    url: "https://perp.wiki/categories",
+    siteName: "perp.wiki",
+    images: [{ url: "/categories/opengraph-image", width: 1200, height: 630 }],
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    site: "@perpwiki",
+    title: "Hyperliquid Ecosystem Categories — All DeFi Sectors",
+    description:
+      "Browse all Hyperliquid ecosystem categories — liquid staking, lending, DEXs, yield vaults, trading tools, and more. Discover every DeFi sector on HyperEVM and HyperCore.",
+    images: ["/categories/opengraph-image"],
+  },
 };
 
 /* Short descriptions for each category */

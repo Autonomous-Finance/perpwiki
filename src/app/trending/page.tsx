@@ -14,6 +14,18 @@ export const metadata: Metadata = {
     title: "Trending on Hyperliquid — Top Markets & New Projects",
     description:
       "Top markets by volume, highest open interest, new projects, and ecosystem pulse for Hyperliquid.",
+    url: "https://perp.wiki/trending",
+    siteName: "perp.wiki",
+    images: [{ url: "/trending/opengraph-image", width: 1200, height: 630 }],
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    site: "@perpwiki",
+    title: "Trending on Hyperliquid — Top Markets & New Projects",
+    description:
+      "Top markets by volume, highest open interest, new projects, and ecosystem pulse for Hyperliquid.",
+    images: ["/trending/opengraph-image"],
   },
   keywords: [
     "Hyperliquid trending",

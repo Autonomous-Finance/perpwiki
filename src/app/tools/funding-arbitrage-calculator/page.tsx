@@ -9,6 +9,23 @@ export const metadata: Metadata = {
   description:
     "Calculate potential yield from Hyperliquid funding rate arbitrage strategies. Estimate APR from delta-neutral positions.",
   alternates: { canonical: "https://perp.wiki/tools/funding-arbitrage-calculator" },
+  openGraph: {
+    title: "Funding Rate Arbitrage Calculator — Delta-Neutral Yield",
+    description:
+      "Calculate potential yield from Hyperliquid funding rate arbitrage strategies. Estimate APR from delta-neutral positions.",
+    url: "https://perp.wiki/tools/funding-arbitrage-calculator",
+    siteName: "perp.wiki",
+    images: [{ url: "/tools/funding-arbitrage-calculator/opengraph-image", width: 1200, height: 630 }],
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    site: "@perpwiki",
+    title: "Funding Rate Arbitrage Calculator — Delta-Neutral Yield",
+    description:
+      "Calculate potential yield from Hyperliquid funding rate arbitrage strategies. Estimate APR from delta-neutral positions.",
+    images: ["/tools/funding-arbitrage-calculator/opengraph-image"],
+  },
 };
 
 export default function FundingArbCalculatorPage() {

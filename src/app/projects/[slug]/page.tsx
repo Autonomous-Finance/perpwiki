@@ -114,12 +114,25 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!project) return { title: "Not Found" };
   const seoTitle = `${project.name} — Hyperliquid Ecosystem`;
   const seoDesc = `${project.name} on Hyperliquid: overview, features, layer, and ecosystem context. Independent profile on perp.wiki.`;
+  const ogImageUrl = `/projects/${slug}/opengraph-image`;
   return {
     title: seoTitle,
     description: seoDesc,
+    alternates: { canonical: `https://perp.wiki/projects/${slug}` },
     openGraph: {
       title: seoTitle,
       description: seoDesc,
+      url: `https://perp.wiki/projects/${slug}`,
+      siteName: "perp.wiki",
+      images: [{ url: ogImageUrl, width: 1200, height: 630, alt: seoTitle }],
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      site: "@perpwiki",
+      title: seoTitle,
+      description: seoDesc,
+      images: [ogImageUrl],
     },
   };
 }
@@ -217,9 +230,11 @@ export default async function ProjectDetailPage({ params }: Props) {
           "@context": "https://schema.org",
           "@type": "SoftwareApplication",
           name: project.name,
-          url: project.website || undefined,
+          description: (project.tagline || project.description || "").slice(0, 200),
           applicationCategory: "FinanceApplication",
-          description: project.tagline || project.description || undefined,
+          url: project.website || undefined,
+          operatingSystem: "Web",
+          offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
         }}
       />
       <JsonLd data={faqSchema} />

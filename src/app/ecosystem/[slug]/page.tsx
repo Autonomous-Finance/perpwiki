@@ -33,11 +33,28 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     return { title: "Not Found" };
   }
 
+  const title = `${project.name} on Hyperliquid — Overview, Features & Analysis`;
+  const description = `Everything you need to know about ${project.name} on Hyperliquid. ${project.tagline || ""}. Layer, category, features, and ecosystem context.`;
   return {
-    title: `${project.name} on Hyperliquid — Overview, Features & Analysis`,
-    description: `Everything you need to know about ${project.name} on Hyperliquid. ${project.tagline || ""}. Layer, category, features, and ecosystem context.`,
+    title,
+    description,
     alternates: {
       canonical: `${SITE_URL}/ecosystem/${project.slug}`,
+    },
+    openGraph: {
+      title,
+      description,
+      url: `${SITE_URL}/ecosystem/${project.slug}`,
+      siteName: "perp.wiki",
+      images: [{ url: `/ecosystem/${project.slug}/opengraph-image`, width: 1200, height: 630 }],
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image" as const,
+      site: "@perpwiki",
+      title,
+      description,
+      images: [`/ecosystem/${project.slug}/opengraph-image`],
     },
   };
 }

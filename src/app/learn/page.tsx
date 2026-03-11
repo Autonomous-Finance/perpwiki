@@ -12,9 +12,19 @@ export const metadata: Metadata = {
     title: "Hyperliquid Guides & Resources 2026",
     description:
       "Learn about Hyperliquid, HyperEVM, HYPE staking, HLP vault, trading bots, and the Hyperliquid ecosystem. Guides for beginners and advanced users.",
+    url: "https://perp.wiki/learn",
+    siteName: "perp.wiki",
+    images: [{ url: "/learn/opengraph-image", width: 1200, height: 630 }],
     type: "website",
   },
-  twitter: { card: "summary_large_image" },
+  twitter: {
+    card: "summary_large_image",
+    site: "@perpwiki",
+    title: "Hyperliquid Guides & Resources 2026",
+    description:
+      "Learn about Hyperliquid, HyperEVM, HYPE staking, HLP vault, trading bots, and the Hyperliquid ecosystem. Guides for beginners and advanced users.",
+    images: ["/learn/opengraph-image"],
+  },
 };
 
 export default function LearnPage() {

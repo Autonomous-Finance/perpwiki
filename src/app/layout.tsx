@@ -44,6 +44,10 @@ export const metadata: Metadata = {
   icons: {
     icon: "/icon.svg",
   },
+  alternates: {
+    canonical: "https://perp.wiki",
+    languages: { "en": "https://perp.wiki" },
+  },
   robots: {
     index: true,
     follow: true,
@@ -84,10 +88,29 @@ export default function RootLayout({
               "name": "perp.wiki",
               "url": "https://perp.wiki",
               "description": "The definitive Hyperliquid ecosystem directory — tracking every DeFi protocol, DEX, LST, and tool on HyperEVM and HyperCore.",
+              "logo": "https://perp.wiki/icon.svg",
               "sameAs": [],
             }),
           }}
         />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "WebSite",
+              "name": "perp.wiki",
+              "url": "https://perp.wiki",
+              "description": "Independent directory for the Hyperliquid ecosystem and perpetual futures trading",
+              "potentialAction": {
+                "@type": "SearchAction",
+                "target": "https://perp.wiki/projects?q={search_term_string}",
+                "query-input": "required name=search_term_string",
+              },
+            }),
+          }}
+        />
+        <link rel="dns-prefetch" href="https://api.hyperliquid.xyz" />
         <link rel="alternate" type="application/rss+xml" title="perp.wiki RSS Feed" href="/feed.xml" />
       </head>
       <body

@@ -15,9 +15,19 @@ export const metadata: Metadata = {
     title: "About perp.wiki — The Hyperliquid Ecosystem Directory",
     description:
       "The definitive directory of Hyperliquid ecosystem projects — DEXs, LSTs, lending protocols, yield vaults, and DeFi infrastructure on HyperEVM and HyperCore.",
+    url: "https://perp.wiki/about",
+    siteName: "perp.wiki",
+    images: [{ url: "/about/opengraph-image", width: 1200, height: 630 }],
     type: "website",
   },
-  twitter: { card: "summary_large_image" },
+  twitter: {
+    card: "summary_large_image",
+    site: "@perpwiki",
+    title: "About perp.wiki — The Hyperliquid Ecosystem Directory",
+    description:
+      "The definitive directory of Hyperliquid ecosystem projects — DEXs, LSTs, lending protocols, yield vaults, and DeFi infrastructure on HyperEVM and HyperCore.",
+    images: ["/about/opengraph-image"],
+  },
 };
 
 const NAV_LINKS = [
@@ -207,6 +217,31 @@ export default async function AboutPage() {
           </Link>
         </div>
       </div>
+
+      {/* Network */}
+      <section className="mb-10">
+        <h2 className="font-[family-name:var(--font-space-grotesk)] text-xl font-semibold text-[var(--hw-text)] mb-4">
+          Part of the Network
+        </h2>
+        <div className="text-sm leading-relaxed text-[var(--hw-text-muted)] space-y-3">
+          <p>
+            perp.wiki is part of a broader network of independent directories covering the decentralized finance landscape.
+            Our sister sites include{" "}
+            <a href="https://pm.wiki" target="_blank" rel="noopener noreferrer" className="text-[var(--hw-green)] hover:underline">
+              pm.wiki
+            </a>{" "}
+            (the prediction market directory),{" "}
+            <a href="https://canton.wiki" target="_blank" rel="noopener noreferrer" className="text-[var(--hw-green)] hover:underline">
+              canton.wiki
+            </a>{" "}
+            (Canton Network intelligence), and{" "}
+            <a href="https://polyguana.com" target="_blank" rel="noopener noreferrer" className="text-[var(--hw-green)] hover:underline">
+              polyguana.com
+            </a>{" "}
+            (market analytics).
+          </p>
+        </div>
+      </section>
 
       {/* Footer note */}
       <p className="text-xs text-[var(--hw-text-dim)] text-center">

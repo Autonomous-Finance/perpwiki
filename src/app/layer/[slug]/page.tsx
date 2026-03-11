@@ -35,8 +35,21 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title,
     description,
     alternates: { canonical: `https://perp.wiki/layer/${slug}` },
-    openGraph: { title, description, type: "website" },
-    twitter: { card: "summary_large_image" },
+    openGraph: {
+      title,
+      description,
+      url: `https://perp.wiki/layer/${slug}`,
+      siteName: "perp.wiki",
+      images: [{ url: `/layer/${slug}/opengraph-image`, width: 1200, height: 630 }],
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image" as const,
+      site: "@perpwiki",
+      title,
+      description,
+      images: [`/layer/${slug}/opengraph-image`],
+    },
   };
 }
 

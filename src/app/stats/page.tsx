@@ -15,6 +15,18 @@ export const metadata: Metadata = {
     title: "Hyperliquid Stats — Volume, Open Interest & Ecosystem Growth",
     description:
       "Weekly volume trends, top markets by OI, funding heatmaps, and DEX market share for Hyperliquid — the largest on-chain perpetual exchange.",
+    url: "https://perp.wiki/stats",
+    siteName: "perp.wiki",
+    images: [{ url: "/stats/opengraph-image", width: 1200, height: 630 }],
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    site: "@perpwiki",
+    title: "Hyperliquid Stats — Volume, Open Interest & Ecosystem Growth",
+    description:
+      "Weekly volume trends, top markets by OI, funding heatmaps, and DEX market share for Hyperliquid — the largest on-chain perpetual exchange.",
+    images: ["/stats/opengraph-image"],
   },
   keywords: [
     "Hyperliquid stats",

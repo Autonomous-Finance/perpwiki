@@ -68,8 +68,10 @@ export default function HlpVaultGuidePage() {
           headline: article.title,
           description: article.description,
           datePublished: article.datePublished,
-          author: { "@type": "Organization", name: "perp.wiki" },
-          publisher: { "@type": "Organization", name: "perp.wiki" },
+          author: { "@type": "Organization", name: "perp.wiki", url: "https://perp.wiki" },
+          publisher: { "@type": "Organization", name: "perp.wiki", url: "https://perp.wiki", logo: { "@type": "ImageObject", url: "https://perp.wiki/icon.svg" } },
+          dateModified: article.datePublished,
+          mainEntityOfPage: `https://perp.wiki/learn/${SLUG}`,
         }}
       />
       <JsonLd

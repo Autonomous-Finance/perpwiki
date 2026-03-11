@@ -12,9 +12,19 @@ export const metadata: Metadata = {
     title: "Hyperliquid Trading Tools — Calculators & Estimators",
     description:
       "Free trading calculators for Hyperliquid — estimate liquidation prices, calculate trading fees, and optimize your perpetual futures strategy.",
+    url: "https://perp.wiki/tools",
+    siteName: "perp.wiki",
+    images: [{ url: "/tools/opengraph-image", width: 1200, height: 630 }],
     type: "website",
   },
-  twitter: { card: "summary_large_image" },
+  twitter: {
+    card: "summary_large_image",
+    site: "@perpwiki",
+    title: "Hyperliquid Trading Tools — Calculators & Estimators",
+    description:
+      "Free trading calculators for Hyperliquid — estimate liquidation prices, calculate trading fees, and optimize your perpetual futures strategy.",
+    images: ["/tools/opengraph-image"],
+  },
 };
 
 const TOOLS = [

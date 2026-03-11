@@ -9,6 +9,23 @@ export const metadata: Metadata = {
   description:
     "Calculate your Hyperliquid trading fees for perpetual and spot trades. Compare maker vs taker costs and estimate total expenses.",
   alternates: { canonical: "https://perp.wiki/tools/fee-calculator" },
+  openGraph: {
+    title: "Hyperliquid Fee Calculator — Trading Cost Estimator",
+    description:
+      "Calculate your Hyperliquid trading fees for perpetual and spot trades. Compare maker vs taker costs and estimate total expenses.",
+    url: "https://perp.wiki/tools/fee-calculator",
+    siteName: "perp.wiki",
+    images: [{ url: "/tools/fee-calculator/opengraph-image", width: 1200, height: 630 }],
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    site: "@perpwiki",
+    title: "Hyperliquid Fee Calculator — Trading Cost Estimator",
+    description:
+      "Calculate your Hyperliquid trading fees for perpetual and spot trades. Compare maker vs taker costs and estimate total expenses.",
+    images: ["/tools/fee-calculator/opengraph-image"],
+  },
 };
 
 export default function FeeCalculatorPage() {

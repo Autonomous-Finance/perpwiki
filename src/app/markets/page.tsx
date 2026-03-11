@@ -12,6 +12,18 @@ export const metadata: Metadata = {
     title: "Hyperliquid Live Markets — Funding Rates, Open Interest & Volume",
     description:
       "Live Hyperliquid perpetual futures data: mark prices, 24h change, funding rates, open interest, and trading volume.",
+    url: "https://perp.wiki/markets",
+    siteName: "perp.wiki",
+    images: [{ url: "/markets/opengraph-image", width: 1200, height: 630 }],
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    site: "@perpwiki",
+    title: "Hyperliquid Live Markets — Funding Rates, Open Interest & Volume",
+    description:
+      "Live Hyperliquid perpetual futures data: mark prices, 24h change, funding rates, open interest, and trading volume.",
+    images: ["/markets/opengraph-image"],
   },
   keywords: [
     "Hyperliquid markets",
