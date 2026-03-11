@@ -224,6 +224,96 @@ export const LEARN_ARTICLES: LearnArticle[] = [
     readingTime: "7 min",
     datePublished: "2026-03-09",
   },
+  {
+    slug: "hyperliquid-vs-dydx",
+    title: "Hyperliquid vs dYdX: Which Perp DEX Should You Use in 2026?",
+    description:
+      "Detailed comparison of Hyperliquid vs dYdX: architecture, fees, leverage, liquidity, volume, ecosystem, and which perp DEX is best for your trading style.",
+    category: "Comparisons",
+    readingTime: "12 min",
+    datePublished: "2026-03-11",
+  },
+  {
+    slug: "hyperliquid-vs-gmx",
+    title: "Hyperliquid vs GMX: Perp DEX Comparison 2026",
+    description:
+      "Hyperliquid vs GMX comparison: orderbook vs oracle-based pricing, fees, liquidity models (HLP vs GLP/GM), volume, and which DEX suits different trading styles.",
+    category: "Comparisons",
+    readingTime: "11 min",
+    datePublished: "2026-03-11",
+  },
+  {
+    slug: "best-hyperliquid-analytics-tools",
+    title: "Best Hyperliquid Analytics Tools in 2026",
+    description:
+      "Top Hyperliquid analytics tools: HyperScanner, Copin.io, Velo Data, Parsec Finance, and HyperDash. Features, pricing, and how to track whales and markets.",
+    category: "Ecosystem",
+    readingTime: "10 min",
+    datePublished: "2026-03-11",
+  },
+  {
+    slug: "hyperliquid-liquidity-providers",
+    title: "How to Become a Hyperliquid Liquidity Provider (HLP Guide)",
+    description:
+      "Complete guide to HLP: deposit USDC, earn 15-25% APR from market-making, understand risks, and compare HLP with HYPE staking and DeFi yields.",
+    category: "Guides",
+    readingTime: "11 min",
+    datePublished: "2026-03-11",
+  },
+  {
+    slug: "what-is-hype-token",
+    title: "What is HYPE Token? Complete Guide to Hyperliquid's Native Token",
+    description:
+      "Everything about HYPE token: tokenomics, staking rewards, governance, the $1.6B airdrop, buy-and-burn mechanism, and where to buy HYPE.",
+    category: "Tokens",
+    readingTime: "12 min",
+    datePublished: "2026-03-11",
+  },
+  {
+    slug: "hyperliquid-points-airdrop-2",
+    title: "Hyperliquid Points & Airdrop Season 2: What We Know",
+    description:
+      "Guide to Hyperliquid points and airdrop season 2: how points work, earning strategies, timeline, and what to expect after the record-breaking season 1.",
+    category: "Guides",
+    readingTime: "10 min",
+    datePublished: "2026-03-11",
+  },
+  {
+    slug: "perpetual-futures-vs-options",
+    title: "Perpetual Futures vs Options: Key Differences Explained",
+    description:
+      "Perpetual futures vs options comparison: expiration, funding vs premium, leverage, risk profiles, and when to use each instrument in DeFi trading.",
+    category: "Fundamentals",
+    readingTime: "10 min",
+    datePublished: "2026-03-11",
+  },
+  {
+    slug: "hyperliquid-api-guide",
+    title: "Hyperliquid API Guide for Developers and Algo Traders",
+    description:
+      "Complete Hyperliquid API guide: Info and Exchange endpoints, WebSocket feeds, authentication, rate limits, SDKs, and building your first trading bot.",
+    category: "Guides",
+    readingTime: "12 min",
+    datePublished: "2026-03-11",
+  },
+  {
+    slug: "best-perp-dex-2026",
+    title: "Best Perpetual Futures DEXes in 2026: Full Comparison",
+    description:
+      "Comprehensive comparison of top perp DEXes: Hyperliquid, dYdX, GMX, Drift, Vertex, and Lighter. Volume, fees, leverage, chains, and which to choose.",
+    category: "Comparisons",
+    readingTime: "14 min",
+    datePublished: "2026-03-11",
+  },
+  {
+    slug: "hyperliquid-trading-strategies",
+    title: "Proven Hyperliquid Trading Strategies for 2026",
+    description:
+      "Top Hyperliquid trading strategies: scalping, momentum trading, funding rate farming, basis trading, grid trading, and risk management best practices.",
+    category: "Guides",
+    readingTime: "13 min",
+    datePublished: "2026-03-11",
+  },
 ];
 
 export function getArticle(slug: string): LearnArticle | undefined {
