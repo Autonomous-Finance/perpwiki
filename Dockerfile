@@ -1,3 +1,5 @@
+FROM litestream/litestream:0.5.9 AS litestream
+
 # --- Builder ---
 FROM node:22-alpine AS builder
 WORKDIR /app
@@ -20,10 +22,8 @@ ENV NODE_ENV=production
 ENV PORT=4001
 ENV HOSTNAME=0.0.0.0
 EXPOSE 4001
-RUN apk add --no-cache libstdc++ sqlite && \
-    wget -q -O /tmp/litestream.tar.gz https://github.com/benbjohnson/litestream/releases/download/v0.5.9/litestream-v0.5.9-linux-amd64.tar.gz && \
-    tar -xzf /tmp/litestream.tar.gz -C /usr/local/bin litestream && \
-    rm /tmp/litestream.tar.gz
+RUN apk add --no-cache libstdc++ sqlite
+COPY --from=litestream /usr/local/bin/litestream /usr/local/bin/litestream
 RUN addgroup --system --gid 1001 nodejs && adduser --system --uid 1001 nextjs
 COPY --from=builder /app/.next/standalone ./
 COPY --from=builder /app/.next/static ./.next/static
