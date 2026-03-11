@@ -18,6 +18,7 @@ export const metadata: Metadata = {
     title: "Hyperliquid Fees Explained: Complete Fee Structure Guide",
     description:
       "Full breakdown of Hyperliquid fees: perp maker/taker rates, spot fees, HyperEVM gas, deposit/withdrawal costs, and how to reduce trading costs.",
+    type: "article",
   },
 };
 

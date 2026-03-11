@@ -12,6 +12,13 @@ export const metadata: Metadata = {
   description:
     "Side-by-side comparisons of Hyperliquid ecosystem projects. Compare LSTs, lending protocols, DEXs, and yield strategies on HyperEVM.",
   alternates: { canonical: "https://perp.wiki/compare" },
+  openGraph: {
+    title: "Compare Hyperliquid Projects — LSTs, Lending, DEXs",
+    description:
+      "Side-by-side comparisons of Hyperliquid ecosystem projects. Compare LSTs, lending protocols, DEXs, and yield strategies on HyperEVM.",
+    type: "website",
+  },
+  twitter: { card: "summary_large_image" },
 };
 
 interface GroupedCategory {

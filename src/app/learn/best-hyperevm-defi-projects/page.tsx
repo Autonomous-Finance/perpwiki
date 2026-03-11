@@ -15,6 +15,7 @@ export const metadata: Metadata = {
     title: "Best HyperEVM DeFi Projects 2026",
     description:
       "The top DeFi protocols on HyperEVM: lending, staking, yield aggregation, and delta-neutral strategies.",
+    type: "article",
   },
 };
 

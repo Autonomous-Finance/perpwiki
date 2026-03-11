@@ -341,8 +341,7 @@ export default async function HomePage() {
               <Link
                 key={pill.label}
                 href={pill.href}
-                className="px-2.5 py-1 text-xs border border-[var(--hw-border)] text-[var(--hw-text-dim)] transition-all hover:border-[var(--hw-green)] hover:text-[var(--hw-green)]"
-                style={{ borderRadius: "2px" }}
+                className="px-2.5 py-1 text-xs border border-[var(--hw-border)] text-[var(--hw-text-dim)] transition-all hover:border-[var(--hw-green)] hover:text-[var(--hw-green)] rounded-sm"
               >
                 {pill.label}
               </Link>
@@ -365,8 +364,7 @@ export default async function HomePage() {
             return (
               <Link key={p.slug} href={`/projects/${p.slug}`}>
                 <div
-                  className="group relative flex h-full min-h-[140px] flex-col justify-between border border-[var(--hw-border)] bg-[var(--hw-surface)] p-5 transition-all hover:border-[var(--hw-border-bright)] hover:shadow-[0_0_12px_rgba(0,229,160,0.06)] overflow-hidden"
-                  style={{ borderRadius: "4px" }}
+                  className="card-hover group relative flex h-full min-h-[140px] flex-col justify-between rounded-sm border border-[var(--hw-border)] bg-[var(--hw-surface)] p-5 hover:border-[var(--hw-border-bright)] hover:shadow-[0_0_12px_rgba(0,229,160,0.06)] overflow-hidden"
                 >
                   {/* Top accent line */}
                   <div
@@ -435,8 +433,7 @@ export default async function HomePage() {
                 href={`https://app.hyperliquid.xyz/trade/${m.name}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group border border-[var(--hw-border)] bg-[var(--hw-surface)] p-4 transition-all hover:border-[var(--hw-border-bright)]"
-                style={{ borderRadius: "4px" }}
+                className="card-hover group rounded-sm border border-[var(--hw-border)] bg-[var(--hw-surface)] p-4 hover:border-[var(--hw-border-bright)]"
               >
                 <div className="flex items-center justify-between mb-2">
                   <span className="font-[family-name:var(--font-space-grotesk)] text-sm font-semibold text-[var(--hw-text)]">{m.name}</span>
@@ -464,7 +461,7 @@ export default async function HomePage() {
         </div>
 
         {/* Full table for remaining markets */}
-        <div className="overflow-x-auto border border-[var(--hw-border)] bg-[var(--hw-surface)]" style={{ borderRadius: "4px" }}>
+        <div className="overflow-x-auto rounded-sm border border-[var(--hw-border)] bg-[var(--hw-surface)]">
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-[var(--hw-border)] text-left text-xs text-[var(--hw-text-dim)]">
@@ -659,11 +656,14 @@ export default async function HomePage() {
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {LEARN_ARTICLES.slice(0, 3).map((article) => (
             <Link key={article.slug} href={`/learn/${article.slug}`}>
-              <div className="group border border-[var(--hw-border)] bg-[var(--hw-surface)] p-5 transition-all hover:border-[var(--hw-green)] hover:shadow-[0_0_8px_rgba(0,229,160,0.08)]" style={{ borderRadius: "4px" }}>
-                <span className="text-xs text-[var(--hw-green)]">{article.category}</span>
-                <h3 className="font-[family-name:var(--font-space-grotesk)] text-sm font-semibold text-[var(--hw-text)] mt-1 mb-2">{article.title}</h3>
-                <p className="text-xs text-[var(--hw-text-dim)] line-clamp-2">{article.description}</p>
-                <span className="text-xs text-[var(--hw-text-dim)] mt-2 block">{article.readingTime} read</span>
+              <div className="card-hover group rounded-sm border border-[var(--hw-border)] bg-[var(--hw-surface)] p-5 hover:border-[var(--hw-green)] hover:shadow-[0_0_8px_rgba(0,229,160,0.08)]">
+                <span className="text-xs text-[var(--hw-green)] font-medium">{article.category}</span>
+                <h3 className="font-[family-name:var(--font-space-grotesk)] text-sm font-semibold text-[var(--hw-text)] mt-1.5 mb-2 group-hover:text-[var(--hw-green)] transition-colors">{article.title}</h3>
+                <p className="text-xs text-[var(--hw-text-dim)] line-clamp-2 mb-3">{article.description}</p>
+                <div className="flex items-center justify-between">
+                  <span className="text-xs text-[var(--hw-text-dim)]">{article.readingTime} read</span>
+                  <span className="text-xs text-[var(--hw-green)] opacity-0 group-hover:opacity-100 transition-opacity">Read more →</span>
+                </div>
               </div>
             </Link>
           ))}
@@ -714,20 +714,38 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* Social Proof */}
+      {/* Social Proof + CTA */}
       <section className="border-t border-[var(--hw-border)] bg-[var(--hw-surface)]">
-        <div className="mx-auto max-w-7xl px-4 py-10 text-center">
-          <p className="text-sm text-[var(--hw-text-dim)]">
-            Built on the chain processing <span className="text-[var(--hw-text-muted)]">$40B+ weekly volume</span>
+        <div className="mx-auto max-w-7xl px-4 py-12 text-center">
+          <p className="text-sm text-[var(--hw-text-dim)] mb-6">
+            Built on the chain processing <span className="text-[var(--hw-text-muted)] font-medium">$40B+ weekly volume</span>
             {" · "}
-            <span className="text-[var(--hw-text-muted)]">{stats.total}+ projects</span> and growing
+            <span className="text-[var(--hw-text-muted)] font-medium">{stats.total}+ projects</span> and growing
             {meta?.marketsCount && (
               <>
                 {" · "}
-                <span className="text-[var(--hw-text-muted)]">{meta.marketsCount} perpetual markets</span>
+                <span className="text-[var(--hw-text-muted)] font-medium">{meta.marketsCount} perpetual markets</span>
               </>
             )}
           </p>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+            <Link
+              href="/projects"
+              className="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-semibold rounded-sm transition-all hover:opacity-90"
+              style={{ background: "var(--hw-green)", color: "var(--hw-bg)" }}
+            >
+              Explore All Projects
+              <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+              </svg>
+            </Link>
+            <Link
+              href="/submit"
+              className="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-medium rounded-sm border border-[var(--hw-border)] text-[var(--hw-text-muted)] hover:border-[var(--hw-green)] hover:text-[var(--hw-green)] transition-colors"
+            >
+              Submit Your Project
+            </Link>
+          </div>
         </div>
       </section>
     </>
@@ -738,14 +756,16 @@ export default async function HomePage() {
 
 function SearchTriggerBar() {
   return (
-    <div className="glass border border-[var(--hw-border)] hover:border-[var(--hw-border-bright)] transition-colors cursor-pointer" style={{ borderRadius: "4px" }}>
+    <div
+      className="w-full glass border border-[var(--hw-border)] hover:border-[var(--hw-border-bright)] transition-colors cursor-pointer rounded-sm text-left"
+    >
       <div className="flex items-center gap-2 px-4 py-3">
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="shrink-0 text-[var(--hw-text-dim)]">
           <circle cx="7" cy="7" r="5.5" stroke="currentColor" strokeWidth="1.5" />
           <line x1="11" y1="11" x2="14.5" y2="14.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
         </svg>
-        <span className="text-sm text-[var(--hw-text-dim)]">Search projects...</span>
-        <kbd className="hidden text-[10px] text-[var(--hw-text-dim)] border border-[var(--hw-border)] px-1.5 py-0.5 sm:inline-block" style={{ borderRadius: "2px" }}>
+        <span className="flex-1 text-sm text-[var(--hw-text-dim)]">Search projects, markets, guides...</span>
+        <kbd className="hidden text-[10px] text-[var(--hw-text-dim)] border border-[var(--hw-border)] px-1.5 py-0.5 font-[family-name:var(--font-jetbrains-mono)] sm:inline-block rounded-sm">
           ⌘K
         </kbd>
       </div>
@@ -755,14 +775,11 @@ function SearchTriggerBar() {
 
 function MiniStatCard({ label, value, accent, live }: { label: string; value: string; accent?: boolean; live?: boolean }) {
   return (
-    <div
-      className="border border-[var(--hw-border)] bg-[var(--hw-surface)] px-3 py-2.5"
-      style={{ borderRadius: "4px" }}
-    >
+    <div className="rounded-sm border border-[var(--hw-border)] bg-[var(--hw-surface)] px-3 py-2.5">
       <div className="flex items-center gap-1.5">
         <span className="text-[10px] uppercase tracking-wider text-[var(--hw-text-dim)]">{label}</span>
         {live && (
-          <span className="relative flex h-1 w-1">
+          <span className="relative flex h-1 w-1" aria-label="Live data">
             <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[var(--hw-green)] opacity-75" />
             <span className="relative inline-flex h-1 w-1 rounded-full bg-[var(--hw-green)]" />
           </span>

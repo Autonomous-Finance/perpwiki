@@ -9,6 +9,13 @@ export const metadata: Metadata = {
   description:
     "Answers to the most common questions about Hyperliquid, HyperEVM, HYPE staking, funding rates, and the DeFi ecosystem.",
   alternates: { canonical: "https://perp.wiki/faq" },
+  openGraph: {
+    title: "Hyperliquid FAQ — Common Questions Answered",
+    description:
+      "Answers to the most common questions about Hyperliquid, HyperEVM, HYPE staking, funding rates, and the DeFi ecosystem.",
+    type: "website",
+  },
+  twitter: { card: "summary_large_image" },
 };
 
 type FaqItem = {

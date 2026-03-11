@@ -17,6 +17,7 @@ export const metadata: Metadata = {
     title: "How to Bridge to Hyperliquid: Complete Deposit Guide",
     description:
       "Step-by-step guide to bridging funds to Hyperliquid: official Arbitrum bridge, third-party bridges (Across, deBridge, LayerZero), withdrawals, and safety tips.",
+    type: "article",
   },
 };
 

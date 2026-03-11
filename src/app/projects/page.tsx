@@ -10,6 +10,13 @@ export const metadata: Metadata = {
   description:
     "Browse every project in the Hyperliquid ecosystem — HyperCore, HyperEVM, and HIP-3.",
   alternates: { canonical: "https://perp.wiki/projects" },
+  openGraph: {
+    title: "All Hyperliquid Ecosystem Projects | perp.wiki",
+    description:
+      "Browse every project in the Hyperliquid ecosystem — HyperCore, HyperEVM, and HIP-3.",
+    type: "website",
+  },
+  twitter: { card: "summary_large_image" },
 };
 
 type SortOption = "name" | "category" | "newest";
@@ -165,8 +172,18 @@ export default async function ProjectsPage({
       </div>
 
       {projects.length === 0 && (
-        <div className="py-16 text-center text-[var(--hw-text-dim)]">
-          No projects found. Try a different search or filter.
+        <div className="py-16 text-center">
+          <svg className="mx-auto mb-4 h-12 w-12 text-[var(--hw-text-dim)] opacity-40" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+          </svg>
+          <p className="text-sm text-[var(--hw-text-muted)] mb-1">No projects found</p>
+          <p className="text-xs text-[var(--hw-text-dim)]">Try a different search term or clear your filters</p>
+          <Link
+            href="/projects"
+            className="inline-flex items-center gap-1.5 mt-4 px-4 py-2 text-sm text-[var(--hw-green)] border border-[var(--hw-green)]/20 rounded-sm hover:bg-[var(--hw-green-subtle)] transition-colors"
+          >
+            Clear all filters
+          </Link>
         </div>
       )}
     </div>
@@ -187,9 +204,8 @@ function FilterPill({
   return (
     <Link
       href={href}
-      className="px-3 py-1 text-xs border transition-all"
+      className="px-3 py-1 text-xs border rounded-sm transition-all"
       style={{
-        borderRadius: "2px",
         borderColor: active ? (color || "var(--hw-green)") : "var(--hw-border)",
         background: active ? "var(--hw-green-subtle)" : "transparent",
         color: active ? (color || "var(--hw-green)") : "var(--hw-text-muted)",

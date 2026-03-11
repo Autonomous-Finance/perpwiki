@@ -94,12 +94,45 @@
   box-sizing: border-box;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
 body {
   background: var(--hw-bg);
   color: var(--hw-text);
   font-family: var(--font-body, Inter, system-ui, sans-serif);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* Selection color */
+::selection {
+  background: rgba(0, 229, 160, 0.25);
+  color: var(--hw-text);
+}
+
+/* Focus-visible for keyboard nav */
+:focus-visible {
+  outline: 2px solid var(--hw-green);
+  outline-offset: 2px;
+}
+
+/* Better touch targets on mobile */
+@media (pointer: coarse) {
+  a, button { min-height: 44px; }
+  /* Exempt inline/badge elements */
+  .badge-hypercore, .badge-hyperevm, .badge-hip3, .badge-both,
+  [class*="text-\\[10px\\]"] { min-height: auto; }
 }
 
 /* Glass morphism search */
@@ -166,3 +199,58 @@ body {
 /* Sparkline mini chart */
 .sparkline-up { color: var(--hw-green); }
 .sparkline-down { color: var(--hw-red); }
+
+/* Mobile menu animation */
+.mobile-menu-enter {
+  animation: slideDown 0.2s ease-out;
+}
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Card hover lift */
+.card-hover {
+  transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+}
+.card-hover:hover {
+  transform: translateY(-1px);
+}
+
+/* Skip to main content (a11y) */
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: 16px;
+  z-index: 100;
+  padding: 8px 16px;
+  background: var(--hw-green);
+  color: var(--hw-bg);
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 0 0 4px 4px;
+  text-decoration: none;
+}
+.skip-link:focus {
+  top: 0;
+}
+
+/* Verified badge */
+.verified-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 4px;
+  background: rgba(0, 229, 160, 0.15);
+  border: 1px solid rgba(0, 229, 160, 0.3);
+  color: var(--hw-green);
+  vertical-align: middle;
+  margin-left: 6px;
+  flex-shrink: 0;
+}
+.light .verified-badge {
+  background: rgba(0, 184, 125, 0.12);
+  border-color: rgba(0, 184, 125, 0.25);
+}

@@ -15,6 +15,7 @@ export const metadata: Metadata = {
     title: "Hyperliquid Fees Explained — Trading Fees, Gas, Maker Rebates 2026",
     description:
       "Taker fees, maker rebates, gas costs, withdrawal fees, and volume tiers — everything about Hyperliquid fees in 2026.",
+    type: "article",
   },
 };
 

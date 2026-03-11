@@ -15,6 +15,7 @@ export const metadata: Metadata = {
     title: "5 Ways to Earn Yield on Hyperliquid",
     description:
       "HLP vault, HYPE staking, lending, builder vaults, and funding rate farming — all yield options on Hyperliquid explained.",
+    type: "article",
   },
 };
 

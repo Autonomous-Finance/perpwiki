@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { requireAdmin } from "@/lib/auth";
+import { isRemoteUrl, ensureBase64Logo } from "@/lib/logo-utils";
 
 export async function GET(
   req: NextRequest,
@@ -39,6 +40,12 @@ export async function PATCH(
     if (field in body) {
       data[field] = body[field];
     }
+  }
+
+  // Auto-convert remote logo URLs to base64 data URLs
+  if (typeof data.logoUrl === "string" && isRemoteUrl(data.logoUrl)) {
+    const base64Logo = await ensureBase64Logo(data.logoUrl);
+    if (base64Logo) data.logoUrl = base64Logo;
   }
 
   try {

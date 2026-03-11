@@ -245,8 +245,7 @@ export default async function ProjectDetailPage({ params }: Props) {
 
       {/* ========== HERO SECTION ========== */}
       <div
-        className="relative border border-[var(--hw-border)] bg-[var(--hw-surface)] p-6 sm:p-8 mb-8 overflow-hidden"
-        style={{ borderRadius: "4px" }}
+        className="relative rounded-sm border border-[var(--hw-border)] bg-[var(--hw-surface)] p-6 sm:p-8 mb-8 overflow-hidden"
       >
         {/* Subtle gradient glow */}
         <div
@@ -271,17 +270,10 @@ export default async function ProjectDetailPage({ params }: Props) {
                 <h1 className="font-[family-name:var(--font-space-grotesk)] text-2xl sm:text-3xl font-bold text-[var(--hw-text)]">
                   {project.name}
                   {project.isVerified && (
-                    <span
-                      className="ml-2 inline-flex items-center justify-center h-5 w-5 text-[10px] font-bold align-middle"
-                      style={{
-                        borderRadius: "4px",
-                        background: "rgba(0,229,160,0.15)",
-                        color: "var(--hw-green)",
-                        border: "1px solid rgba(0,229,160,0.3)",
-                      }}
-                      title="Verified project"
-                    >
-                      ✓
+                    <span className="verified-badge" title="Verified project" aria-label="Verified">
+                      <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                        <path d="M2.5 6L5 8.5L9.5 4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
                     </span>
                   )}
                 </h1>
@@ -329,9 +321,8 @@ export default async function ProjectDetailPage({ params }: Props) {
                   href={project.website}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-semibold transition-all hover:opacity-90"
+                  className="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-semibold rounded-sm transition-all hover:opacity-90"
                   style={{
-                    borderRadius: "4px",
                     background: "var(--hw-green)",
                     color: "var(--hw-bg)",
                   }}
@@ -350,8 +341,7 @@ export default async function ProjectDetailPage({ params }: Props) {
                     href={project.twitter}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center justify-center h-9 w-9 border border-[var(--hw-border)] text-[var(--hw-text-dim)] hover:text-[var(--hw-text-muted)] hover:border-[var(--hw-border-bright)] transition-all"
-                    style={{ borderRadius: "4px" }}
+                    className="flex items-center justify-center h-9 w-9 rounded-sm border border-[var(--hw-border)] text-[var(--hw-text-dim)] hover:text-[var(--hw-text-muted)] hover:border-[var(--hw-border-bright)] transition-all"
                     title="X / Twitter"
                   >
                     <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
@@ -362,8 +352,7 @@ export default async function ProjectDetailPage({ params }: Props) {
                     href={project.github}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center justify-center h-9 w-9 border border-[var(--hw-border)] text-[var(--hw-text-dim)] hover:text-[var(--hw-text-muted)] hover:border-[var(--hw-border-bright)] transition-all"
-                    style={{ borderRadius: "4px" }}
+                    className="flex items-center justify-center h-9 w-9 rounded-sm border border-[var(--hw-border)] text-[var(--hw-text-dim)] hover:text-[var(--hw-text-muted)] hover:border-[var(--hw-border-bright)] transition-all"
                     title="GitHub"
                   >
                     <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
@@ -374,8 +363,7 @@ export default async function ProjectDetailPage({ params }: Props) {
                     href={project.discord}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center justify-center h-9 w-9 border border-[var(--hw-border)] text-[var(--hw-text-dim)] hover:text-[var(--hw-text-muted)] hover:border-[var(--hw-border-bright)] transition-all"
-                    style={{ borderRadius: "4px" }}
+                    className="flex items-center justify-center h-9 w-9 rounded-sm border border-[var(--hw-border)] text-[var(--hw-text-dim)] hover:text-[var(--hw-text-muted)] hover:border-[var(--hw-border-bright)] transition-all"
                     title="Discord"
                   >
                     <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 24 24"><path d="M20.317 4.37a19.791 19.791 0 00-4.885-1.515.074.074 0 00-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 00-5.487 0 12.64 12.64 0 00-.617-1.25.077.077 0 00-.079-.037A19.736 19.736 0 003.677 4.37a.07.07 0 00-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 00.031.057 19.9 19.9 0 005.993 3.03.078.078 0 00.084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 00-.041-.106 13.107 13.107 0 01-1.872-.892.077.077 0 01-.008-.128 10.2 10.2 0 00.372-.292.074.074 0 01.077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 01.078.01c.12.098.246.198.373.292a.077.077 0 01-.006.127 12.299 12.299 0 01-1.873.892.077.077 0 00-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 00.084.028 19.839 19.839 0 006.002-3.03.077.077 0 00.032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 00-.031-.03z"/></svg>
@@ -386,8 +374,7 @@ export default async function ProjectDetailPage({ params }: Props) {
                     href={project.telegram}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center justify-center h-9 w-9 border border-[var(--hw-border)] text-[var(--hw-text-dim)] hover:text-[var(--hw-text-muted)] hover:border-[var(--hw-border-bright)] transition-all"
-                    style={{ borderRadius: "4px" }}
+                    className="flex items-center justify-center h-9 w-9 rounded-sm border border-[var(--hw-border)] text-[var(--hw-text-dim)] hover:text-[var(--hw-text-muted)] hover:border-[var(--hw-border-bright)] transition-all"
                     title="Telegram"
                   >
                     <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 24 24"><path d="M11.944 0A12 12 0 000 12a12 12 0 0012 12 12 12 0 0012-12A12 12 0 0012 0a12 12 0 00-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 01.171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.479.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
@@ -398,8 +385,7 @@ export default async function ProjectDetailPage({ params }: Props) {
                     href={project.website}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center justify-center h-9 w-9 border border-[var(--hw-border)] text-[var(--hw-text-dim)] hover:text-[var(--hw-text-muted)] hover:border-[var(--hw-border-bright)] transition-all"
-                    style={{ borderRadius: "4px" }}
+                    className="flex items-center justify-center h-9 w-9 rounded-sm border border-[var(--hw-border)] text-[var(--hw-text-dim)] hover:text-[var(--hw-text-muted)] hover:border-[var(--hw-border-bright)] transition-all"
                     title="Website"
                   >
                     <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M12 21a9 9 0 100-18 9 9 0 000 18z" /><path strokeLinecap="round" strokeLinejoin="round" d="M3.6 9h16.8M3.6 15h16.8" /></svg>
@@ -433,9 +419,8 @@ export default async function ProjectDetailPage({ params }: Props) {
           {/* ===== CTA BANNER (mid-page) ===== */}
           {project.website && (
             <div
-              className="border border-[var(--hw-border)] p-5 flex flex-col sm:flex-row items-center justify-between gap-4"
+              className="rounded-sm border border-[var(--hw-border)] p-5 flex flex-col sm:flex-row items-center justify-between gap-4"
               style={{
-                borderRadius: "4px",
                 background: "linear-gradient(135deg, var(--hw-surface) 0%, rgba(0,229,160,0.03) 100%)",
               }}
             >
@@ -451,8 +436,8 @@ export default async function ProjectDetailPage({ params }: Props) {
                 href={project.website}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-semibold transition-all hover:opacity-90 shrink-0"
-                style={{ borderRadius: "4px", background: "var(--hw-green)", color: "var(--hw-bg)" }}
+                className="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-semibold rounded-sm transition-all hover:opacity-90 shrink-0"
+                style={{ background: "var(--hw-green)", color: "var(--hw-bg)" }}
               >
                 {ctaLabel || "Visit Website"}
                 <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
@@ -482,8 +467,7 @@ export default async function ProjectDetailPage({ params }: Props) {
                 {faqs.map((faq, i) => (
                   <div
                     key={i}
-                    className="border border-[var(--hw-border)] bg-[var(--hw-surface)] p-4"
-                    style={{ borderRadius: "4px" }}
+                    className="rounded-sm border border-[var(--hw-border)] bg-[var(--hw-surface)] p-4"
                   >
                     <h3 className="text-sm font-semibold text-[var(--hw-text)] mb-1.5">
                       {faq.question}
@@ -508,8 +492,7 @@ export default async function ProjectDetailPage({ params }: Props) {
                   <Link
                     key={rp.slug}
                     href={`/projects/${rp.slug}`}
-                    className="group border border-[var(--hw-border)] bg-[var(--hw-surface)] p-4 transition-all hover:border-[var(--hw-border-bright)]"
-                    style={{ borderRadius: "4px" }}
+                    className="group rounded-sm border border-[var(--hw-border)] bg-[var(--hw-surface)] p-4 transition-all hover:border-[var(--hw-border-bright)]"
                   >
                     <div className="flex items-start gap-3">
                       <ProjectLogo name={rp.name} logoUrl={rp.logoUrl} size="md" className="mt-0.5" />
@@ -541,8 +524,7 @@ export default async function ProjectDetailPage({ params }: Props) {
               <>
                 {/* Aggregate Rating + Star Distribution */}
                 <div
-                  className="border border-[var(--hw-border)] bg-[var(--hw-surface)] p-5 mb-4"
-                  style={{ borderRadius: "4px" }}
+                  className="rounded-sm border border-[var(--hw-border)] bg-[var(--hw-surface)] p-5 mb-4"
                 >
                   <div className="flex flex-col sm:flex-row items-start sm:items-center gap-5">
                     {/* Average score */}
@@ -614,9 +596,8 @@ export default async function ProjectDetailPage({ params }: Props) {
                   {reviews.slice(0, 10).map((review) => (
                     <div
                       key={review.id}
-                      className="border border-[var(--hw-border)] p-4"
+                      className="rounded-sm border border-[var(--hw-border)] p-4"
                       style={{
-                        borderRadius: "4px",
                         background: "linear-gradient(135deg, var(--hw-surface) 0%, rgba(0,229,160,0.01) 100%)",
                       }}
                     >
@@ -656,8 +637,7 @@ export default async function ProjectDetailPage({ params }: Props) {
               </>
             ) : (
               <div
-                className="border border-dashed border-[var(--hw-border)] p-6 text-center mb-4"
-                style={{ borderRadius: "4px" }}
+                className="rounded-sm border border-dashed border-[var(--hw-border)] p-6 text-center mb-4"
               >
                 <p className="text-sm text-[var(--hw-text-muted)] mb-1">
                   No reviews yet — be the first!
@@ -669,8 +649,7 @@ export default async function ProjectDetailPage({ params }: Props) {
             )}
 
             <div
-              className="border border-[var(--hw-border)] bg-[var(--hw-surface)] p-4"
-              style={{ borderRadius: "4px" }}
+              className="rounded-sm border border-[var(--hw-border)] bg-[var(--hw-surface)] p-4"
             >
               <h3 className="font-[family-name:var(--font-space-grotesk)] text-sm font-semibold text-[var(--hw-text)] mb-3">
                 Leave a Review
@@ -691,7 +670,7 @@ export default async function ProjectDetailPage({ params }: Props) {
           {ticker && <LiveMarketCard coin={ticker} />}
 
           {/* Quick Actions */}
-          <div className="border border-[var(--hw-border)] bg-[var(--hw-surface)] p-4" style={{ borderRadius: "4px" }}>
+          <div className="rounded-sm border border-[var(--hw-border)] bg-[var(--hw-surface)] p-4">
             <h3 className="font-[family-name:var(--font-space-grotesk)] text-sm font-semibold text-[var(--hw-text)] mb-3">
               Quick Links
             </h3>
@@ -701,8 +680,7 @@ export default async function ProjectDetailPage({ params }: Props) {
                   href={project.website}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-3 w-full border border-[var(--hw-border)] px-3 py-2.5 text-sm text-[var(--hw-text-muted)] transition-all hover:border-[var(--hw-green)] hover:text-[var(--hw-green)]"
-                  style={{ borderRadius: "2px" }}
+                  className="flex items-center gap-3 w-full rounded-sm border border-[var(--hw-border)] px-3 py-2.5 text-sm text-[var(--hw-text-muted)] transition-all hover:border-[var(--hw-green)] hover:text-[var(--hw-green)]"
                 >
                   <svg className="h-4 w-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M12 21a9 9 0 100-18 9 9 0 000 18z" /><path strokeLinecap="round" strokeLinejoin="round" d="M3.6 9h16.8M3.6 15h16.8M12 3a15 15 0 014 9 15 15 0 01-4 9 15 15 0 01-4-9 15 15 0 014-9z" /></svg>
                   <span className="truncate">{getHostname(project.website)}</span>
@@ -714,8 +692,7 @@ export default async function ProjectDetailPage({ params }: Props) {
                   href={project.twitter}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-3 w-full border border-[var(--hw-border)] px-3 py-2.5 text-sm text-[var(--hw-text-muted)] transition-all hover:border-[var(--hw-green)] hover:text-[var(--hw-green)]"
-                  style={{ borderRadius: "2px" }}
+                  className="flex items-center gap-3 w-full rounded-sm border border-[var(--hw-border)] px-3 py-2.5 text-sm text-[var(--hw-text-muted)] transition-all hover:border-[var(--hw-green)] hover:text-[var(--hw-green)]"
                 >
                   <svg className="h-4 w-4 shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
                   X / Twitter
@@ -727,8 +704,7 @@ export default async function ProjectDetailPage({ params }: Props) {
                   href={project.github}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-3 w-full border border-[var(--hw-border)] px-3 py-2.5 text-sm text-[var(--hw-text-muted)] transition-all hover:border-[var(--hw-green)] hover:text-[var(--hw-green)]"
-                  style={{ borderRadius: "2px" }}
+                  className="flex items-center gap-3 w-full rounded-sm border border-[var(--hw-border)] px-3 py-2.5 text-sm text-[var(--hw-text-muted)] transition-all hover:border-[var(--hw-green)] hover:text-[var(--hw-green)]"
                 >
                   <svg className="h-4 w-4 shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
                   GitHub
@@ -740,8 +716,7 @@ export default async function ProjectDetailPage({ params }: Props) {
                   href={project.discord}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-3 w-full border border-[var(--hw-border)] px-3 py-2.5 text-sm text-[var(--hw-text-muted)] transition-all hover:border-[var(--hw-green)] hover:text-[var(--hw-green)]"
-                  style={{ borderRadius: "2px" }}
+                  className="flex items-center gap-3 w-full rounded-sm border border-[var(--hw-border)] px-3 py-2.5 text-sm text-[var(--hw-text-muted)] transition-all hover:border-[var(--hw-green)] hover:text-[var(--hw-green)]"
                 >
                   <svg className="h-4 w-4 shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M20.317 4.37a19.791 19.791 0 00-4.885-1.515.074.074 0 00-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 00-5.487 0 12.64 12.64 0 00-.617-1.25.077.077 0 00-.079-.037A19.736 19.736 0 003.677 4.37a.07.07 0 00-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 00.031.057 19.9 19.9 0 005.993 3.03.078.078 0 00.084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 00-.041-.106 13.107 13.107 0 01-1.872-.892.077.077 0 01-.008-.128 10.2 10.2 0 00.372-.292.074.074 0 01.077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 01.078.01c.12.098.246.198.373.292a.077.077 0 01-.006.127 12.299 12.299 0 01-1.873.892.077.077 0 00-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 00.084.028 19.839 19.839 0 006.002-3.03.077.077 0 00.032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 00-.031-.03z"/></svg>
                   Discord
@@ -753,8 +728,7 @@ export default async function ProjectDetailPage({ params }: Props) {
                   href={project.telegram}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-3 w-full border border-[var(--hw-border)] px-3 py-2.5 text-sm text-[var(--hw-text-muted)] transition-all hover:border-[var(--hw-green)] hover:text-[var(--hw-green)]"
-                  style={{ borderRadius: "2px" }}
+                  className="flex items-center gap-3 w-full rounded-sm border border-[var(--hw-border)] px-3 py-2.5 text-sm text-[var(--hw-text-muted)] transition-all hover:border-[var(--hw-green)] hover:text-[var(--hw-green)]"
                 >
                   <svg className="h-4 w-4 shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M11.944 0A12 12 0 000 12a12 12 0 0012 12 12 12 0 0012-12A12 12 0 0012 0a12 12 0 00-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 01.171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.479.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
                   Telegram
@@ -765,7 +739,7 @@ export default async function ProjectDetailPage({ params }: Props) {
           </div>
 
           {/* Details card */}
-          <div className="border border-[var(--hw-border)] bg-[var(--hw-surface)] p-4" style={{ borderRadius: "4px" }}>
+          <div className="rounded-sm border border-[var(--hw-border)] bg-[var(--hw-surface)] p-4">
             <h3 className="font-[family-name:var(--font-space-grotesk)] text-sm font-semibold text-[var(--hw-text)] mb-3">
               Project Details
             </h3>
@@ -781,7 +755,7 @@ export default async function ProjectDetailPage({ params }: Props) {
 
           {/* Compare */}
           {relatedProjects.length > 0 && (
-            <div className="border border-[var(--hw-border)] bg-[var(--hw-surface)] p-4" style={{ borderRadius: "4px" }}>
+            <div className="rounded-sm border border-[var(--hw-border)] bg-[var(--hw-surface)] p-4">
               <h3 className="font-[family-name:var(--font-space-grotesk)] text-sm font-semibold text-[var(--hw-text)] mb-3">
                 Compare
               </h3>
@@ -806,7 +780,7 @@ export default async function ProjectDetailPage({ params }: Props) {
             const learnArticles = getRelatedArticlesForCategory(project.category);
             if (learnArticles.length === 0) return null;
             return (
-              <div className="border border-[var(--hw-border)] bg-[var(--hw-surface)] p-4" style={{ borderRadius: "4px" }}>
+              <div className="rounded-sm border border-[var(--hw-border)] bg-[var(--hw-surface)] p-4">
                 <h3 className="font-[family-name:var(--font-space-grotesk)] text-sm font-semibold text-[var(--hw-text)] mb-3">
                   Learn More
                 </h3>

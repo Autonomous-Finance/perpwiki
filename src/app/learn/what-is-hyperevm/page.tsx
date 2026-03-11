@@ -11,6 +11,12 @@ export const metadata: Metadata = {
   title: "What Is HyperEVM? Hyperliquid's Ethereum Layer Explained 2026",
   description:
     "HyperEVM is Hyperliquid's EVM-compatible smart contract layer. Learn how it connects to HyperCore, which projects are building on it, and how to use HyperEVM apps.",
+  openGraph: {
+    title: "What Is HyperEVM? Hyperliquid's Ethereum Layer Explained 2026",
+    description:
+      "HyperEVM is Hyperliquid's EVM-compatible smart contract layer. Learn how it connects to HyperCore, which projects are building on it, and how to use HyperEVM apps.",
+    type: "article",
+  },
 };
 
 const TOC = [

@@ -15,6 +15,7 @@ export const metadata: Metadata = {
     title: "HLP Vault Guide — Hyperliquid Liquidity Provider 2026",
     description:
       "Earn yield on Hyperliquid by depositing to the HLP vault. APY, risks, and full guide 2026.",
+    type: "article",
   },
 };
 

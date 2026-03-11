@@ -11,6 +11,12 @@ export const metadata: Metadata = {
   title: "What Is Hyperliquid? Complete Guide 2026",
   description:
     "Hyperliquid explained: how the DEX works, HYPE token, HLP vault, HyperEVM, fees, and why it dominates decentralized perp trading with $40B+ weekly volume.",
+  openGraph: {
+    title: "What Is Hyperliquid? Complete Guide 2026",
+    description:
+      "Hyperliquid explained: how the DEX works, HYPE token, HLP vault, HyperEVM, fees, and why it dominates decentralized perp trading with $40B+ weekly volume.",
+    type: "article",
+  },
 };
 
 const TOC = [

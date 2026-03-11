@@ -17,6 +17,7 @@ export const metadata: Metadata = {
     title: "HyperEVM Yield Farming: Complete Strategy Guide",
     description:
       "In-depth HyperEVM yield farming strategies: HLP vault, liquid staking, lending, LP strategies, delta-neutral farming, and leveraged looping with risk analysis.",
+    type: "article",
   },
 };
 

@@ -8,6 +8,13 @@ export const metadata: Metadata = {
   description:
     "Learn about Hyperliquid, HyperEVM, HYPE staking, HLP vault, trading bots, and the Hyperliquid ecosystem. Guides for beginners and advanced users.",
   alternates: { canonical: "https://perp.wiki/learn" },
+  openGraph: {
+    title: "Hyperliquid Guides & Resources 2026",
+    description:
+      "Learn about Hyperliquid, HyperEVM, HYPE staking, HLP vault, trading bots, and the Hyperliquid ecosystem. Guides for beginners and advanced users.",
+    type: "website",
+  },
+  twitter: { card: "summary_large_image" },
 };
 
 export default function LearnPage() {

@@ -15,6 +15,7 @@ export const metadata: Metadata = {
     title: "Best Hyperliquid Trading Bots 2026",
     description:
       "The top trading bots and automation tools for Hyperliquid: market making, copy trading, AI-driven strategies, and more.",
+    type: "article",
   },
 };
 

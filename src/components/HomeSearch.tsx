@@ -1,7 +1,6 @@
 "use client";
 
-import { CommandSearch, SearchTrigger } from "@/components/CommandSearch";
-import { useState } from "react";
+import { CommandSearch } from "@/components/CommandSearch";
 
 interface HomeSearchProps {
   projects: Array<{
@@ -15,9 +14,5 @@ interface HomeSearchProps {
 }
 
 export function HomeSearch({ projects }: HomeSearchProps) {
-  return (
-    <>
-      <CommandSearch projects={projects} />
-    </>
-  );
+  return <CommandSearch projects={projects} />;
 }

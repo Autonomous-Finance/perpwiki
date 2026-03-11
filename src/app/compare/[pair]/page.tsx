@@ -37,12 +37,16 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   if (!a || !b) return { title: "Not Found" };
 
+  const title = `${a.name} vs ${b.name} — Hyperliquid Ecosystem Comparison`;
+  const description = `Compare ${a.name} and ${b.name} in the Hyperliquid ecosystem. Features, layer, and use case comparison on perp.wiki.`;
   return {
-    title: `${a.name} vs ${b.name} — Hyperliquid Ecosystem Comparison`,
-    description: `Compare ${a.name} and ${b.name} in the Hyperliquid ecosystem. Features, layer, and use case comparison on perp.wiki.`,
+    title,
+    description,
     alternates: {
       canonical: `https://perp.wiki/compare/${slugs[0]}-vs-${slugs[1]}`,
     },
+    openGraph: { title, description, type: "website" },
+    twitter: { card: "summary_large_image" },
   };
 }
 

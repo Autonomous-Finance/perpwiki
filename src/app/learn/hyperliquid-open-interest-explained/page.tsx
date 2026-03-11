@@ -15,6 +15,7 @@ export const metadata: Metadata = {
     title: "Open Interest on Hyperliquid Explained",
     description:
       "What open interest tells you about Hyperliquid markets: how to read OI, volume relationships, and trading signals.",
+    type: "article",
   },
 };
 

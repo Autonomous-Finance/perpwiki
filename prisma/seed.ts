@@ -927,9 +927,26 @@ async function main() {
   }
 
   for (const project of projects) {
+    // Preserve existing base64 data URLs — don't overwrite with remote URLs
+    const existing = await prisma.project.findUnique({
+      where: { slug: project.slug },
+      select: { logoUrl: true },
+    });
+
+    const updateData: Record<string, unknown> = { ...project };
+    if (
+      existing?.logoUrl?.startsWith("data:") &&
+      typeof updateData.logoUrl === "string" &&
+      !updateData.logoUrl.startsWith("data:")
+    ) {
+      // Keep the existing base64 logo
+      delete updateData.logoUrl;
+      console.log(`  Preserved data URL for: ${project.name}`);
+    }
+
     await prisma.project.upsert({
       where: { slug: project.slug },
-      update: project,
+      update: updateData,
       create: project,
     });
     console.log(`  Seeded: ${project.name}`);

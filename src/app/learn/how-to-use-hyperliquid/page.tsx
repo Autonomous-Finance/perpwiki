@@ -15,6 +15,7 @@ export const metadata: Metadata = {
     title: "How to Use Hyperliquid — Complete Beginner's Guide 2026",
     description:
       "From zero to your first trade — a step-by-step walkthrough of Hyperliquid for beginners.",
+    type: "article",
   },
 };
 

@@ -15,6 +15,7 @@ export const metadata: Metadata = {
     title: "Bridge to Hyperliquid with Unit Protocol",
     description:
       "Bridge BTC, ETH, SOL and more to Hyperliquid via Unit Protocol. Complete walkthrough with fees and security details.",
+    type: "article",
   },
 };
 

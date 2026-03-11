@@ -8,6 +8,13 @@ export const metadata: Metadata = {
   description:
     "Complete glossary of Hyperliquid, DeFi, and perpetual trading terms. From funding rates to HyperEVM, every concept explained.",
   alternates: { canonical: "https://perp.wiki/glossary" },
+  openGraph: {
+    title: "Hyperliquid Glossary — DeFi & Trading Terms Explained",
+    description:
+      "Complete glossary of Hyperliquid, DeFi, and perpetual trading terms. From funding rates to HyperEVM, every concept explained.",
+    type: "website",
+  },
+  twitter: { card: "summary_large_image" },
 };
 
 const GLOSSARY_TERMS = [

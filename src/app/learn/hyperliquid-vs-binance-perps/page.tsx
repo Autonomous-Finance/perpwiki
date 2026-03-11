@@ -15,6 +15,7 @@ export const metadata: Metadata = {
     title: "Hyperliquid vs Binance Perps 2026",
     description:
       "On-chain vs CEX perpetuals: how Hyperliquid compares to Binance on fees, speed, custody, and transparency.",
+    type: "article",
   },
 };
 

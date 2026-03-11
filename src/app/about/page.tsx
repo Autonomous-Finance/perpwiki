@@ -11,6 +11,13 @@ export const metadata: Metadata = {
   description:
     "perp.wiki is the definitive directory of Hyperliquid ecosystem projects — DEXs, LSTs, lending protocols, yield vaults, and DeFi infrastructure on HyperEVM and HyperCore.",
   alternates: { canonical: "https://perp.wiki/about" },
+  openGraph: {
+    title: "About perp.wiki — The Hyperliquid Ecosystem Directory",
+    description:
+      "The definitive directory of Hyperliquid ecosystem projects — DEXs, LSTs, lending protocols, yield vaults, and DeFi infrastructure on HyperEVM and HyperCore.",
+    type: "website",
+  },
+  twitter: { card: "summary_large_image" },
 };
 
 const NAV_LINKS = [

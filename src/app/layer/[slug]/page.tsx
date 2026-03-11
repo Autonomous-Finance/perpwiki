@@ -29,9 +29,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     HYPEREVM: "Best HyperEVM Projects 2026 — Ethereum-Compatible on Hyperliquid",
     HIP3: "HIP-3 Projects 2026 — Hyperliquid External Assets",
   };
+  const title = layerTitles[layer] || `${meta.label} Projects`;
+  const description = `Browse all ${meta.label} projects in the Hyperliquid ecosystem. Independent directory on perp.wiki.`;
   return {
-    title: layerTitles[layer] || `${meta.label} Projects`,
-    description: `Browse all ${meta.label} projects in the Hyperliquid ecosystem. Independent directory on perp.wiki.`,
+    title,
+    description,
+    alternates: { canonical: `https://perp.wiki/layer/${slug}` },
+    openGraph: { title, description, type: "website" },
+    twitter: { card: "summary_large_image" },
   };
 }
 

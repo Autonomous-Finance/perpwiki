@@ -11,6 +11,12 @@ export const metadata: Metadata = {
   title: "What Is HIP-3? Hyperliquid External Assets Explained",
   description:
     "HIP-3 brings external blockchain assets to Hyperliquid. Learn how HIP-3 works, which tokens are listed, and how it differs from HIP-1 and HyperEVM projects.",
+  openGraph: {
+    title: "What Is HIP-3? Hyperliquid External Assets Explained",
+    description:
+      "HIP-3 brings external blockchain assets to Hyperliquid. Learn how HIP-3 works, which tokens are listed, and how it differs from HIP-1 and HyperEVM projects.",
+    type: "article",
+  },
 };
 
 const TOC = [

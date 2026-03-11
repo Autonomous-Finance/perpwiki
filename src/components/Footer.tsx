@@ -92,17 +92,26 @@ export function Footer() {
 
       {/* Bottom bar */}
       <div className="border-t border-[var(--hw-border)]">
-        <div className="mx-auto flex max-w-7xl flex-col gap-4 px-4 py-6 sm:px-6 lg:flex-row lg:items-start lg:justify-between lg:px-8">
+        <div className="mx-auto flex max-w-7xl flex-col gap-4 px-4 py-6 sm:px-6 lg:flex-row lg:items-center lg:justify-between lg:px-8">
           <p className="text-xs text-[var(--hw-text-dim)]">
             &copy; 2026 perp.wiki &mdash; The Hyperliquid Ecosystem Directory
           </p>
-          <p className="max-w-2xl text-xs leading-relaxed text-[var(--hw-text-dim)] lg:text-right">
-            perp.wiki covers the complete Hyperliquid DeFi ecosystem including
-            perpetual futures, spot trading, liquid staking (kHYPE, stHYPE,
-            beHYPE), lending protocols, yield vaults, bridges, and developer
-            tools. Live market data, funding rates, and project research updated
-            daily.
-          </p>
+          <div className="flex items-center gap-4">
+            <p className="max-w-xl text-xs leading-relaxed text-[var(--hw-text-dim)] lg:text-right">
+              Live market data, funding rates, and project research updated daily.
+            </p>
+            {/* Scroll to top */}
+            <a
+              href="#main-content"
+              className="shrink-0 flex items-center justify-center h-8 w-8 rounded-sm border border-[var(--hw-border)] text-[var(--hw-text-dim)] hover:text-[var(--hw-green)] hover:border-[var(--hw-green)] transition-colors"
+              aria-label="Scroll to top"
+              title="Back to top"
+            >
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M18 15l-6-6-6 6" />
+              </svg>
+            </a>
+          </div>
         </div>
       </div>
     </footer>

@@ -15,6 +15,7 @@ export const metadata: Metadata = {
     title: "Hyperliquid Funding Rates Explained",
     description:
       "How funding rates work on Hyperliquid, how to read them, and strategies for profiting from rate differentials.",
+    type: "article",
   },
 };
 

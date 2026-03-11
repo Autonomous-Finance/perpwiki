@@ -11,6 +11,12 @@ export const metadata: Metadata = {
   title: "How to Stake HYPE — Complete Staking Guide 2026",
   description:
     "Step-by-step guide to staking HYPE tokens on Hyperliquid. Covers native staking, liquid staking (Kinetiq), APY, validators, and fee discounts. Updated 2026.",
+  openGraph: {
+    title: "How to Stake HYPE — Complete Staking Guide 2026",
+    description:
+      "Step-by-step guide to staking HYPE tokens on Hyperliquid. Covers native staking, liquid staking (Kinetiq), APY, validators, and fee discounts. Updated 2026.",
+    type: "article",
+  },
 };
 
 const TOC = [

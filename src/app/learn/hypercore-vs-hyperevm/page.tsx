@@ -11,6 +11,12 @@ export const metadata: Metadata = {
   title: "HyperCore vs HyperEVM — What's the Difference?",
   description:
     "HyperCore is Hyperliquid's native trading layer; HyperEVM is the EVM-compatible smart contract layer. Full comparison of features, speed, and use cases.",
+  openGraph: {
+    title: "HyperCore vs HyperEVM — What's the Difference?",
+    description:
+      "HyperCore is Hyperliquid's native trading layer; HyperEVM is the EVM-compatible smart contract layer. Full comparison of features, speed, and use cases.",
+    type: "article",
+  },
 };
 
 const TOC = [

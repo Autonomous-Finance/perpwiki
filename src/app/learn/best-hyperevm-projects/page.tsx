@@ -11,6 +11,12 @@ export const metadata: Metadata = {
   title: "Best HyperEVM Projects 2026 — Top Hyperliquid Ecosystem Apps",
   description:
     "The best projects building on HyperEVM in 2026: DeFi, liquid staking, lending, DEX, and infrastructure. Independent rankings on perp.wiki.",
+  openGraph: {
+    title: "Best HyperEVM Projects 2026 — Top Hyperliquid Ecosystem Apps",
+    description:
+      "The best projects building on HyperEVM in 2026: DeFi, liquid staking, lending, DEX, and infrastructure. Independent rankings on perp.wiki.",
+    type: "article",
+  },
 };
 
 const TOC = [

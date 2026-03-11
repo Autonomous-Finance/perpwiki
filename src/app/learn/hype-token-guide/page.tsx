@@ -11,6 +11,12 @@ export const metadata: Metadata = {
   title: "HYPE Token Guide — Tokenomics, Staking & Use Cases 2026",
   description:
     "Everything about the HYPE token: supply, staking mechanics, fee discounts, governance, liquid staking, and burn mechanism. Complete guide 2026.",
+  openGraph: {
+    title: "HYPE Token Guide — Tokenomics, Staking & Use Cases 2026",
+    description:
+      "Everything about the HYPE token: supply, staking mechanics, fee discounts, governance, liquid staking, and burn mechanism. Complete guide 2026.",
+    type: "article",
+  },
 };
 
 const TOC = [

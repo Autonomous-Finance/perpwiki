@@ -15,6 +15,7 @@ export const metadata: Metadata = {
     title: "What Is HIP-1? Hyperliquid Token Standard",
     description:
       "How HIP-1 governs native token creation, spot trading, and token launches on Hyperliquid's HyperCore L1.",
+    type: "article",
   },
 };
 

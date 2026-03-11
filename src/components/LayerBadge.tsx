@@ -13,9 +13,12 @@ export function LayerBadge({ layer }: { layer: string }) {
 
   return (
     <span
-      className={`${badgeClass} inline-block px-2 py-0.5 text-xs font-medium font-[family-name:var(--font-jetbrains-mono)]`}
-      style={{ borderRadius: "2px" }}
+      className={`${badgeClass} inline-flex items-center gap-1 rounded-sm px-2 py-0.5 text-xs font-medium font-[family-name:var(--font-jetbrains-mono)] shrink-0`}
     >
+      <span
+        className="inline-block h-1.5 w-1.5 rounded-full"
+        style={{ background: "currentColor", opacity: 0.6 }}
+      />
       {meta.label}
     </span>
   );

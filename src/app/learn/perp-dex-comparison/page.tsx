@@ -15,6 +15,7 @@ export const metadata: Metadata = {
     title: "Best Perp DEX in 2026 — Hyperliquid vs dYdX vs GMX vs Drift Compared",
     description:
       "Comprehensive comparison of top perp DEXs: Hyperliquid, dYdX, GMX, Drift, Lighter — fees, volume, and features.",
+    type: "article",
   },
 };
 

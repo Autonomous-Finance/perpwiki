@@ -227,13 +227,7 @@ export function CommandSearch({ projects }: CommandSearchProps) {
       onClick={() => setOpen(false)}
     >
       <div
-        className="w-full max-w-lg mx-4 border border-[var(--hw-border)] shadow-2xl overflow-hidden"
-        style={{
-          background: "rgba(13,17,23,0.95)",
-          backdropFilter: "blur(20px)",
-          WebkitBackdropFilter: "blur(20px)",
-          borderRadius: "4px",
-        }}
+        className="w-full max-w-lg mx-4 border border-[var(--hw-border)] shadow-2xl overflow-hidden rounded-sm glass"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Search input */}
@@ -479,8 +473,16 @@ export function CommandSearch({ projects }: CommandSearchProps) {
           {query.trim() &&
             filteredProjects.length === 0 &&
             filteredQuickLinks.length === 0 && (
-              <div className="px-4 py-8 text-center text-sm text-[var(--hw-text-dim)]">
-                No results for &ldquo;{query}&rdquo;
+              <div className="px-4 py-8 text-center">
+                <svg className="mx-auto mb-3 h-8 w-8 text-[var(--hw-text-dim)] opacity-50" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+                </svg>
+                <p className="text-sm text-[var(--hw-text-dim)]">
+                  No results for &ldquo;{query}&rdquo;
+                </p>
+                <p className="text-xs text-[var(--hw-text-dim)] mt-1 opacity-60">
+                  Try a different search term or browse projects
+                </p>
               </div>
             )}
         </div>

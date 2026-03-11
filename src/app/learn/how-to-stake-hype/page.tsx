@@ -17,6 +17,7 @@ export const metadata: Metadata = {
     title: "How to Stake HYPE: Native & Liquid Staking Guide",
     description:
       "Complete guide to staking HYPE — native staking for ~2.25% APY, liquid staking with kHYPE, stHYPE, and beHYPE, and strategies for maximizing yield.",
+    type: "article",
   },
 };
 
