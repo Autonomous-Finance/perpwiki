@@ -28,6 +28,12 @@ const ecosystemLinks = [
   { label: "About", href: "/about" },
 ];
 
+const networkLinks = [
+  { label: "pm.wiki — Prediction Markets", href: "https://pm.wiki" },
+  { label: "canton.wiki — Canton Network", href: "https://canton.wiki" },
+  { label: "polyguana.com — Analytics", href: "https://polyguana.com" },
+];
+
 function FooterLinkColumn({
   title,
   links,
@@ -61,7 +67,7 @@ export function Footer() {
     <footer className="border-t border-[var(--hw-border)] bg-[var(--hw-surface)]">
       {/* Main footer columns */}
       <div className="mx-auto max-w-7xl px-4 pb-10 pt-12 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-5">
           {/* Column 1: Brand */}
           <div className="sm:col-span-2 lg:col-span-1">
             <Link href="/" className="inline-block">
@@ -77,6 +83,18 @@ export function Footer() {
             <p className="mt-3 text-xs text-[var(--hw-text-dim)]">
               Independent. Not affiliated with Hyperliquid Labs.
             </p>
+            {/* Social links */}
+            <div className="mt-4 flex items-center gap-2">
+              <a
+                href="https://x.com/perpwiki"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-center h-8 w-8 rounded-sm border border-[var(--hw-border)] text-[var(--hw-text-dim)] hover:text-[var(--hw-green)] hover:border-[var(--hw-green)] transition-colors"
+                title="Follow @perpwiki on X"
+              >
+                <svg className="h-3.5 w-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+              </a>
+            </div>
           </div>
 
           {/* Column 2: Explore */}
@@ -87,6 +105,35 @@ export function Footer() {
 
           {/* Column 4: Ecosystem */}
           <FooterLinkColumn title="Ecosystem" links={ecosystemLinks} />
+
+          {/* Column 5: Network */}
+          <div>
+            <h3 className="font-[family-name:var(--font-display)] text-sm font-semibold uppercase tracking-wider text-[var(--hw-text)]">
+              Network
+            </h3>
+            <ul className="mt-4 space-y-2.5">
+              {networkLinks.map((link) => (
+                <li key={link.href}>
+                  <a
+                    href={link.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-sm text-[var(--hw-text-muted)] transition-colors duration-150 hover:text-[var(--hw-green)]"
+                  >
+                    {link.label}
+                  </a>
+                </li>
+              ))}
+              <li>
+                <Link
+                  href="/submit"
+                  className="text-sm text-[var(--hw-green)] transition-colors duration-150 hover:underline"
+                >
+                  Submit a Project
+                </Link>
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
 
@@ -97,6 +144,13 @@ export function Footer() {
             &copy; 2026 perp.wiki &mdash; The Hyperliquid Ecosystem Directory
           </p>
           <div className="flex items-center gap-4">
+            <div className="flex items-center gap-3 text-xs text-[var(--hw-text-dim)]">
+              <a href="/feed.xml" className="hover:text-[var(--hw-green)] transition-colors">RSS</a>
+              <span className="text-[var(--hw-border)]">·</span>
+              <a href="/llms.txt" className="hover:text-[var(--hw-green)] transition-colors">llms.txt</a>
+              <span className="text-[var(--hw-border)]">·</span>
+              <a href="/sitemap.xml" className="hover:text-[var(--hw-green)] transition-colors">Sitemap</a>
+            </div>
             <p className="max-w-xl text-xs leading-relaxed text-[var(--hw-text-dim)] lg:text-right">
               Live market data, funding rates, and project research updated daily.
             </p>

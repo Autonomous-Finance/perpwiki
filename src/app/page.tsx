@@ -326,6 +326,30 @@ export default async function HomePage() {
             />
           </div>
 
+          {/* Hero CTAs */}
+          <div className="mt-4 flex flex-wrap items-center gap-3">
+            <Link
+              href="/projects"
+              className="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-semibold transition-all hover:opacity-90"
+              style={{ borderRadius: "4px", background: "var(--hw-green)", color: "var(--hw-bg)" }}
+            >
+              Explore Ecosystem
+              <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+              </svg>
+            </Link>
+            <Link
+              href="/markets"
+              className="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-semibold border border-[var(--hw-border)] text-[var(--hw-text-muted)] hover:border-[var(--hw-green)] hover:text-[var(--hw-green)] transition-all"
+              style={{ borderRadius: "4px" }}
+            >
+              Live Markets
+              <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+              </svg>
+            </Link>
+          </div>
+
           {/* Quick nav */}
           <div className="mt-4 flex flex-wrap items-center gap-2">
             {[
