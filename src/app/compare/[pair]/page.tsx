@@ -57,7 +57,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   if (!a || !b) return { title: "Not Found" };
 
-  const title = `${a.name} vs ${b.name} — Hyperliquid Ecosystem Comparison`;
+  const title = `${a.name} vs ${b.name} — Hyperliquid Comparison`;
   const description = `Compare ${a.name} and ${b.name} in the Hyperliquid ecosystem. Features, layer, and use case comparison on perp.wiki.`;
   return {
     title,

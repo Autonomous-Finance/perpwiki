@@ -363,7 +363,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     ? content.intro
     : `Top ${category} projects in the Hyperliquid ecosystem. Independent directory with features and ecosystem context. perp.wiki`;
   return {
-    title: `Best Hyperliquid ${category} Projects 2026`,
+    title: `Best ${category} on Hyperliquid 2026`,
     description,
     alternates: { canonical: `${SITE_URL}/category/${slug}` },
   };

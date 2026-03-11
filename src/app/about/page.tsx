@@ -7,12 +7,12 @@ import type { Metadata } from "next";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "About perp.wiki — The Hyperliquid Ecosystem Directory",
+  title: "About — Hyperliquid Ecosystem Directory",
   description:
     "perp.wiki is the definitive directory of Hyperliquid ecosystem projects — DEXs, LSTs, lending protocols, yield vaults, and DeFi infrastructure on HyperEVM and HyperCore.",
   alternates: { canonical: "https://perp.wiki/about" },
   openGraph: {
-    title: "About perp.wiki — The Hyperliquid Ecosystem Directory",
+    title: "About perp.wiki — Hyperliquid Ecosystem Directory",
     description:
       "The definitive directory of Hyperliquid ecosystem projects — DEXs, LSTs, lending protocols, yield vaults, and DeFi infrastructure on HyperEVM and HyperCore.",
     url: "https://perp.wiki/about",
@@ -23,7 +23,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     site: "@perpwiki",
-    title: "About perp.wiki — The Hyperliquid Ecosystem Directory",
+    title: "About perp.wiki — Hyperliquid Ecosystem Directory",
     description:
       "The definitive directory of Hyperliquid ecosystem projects — DEXs, LSTs, lending protocols, yield vaults, and DeFi infrastructure on HyperEVM and HyperCore.",
     images: ["/about/opengraph-image"],

@@ -11,7 +11,7 @@ export const metadata: Metadata = {
     "Browse every project in the Hyperliquid ecosystem — HyperCore, HyperEVM, and HIP-3.",
   alternates: { canonical: "https://perp.wiki/projects" },
   openGraph: {
-    title: "All Hyperliquid Ecosystem Projects | perp.wiki",
+    title: "All Hyperliquid Ecosystem Projects",
     description:
       "Browse every project in the Hyperliquid ecosystem — HyperCore, HyperEVM, and HIP-3.",
     url: "https://perp.wiki/projects",
@@ -22,7 +22,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     site: "@perpwiki",
-    title: "All Hyperliquid Ecosystem Projects | perp.wiki",
+    title: "All Hyperliquid Ecosystem Projects",
     description:
       "Browse every project in the Hyperliquid ecosystem — HyperCore, HyperEVM, and HIP-3.",
     images: ["/projects/opengraph-image"],

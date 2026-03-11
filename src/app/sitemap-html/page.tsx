@@ -7,7 +7,7 @@ import type { Metadata } from "next";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Sitemap — perp.wiki",
+  title: "Sitemap",
   description:
     "Complete site map for perp.wiki — browse all pages including projects, markets, funding rates, learn articles, ecosystem layers, and tools.",
   alternates: { canonical: "https://perp.wiki/sitemap-html" },
