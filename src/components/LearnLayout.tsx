@@ -3,6 +3,7 @@ import { BreadcrumbSchema } from "@/components/BreadcrumbSchema";
 import { ProjectLogo } from "@/components/ProjectLogo";
 import { prisma } from "@/lib/prisma";
 import { LEARN_ARTICLES, type LearnArticle } from "@/lib/learn-articles";
+import { categoryToSlug } from "@/lib/categories";
 
 /* Re-export reusable learn article components */
 export { LiveStatBanner } from "@/components/LiveStatBanner";
@@ -49,6 +50,31 @@ function getRelatedProjectSlugs(articleSlug: string): string[] {
   return ["hyperliquid", "hlp"];
 }
 
+/**
+ * Get related articles from the same category, filling from other categories if needed.
+ */
+function getRelatedArticles(article: LearnArticle): LearnArticle[] {
+  const sameCategory = LEARN_ARTICLES.filter(
+    (a) => a.category === article.category && a.slug !== article.slug
+  );
+
+  if (sameCategory.length >= 3) {
+    return sameCategory.slice(0, 3);
+  }
+
+  const result = [...sameCategory];
+  const otherArticles = LEARN_ARTICLES.filter(
+    (a) => a.category !== article.category && a.slug !== article.slug
+  );
+
+  for (const a of otherArticles) {
+    if (result.length >= 3) break;
+    result.push(a);
+  }
+
+  return result.slice(0, 3);
+}
+
 export async function LearnLayout({ article, prev, next, toc, children }: LearnLayoutProps) {
   const relatedSlugs = getRelatedProjectSlugs(article.slug);
   const relatedProjects = await prisma.project.findMany({
@@ -64,6 +90,9 @@ export async function LearnLayout({ article, prev, next, toc, children }: LearnL
     },
     take: 3,
   });
+
+  const relatedArticles = getRelatedArticles(article);
+  const catSlug = categoryToSlug(article.category);
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8">
@@ -148,7 +177,10 @@ export async function LearnLayout({ article, prev, next, toc, children }: LearnL
                 </span>
                 <span className="text-xs text-[var(--hw-text-dim)]">{article.readingTime} read</span>
                 {article.datePublished && (
-                  <span className="text-xs text-[var(--hw-text-dim)]">
+                  <span className="inline-flex items-center gap-1.5 text-xs text-[var(--hw-text-dim)] bg-[var(--hw-surface)] px-2 py-0.5 border border-[var(--hw-border)]" style={{ borderRadius: "4px" }}>
+                    <svg className="h-3 w-3 text-[var(--hw-green)]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6l4 2m6-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
                     Updated {article.datePublished}
                   </span>
                 )}
@@ -196,74 +228,79 @@ export async function LearnLayout({ article, prev, next, toc, children }: LearnL
           )}
 
           {/* Related Articles */}
-          {(() => {
-            const related = LEARN_ARTICLES
-              .filter((a) => a.category === article.category && a.slug !== article.slug)
-              .slice(0, 3);
-            if (related.length === 0) return null;
-            return (
-              <div className="mt-10 border-t border-[var(--hw-border)] pt-8">
-                <h2 className="font-[family-name:var(--font-space-grotesk)] text-lg font-semibold text-[var(--hw-text)] mb-4">
-                  Related Articles
-                </h2>
-                <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-                  {related.map((ra) => (
-                    <Link
-                      key={ra.slug}
-                      href={`/learn/${ra.slug}`}
-                      className="group border border-[var(--hw-border)] bg-[var(--hw-surface)] p-4 transition-all hover:border-[var(--hw-green)]"
-                      style={{ borderRadius: "4px" }}
-                    >
-                      <span className="text-[10px] text-[var(--hw-text-dim)] uppercase tracking-wider">{ra.category}</span>
-                      <span className="block text-sm font-medium text-[var(--hw-text)] group-hover:text-[var(--hw-green)] transition-colors mt-1 line-clamp-2">
-                        {ra.title}
-                      </span>
-                      <span className="block text-xs text-[var(--hw-text-dim)] mt-1">{ra.readingTime} read</span>
-                    </Link>
-                  ))}
-                </div>
+          {relatedArticles.length > 0 && (
+            <div className="mt-10 border-t border-[var(--hw-border)] pt-8">
+              <h2 className="font-[family-name:var(--font-space-grotesk)] text-lg font-semibold text-[var(--hw-text)] mb-4">
+                Related Articles
+              </h2>
+              <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                {relatedArticles.map((ra) => (
+                  <Link
+                    key={ra.slug}
+                    href={`/learn/${ra.slug}`}
+                    className="group border border-[var(--hw-border)] bg-[var(--hw-surface)] p-4 transition-all hover:border-[var(--hw-green)]"
+                    style={{ borderRadius: "4px" }}
+                  >
+                    <span className="text-[10px] text-[var(--hw-text-dim)] uppercase tracking-wider">{ra.category}</span>
+                    <span className="block text-sm font-medium text-[var(--hw-text)] group-hover:text-[var(--hw-green)] transition-colors mt-1 line-clamp-2">
+                      {ra.title}
+                    </span>
+                    <span className="block text-xs text-[var(--hw-text-dim)] mt-1">{ra.readingTime} read</span>
+                  </Link>
+                ))}
               </div>
-            );
-          })()}
+            </div>
+          )}
 
-          {/* CTA Banner */}
+          {/* Category-aware CTA Banner */}
           <div
-            className="mt-10 border border-[var(--hw-border)] p-6 flex flex-col sm:flex-row items-center justify-between gap-4"
+            className="mt-10 border border-[var(--hw-border)] p-6"
             style={{
               borderRadius: "4px",
               background: "linear-gradient(135deg, var(--hw-surface) 0%, rgba(0,229,160,0.03) 100%)",
             }}
           >
-            <div>
-              <p className="text-sm font-medium text-[var(--hw-text)]">
-                Explore the Hyperliquid ecosystem
+            <div className="flex flex-col gap-4">
+              <div>
+                <p className="text-sm font-medium text-[var(--hw-text)]">
+                  Ready to explore {article.category}?
+                </p>
+                <p className="text-xs text-[var(--hw-text-dim)] mt-0.5">
+                  Browse projects, compare protocols, and dive deeper into the Hyperliquid ecosystem.
+                </p>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                <Link
+                  href={`/projects?category=${encodeURIComponent(catSlug)}`}
+                  className="inline-flex items-center gap-2 px-4 py-2 text-xs font-semibold transition-all hover:opacity-90"
+                  style={{ borderRadius: "4px", background: "var(--hw-green)", color: "var(--hw-bg)" }}
+                >
+                  Browse {article.category} projects
+                  <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                  </svg>
+                </Link>
+                <Link
+                  href="/compare"
+                  className="inline-flex items-center gap-2 px-4 py-2 text-xs font-medium border border-[var(--hw-green)] text-[var(--hw-green)] hover:bg-[var(--hw-green-subtle)] transition-all"
+                  style={{ borderRadius: "4px" }}
+                >
+                  Compare projects side-by-side
+                  <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                  </svg>
+                </Link>
+                <Link
+                  href="/learn"
+                  className="inline-flex items-center gap-2 px-4 py-2 text-xs font-medium border border-[var(--hw-border)] text-[var(--hw-text-muted)] hover:border-[var(--hw-border-bright)] transition-all"
+                  style={{ borderRadius: "4px" }}
+                >
+                  More Articles
+                </Link>
+              </div>
+              <p className="text-[10px] text-[var(--hw-text-dim)] font-[family-name:var(--font-jetbrains-mono)]">
+                Bookmark perp.wiki for the latest Hyperliquid ecosystem coverage.
               </p>
-              <p className="text-xs text-[var(--hw-text-dim)] mt-0.5">
-                Discover projects, compare protocols, and track markets
-              </p>
-            </div>
-            <div className="flex flex-wrap gap-2">
-              <Link
-                href="/projects"
-                className="inline-flex items-center gap-2 px-4 py-2 text-xs font-semibold transition-all hover:opacity-90"
-                style={{ borderRadius: "4px", background: "var(--hw-green)", color: "var(--hw-bg)" }}
-              >
-                Browse Projects
-              </Link>
-              <Link
-                href="/compare"
-                className="inline-flex items-center gap-2 px-4 py-2 text-xs font-medium border border-[var(--hw-green)] text-[var(--hw-green)] hover:bg-[var(--hw-green-subtle)] transition-all"
-                style={{ borderRadius: "4px" }}
-              >
-                Compare Projects
-              </Link>
-              <Link
-                href="/learn"
-                className="inline-flex items-center gap-2 px-4 py-2 text-xs font-medium border border-[var(--hw-border)] text-[var(--hw-text-muted)] hover:border-[var(--hw-border-bright)] transition-all"
-                style={{ borderRadius: "4px" }}
-              >
-                More Articles
-              </Link>
             </div>
           </div>
 
@@ -322,7 +359,7 @@ export function H2({ id, children }: { id: string; children: React.ReactNode }) 
 
 export function P({ children }: { children: React.ReactNode }) {
   return (
-    <p className="text-sm leading-relaxed text-[var(--hw-text-muted)] mb-4">{children}</p>
+    <p className="text-sm leading-[1.75] text-[var(--hw-text-muted)] mb-4">{children}</p>
   );
 }
 
@@ -541,6 +578,64 @@ export function CTAOutline({ href, children }: { href: string; children: React.R
           <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
         </svg>
       </Link>
+    </div>
+  );
+}
+
+/** TL;DR box — alternate export name accepting `points` prop */
+export function TLDRBox({ points }: { points: string[] }) {
+  return <TldrBox items={points} />;
+}
+
+/** Horizontal stat cards for live-ish category counts */
+export function QuickStats({ stats }: { stats: { label: string; value: string }[] }) {
+  return (
+    <div className="my-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+      {stats.map((stat) => (
+        <div
+          key={stat.label}
+          className="border border-[var(--hw-border)] bg-[var(--hw-surface)] p-4 text-center"
+          style={{ borderRadius: "4px" }}
+        >
+          <div className="font-[family-name:var(--font-jetbrains-mono)] text-xl font-bold text-[var(--hw-green)]">
+            {stat.value}
+          </div>
+          <div className="mt-1 text-xs text-[var(--hw-text-dim)]">{stat.label}</div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+/** Comparison link cards with a "vs" badge */
+export function CompareToolsBox({
+  pairs,
+}: {
+  pairs: { nameA: string; nameB: string; slugA: string; slugB: string }[];
+}) {
+  return (
+    <div className="my-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+      {pairs.map((pair) => (
+        <Link
+          key={`${pair.slugA}-${pair.slugB}`}
+          href={`/compare/${pair.slugA}-vs-${pair.slugB}`}
+          className="group flex items-center justify-center gap-3 border border-[var(--hw-border)] bg-[var(--hw-surface)] p-4 transition-all hover:border-[var(--hw-green)]"
+          style={{ borderRadius: "4px" }}
+        >
+          <span className="text-sm font-medium text-[var(--hw-text)] group-hover:text-[var(--hw-green)] transition-colors truncate">
+            {pair.nameA}
+          </span>
+          <span
+            className="shrink-0 inline-flex items-center justify-center h-6 w-8 text-[10px] font-bold uppercase tracking-wider text-[var(--hw-bg)] font-[family-name:var(--font-jetbrains-mono)]"
+            style={{ borderRadius: "4px", background: "var(--hw-gold)" }}
+          >
+            vs
+          </span>
+          <span className="text-sm font-medium text-[var(--hw-text)] group-hover:text-[var(--hw-green)] transition-colors truncate">
+            {pair.nameB}
+          </span>
+        </Link>
+      ))}
     </div>
   );
 }

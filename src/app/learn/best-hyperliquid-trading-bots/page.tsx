@@ -1,5 +1,5 @@
 import { getArticle, getAdjacentArticles } from "@/lib/learn-articles";
-import { LearnLayout, H2, P, InlineLink, ComparisonTable, CTA } from "@/components/LearnLayout";
+import { LearnLayout, H2, P, InlineLink, ComparisonTable, CTA, TLDRBox, FeatureCard } from "@/components/LearnLayout";
 import { JsonLd } from "@/components/JsonLd";
 import type { Metadata } from "next";
 
@@ -88,6 +88,14 @@ export default function BestHyperliquidTradingBotsPage() {
         }}
       />
 
+      <TLDRBox
+        points={[
+          "Hummingbot (free, open-source) is best for custom market-making strategies; pvp.trade is best for copy trading verified on-chain traders.",
+          "Hyperliquid's zero-gas order placement makes bot trading significantly cheaper than on most other chains.",
+          "Always use trade-only API keys (no withdrawal access) and start with small position sizes when running any bot.",
+        ]}
+      />
+
       <H2 id="why-bots">Why Use Trading Bots on Hyperliquid?</H2>
       <P>
         Trading bots automate the execution of trading strategies, removing the need for manual
@@ -139,6 +147,13 @@ export default function BestHyperliquidTradingBotsPage() {
         management), no graphical interface for live monitoring, strategy development requires
         coding ability, you are responsible for your own infrastructure uptime.
       </P>
+
+      <FeatureCard
+        name="Hummingbot"
+        slug="hummingbot"
+        description="Open-source market-making bot framework with native Hyperliquid support. Free, self-hosted, and highly customizable."
+        category="Trading Bots"
+      />
 
       <H2 id="insilico">Insilico Terminal</H2>
       <P>

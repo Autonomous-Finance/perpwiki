@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { JsonLd } from "@/components/JsonLd";
 import { BreadcrumbSchema } from "@/components/BreadcrumbSchema";
+import { ProjectLogo } from "@/components/ProjectLogo";
+import { CompareSearch } from "@/components/CompareSearch";
 import { prisma } from "@/lib/prisma";
 import { categoryToSlug } from "@/lib/categories";
 import type { Metadata } from "next";
@@ -34,8 +36,8 @@ export const metadata: Metadata = {
 interface GroupedCategory {
   category: string;
   slug: string;
-  projects: { slug: string; name: string }[];
-  pairs: { slugA: string; slugB: string; nameA: string; nameB: string }[];
+  projects: { slug: string; name: string; logoUrl: string | null }[];
+  pairs: { slugA: string; slugB: string; nameA: string; nameB: string; logoUrlA: string | null; logoUrlB: string | null }[];
 }
 
 const CATEGORY_ICONS: Record<string, string> = {
@@ -66,15 +68,15 @@ const CATEGORY_ICONS: Record<string, string> = {
 export default async function CompareHubPage() {
   const projects = await prisma.project.findMany({
     where: { approvalStatus: "APPROVED" },
-    select: { slug: true, name: true, category: true },
+    select: { slug: true, name: true, category: true, logoUrl: true },
     orderBy: { name: "asc" },
   });
 
   // Group by category
-  const byCategory = new Map<string, { slug: string; name: string }[]>();
+  const byCategory = new Map<string, { slug: string; name: string; logoUrl: string | null }[]>();
   for (const p of projects) {
     const existing = byCategory.get(p.category) || [];
-    existing.push({ slug: p.slug, name: p.name });
+    existing.push({ slug: p.slug, name: p.name, logoUrl: p.logoUrl });
     byCategory.set(p.category, existing);
   }
 
@@ -90,6 +92,8 @@ export default async function CompareHubPage() {
           slugB: members[j].slug,
           nameA: members[i].name,
           nameB: members[j].name,
+          logoUrlA: members[i].logoUrl,
+          logoUrlB: members[j].logoUrl,
         });
       }
     }
@@ -106,11 +110,24 @@ export default async function CompareHubPage() {
 
   const totalPairs = groups.reduce((sum, g) => sum + g.pairs.length, 0);
 
-  // Popular comparisons: first pair from the top 4 categories
+  // Popular comparisons: first pair from the top 6 categories
   const popularPairs = groups
-    .slice(0, 4)
+    .slice(0, 6)
     .map((g) => ({ ...g.pairs[0], category: g.category }))
     .filter(Boolean);
+
+  // Flatten all pairs for search
+  const allSearchPairs = groups.flatMap((g) =>
+    g.pairs.map((p) => ({
+      slugA: p.slugA,
+      slugB: p.slugB,
+      nameA: p.nameA,
+      nameB: p.nameB,
+      category: g.category,
+      logoUrlA: p.logoUrlA,
+      logoUrlB: p.logoUrlB,
+    }))
+  );
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-8">
@@ -178,24 +195,10 @@ export default async function CompareHubPage() {
           </span>
           <span className="text-[var(--hw-text-dim)]">projects</span>
         </div>
-        <p className="mt-3 text-sm text-[var(--hw-text-dim)]">
-          Jump to a category below, or search for a specific project comparison.
-        </p>
       </div>
 
-      {/* Category Filter Chips */}
-      <div className="flex flex-wrap gap-2 mb-8">
-        {groups.map((group) => (
-          <a
-            key={`chip-${group.slug}`}
-            href={`#${group.slug}`}
-            className="px-3 py-1.5 text-xs font-medium border border-[var(--hw-border)] text-[var(--hw-text-muted)] hover:border-[var(--hw-green)] hover:text-[var(--hw-green)] transition-all"
-            style={{ borderRadius: "4px" }}
-          >
-            {group.category}
-          </a>
-        ))}
-      </div>
+      {/* Search */}
+      <CompareSearch pairs={allSearchPairs} />
 
       {/* Popular Comparisons */}
       {popularPairs.length > 0 && (
@@ -206,7 +209,7 @@ export default async function CompareHubPage() {
               Popular Comparisons
             </h2>
           </div>
-          <div className="grid gap-3 sm:grid-cols-2">
+          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {popularPairs.map((pair) => (
               <Link
                 key={`popular-${pair.slugA}-${pair.slugB}`}
@@ -220,12 +223,7 @@ export default async function CompareHubPage() {
                 />
                 <div className="flex items-center gap-3 mb-2">
                   <div className="flex items-center gap-2 min-w-0 flex-1">
-                    <span
-                      className="flex h-8 w-8 shrink-0 items-center justify-center text-xs font-bold text-[var(--hw-bg)]"
-                      style={{ borderRadius: "4px", background: "var(--hw-green)" }}
-                    >
-                      {pair.nameA.charAt(0)}
-                    </span>
+                    <ProjectLogo name={pair.nameA} logoUrl={pair.logoUrlA} size="md" />
                     <span className="text-sm font-semibold text-[var(--hw-text)] group-hover:text-[var(--hw-green)] transition-colors truncate">
                       {pair.nameA}
                     </span>
@@ -240,12 +238,7 @@ export default async function CompareHubPage() {
                     <span className="text-sm font-semibold text-[var(--hw-text)] group-hover:text-[var(--hw-green)] transition-colors truncate text-right">
                       {pair.nameB}
                     </span>
-                    <span
-                      className="flex h-8 w-8 shrink-0 items-center justify-center text-xs font-bold text-[var(--hw-bg)]"
-                      style={{ borderRadius: "4px", background: "var(--hw-cyan)" }}
-                    >
-                      {pair.nameB.charAt(0)}
-                    </span>
+                    <ProjectLogo name={pair.nameB} logoUrl={pair.logoUrlB} size="md" />
                   </div>
                 </div>
                 <div className="flex items-center justify-between">
@@ -266,9 +259,9 @@ export default async function CompareHubPage() {
         </section>
       )}
 
-      {/* Category Quick Nav */}
+      {/* Category Quick Nav — enhanced tab-like style */}
       <div className="mb-10">
-        <h2 className="font-[family-name:var(--font-space-grotesk)] text-sm font-semibold text-[var(--hw-text-dim)] uppercase tracking-wider mb-3">
+        <h2 className="font-[family-name:var(--font-space-grotesk)] text-sm font-semibold text-[var(--hw-text)] uppercase tracking-wider mb-3">
           Jump to Category
         </h2>
         <div className="flex flex-wrap gap-2">
@@ -276,12 +269,15 @@ export default async function CompareHubPage() {
             <a
               key={`nav-${group.slug}`}
               href={`#${group.slug}`}
-              className="inline-flex items-center gap-1.5 border border-[var(--hw-border)] bg-[var(--hw-surface)] px-3 py-1.5 text-xs text-[var(--hw-text-muted)] transition-all hover:border-[var(--hw-green)] hover:text-[var(--hw-green)]"
+              className="inline-flex items-center gap-1.5 border-2 border-[var(--hw-border)] bg-[var(--hw-surface)] px-3.5 py-2 text-xs font-medium text-[var(--hw-text-muted)] transition-all hover:border-[var(--hw-green)] hover:text-[var(--hw-green)] hover:bg-[var(--hw-green-subtle)]"
               style={{ borderRadius: "4px" }}
             >
               <span>{CATEGORY_ICONS[group.category] || "\u25CB"}</span>
               {group.category}
-              <span className="font-[family-name:var(--font-jetbrains-mono)] text-[var(--hw-text-dim)]">
+              <span
+                className="font-[family-name:var(--font-jetbrains-mono)] text-[10px] text-[var(--hw-text-dim)] px-1.5 py-0.5"
+                style={{ borderRadius: "2px", background: "var(--hw-surface-raised)" }}
+              >
                 {group.pairs.length}
               </span>
             </a>
@@ -320,18 +316,8 @@ export default async function CompareHubPage() {
                 >
                   <div className="flex items-center gap-3">
                     <div className="flex items-center -space-x-1.5">
-                      <span
-                        className="flex h-7 w-7 items-center justify-center text-[10px] font-bold text-[var(--hw-bg)] ring-2 ring-[var(--hw-surface)]"
-                        style={{ borderRadius: "4px", background: "var(--hw-green)" }}
-                      >
-                        {pair.nameA.charAt(0)}
-                      </span>
-                      <span
-                        className="flex h-7 w-7 items-center justify-center text-[10px] font-bold text-[var(--hw-bg)] ring-2 ring-[var(--hw-surface)]"
-                        style={{ borderRadius: "4px", background: "var(--hw-cyan)" }}
-                      >
-                        {pair.nameB.charAt(0)}
-                      </span>
+                      <ProjectLogo name={pair.nameA} logoUrl={pair.logoUrlA} size="sm" />
+                      <ProjectLogo name={pair.nameB} logoUrl={pair.logoUrlB} size="sm" />
                     </div>
                     <div className="flex items-center gap-1.5 min-w-0 flex-1">
                       <span className="text-sm font-medium text-[var(--hw-text)] group-hover:text-[var(--hw-green)] transition-colors truncate">

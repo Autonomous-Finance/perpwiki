@@ -690,18 +690,21 @@ export default async function CategoryPage({ params }: Props) {
 
       {/* ── Compare CTA ── */}
       <div
-        className="mt-8 border border-[var(--hw-border)] bg-[var(--hw-surface)] p-5 text-center"
+        className="mt-8 border border-[var(--hw-border)] bg-[var(--hw-surface)] p-6 text-center"
         style={{ borderRadius: "4px" }}
       >
-        <p className="text-sm text-[var(--hw-text-muted)] mb-3">
-          Compare {category} projects side-by-side
+        <h3 className="font-[family-name:var(--font-space-grotesk)] text-base font-semibold text-[var(--hw-text)] mb-2">
+          Compare {category} Projects
+        </h3>
+        <p className="text-sm text-[var(--hw-text-muted)] mb-4">
+          See how {category} projects on Hyperliquid stack up against each other side-by-side.
         </p>
         <Link
-          href="/compare"
-          className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-[var(--hw-bg)] transition-all hover:opacity-90"
+          href={`/compare#${slug}`}
+          className="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-medium text-[var(--hw-bg)] transition-all hover:opacity-90"
           style={{ borderRadius: "4px", background: "var(--hw-green)" }}
         >
-          Compare Projects
+          Compare {category} projects side-by-side
           <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
           </svg>

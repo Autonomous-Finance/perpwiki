@@ -25,6 +25,26 @@ function parseTags(tags: string): string[] {
   }
 }
 
+function getVerdictBadge(category: string): string {
+  const lower = category.toLowerCase();
+  if (lower.includes("perp") || lower.includes("trading") || lower.includes("terminal") || lower.includes("bot")) {
+    return "Best for Traders";
+  }
+  if (lower.includes("liquid staking") || lower.includes("yield") || lower.includes("vault")) {
+    return "Best for Yield";
+  }
+  if (lower.includes("lending") || lower.includes("borrowing")) {
+    return "Best for Borrowers";
+  }
+  if (lower.includes("analytics") || lower.includes("data") || lower.includes("tracker")) {
+    return "Best for Research";
+  }
+  if (lower.includes("dex") || lower.includes("exchange")) {
+    return "Best for Swaps";
+  }
+  return "Ecosystem Pick";
+}
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { pair } = await params;
   const slugs = parsePair(pair);
@@ -84,21 +104,35 @@ export default async function ComparePage({ params }: Props) {
   const sameCategory = projectA.category === projectB.category;
   const sameLayer = projectA.layer === projectB.layer;
 
-  // Fetch related comparisons: other projects in the same category
-  const relatedProjects = await prisma.project.findMany({
+  // Fetch related comparisons: other projects in the same category as A
+  const relatedProjectsA = await prisma.project.findMany({
     where: {
       approvalStatus: "APPROVED",
       category: projectA.category,
       slug: { notIn: [projectA.slug, projectB.slug] },
     },
     select: { slug: true, name: true },
-    take: 6,
+    take: 8,
     orderBy: { name: "asc" },
   });
 
-  // Build related pairs
+  // Fetch related from projectB's category if different
+  const relatedProjectsB = !sameCategory
+    ? await prisma.project.findMany({
+        where: {
+          approvalStatus: "APPROVED",
+          category: projectB.category,
+          slug: { notIn: [projectA.slug, projectB.slug] },
+        },
+        select: { slug: true, name: true },
+        take: 4,
+        orderBy: { name: "asc" },
+      })
+    : [];
+
+  // Build related pairs (up to 6)
   const relatedPairs: { slugA: string; slugB: string; nameA: string; nameB: string }[] = [];
-  for (const rp of relatedProjects) {
+  for (const rp of relatedProjectsA) {
     if (relatedPairs.length >= 4) break;
     relatedPairs.push({
       slugA: projectA.slug,
@@ -107,8 +141,8 @@ export default async function ComparePage({ params }: Props) {
       nameB: rp.name,
     });
   }
-  for (const rp of relatedProjects) {
-    if (relatedPairs.length >= 4) break;
+  for (const rp of relatedProjectsA) {
+    if (relatedPairs.length >= 6) break;
     if (relatedPairs.some((p) => p.slugB === rp.slug)) continue;
     relatedPairs.push({
       slugA: projectB.slug,
@@ -117,9 +151,82 @@ export default async function ComparePage({ params }: Props) {
       nameB: rp.name,
     });
   }
+  // Add pairs from projectB's category if different
+  for (const rp of relatedProjectsB) {
+    if (relatedPairs.length >= 6) break;
+    if (relatedPairs.some((p) => p.slugB === rp.slug || p.slugA === rp.slug)) continue;
+    relatedPairs.push({
+      slugA: projectB.slug,
+      slugB: rp.slug,
+      nameA: projectB.name,
+      nameB: rp.name,
+    });
+  }
+
+  // Mid-page related suggestions (2-3 pairs from related for "Compare more" CTA)
+  const midPageSuggestions = relatedPairs.slice(0, 3);
 
   const layerMetaA = LAYER_META[projectA.layer] || LAYER_META.BOTH;
   const layerMetaB = LAYER_META[projectB.layer] || LAYER_META.BOTH;
+
+  const verdictLabel = getVerdictBadge(projectA.category);
+
+  // Score computations
+  const scoreOpenSourceA = projectA.github ? 100 : 0;
+  const scoreOpenSourceB = projectB.github ? 100 : 0;
+  const scoreVerifiedA = projectA.isVerified ? 100 : 0;
+  const scoreVerifiedB = projectB.isVerified ? 100 : 0;
+  const scoreEcoBreadthA = Math.min(tagsA.length * 20, 100);
+  const scoreEcoBreadthB = Math.min(tagsB.length * 20, 100);
+  // Maturity: earlier launch = higher score. Range 2022-2026
+  function maturityScore(year: number | null): number {
+    if (!year) return 0;
+    const clamped = Math.max(2022, Math.min(2026, year));
+    return Math.round(((2026 - clamped) / 4) * 100);
+  }
+  const scoreMaturityA = maturityScore(projectA.launchYear);
+  const scoreMaturityB = maturityScore(projectB.launchYear);
+
+  const scoreBars: { label: string; scoreA: number; scoreB: number; descA: string; descB: string }[] = [
+    {
+      label: "Open Source",
+      scoreA: scoreOpenSourceA,
+      scoreB: scoreOpenSourceB,
+      descA: projectA.github ? "Public repo" : "Not public",
+      descB: projectB.github ? "Public repo" : "Not public",
+    },
+    {
+      label: "Verified",
+      scoreA: scoreVerifiedA,
+      scoreB: scoreVerifiedB,
+      descA: projectA.isVerified ? "Verified" : "Unverified",
+      descB: projectB.isVerified ? "Verified" : "Unverified",
+    },
+    {
+      label: "Ecosystem Breadth",
+      scoreA: scoreEcoBreadthA,
+      scoreB: scoreEcoBreadthB,
+      descA: `${tagsA.length} tag${tagsA.length !== 1 ? "s" : ""}`,
+      descB: `${tagsB.length} tag${tagsB.length !== 1 ? "s" : ""}`,
+    },
+    {
+      label: "Maturity",
+      scoreA: scoreMaturityA,
+      scoreB: scoreMaturityB,
+      descA: projectA.launchYear ? `Since ${projectA.launchYear}` : "Unknown",
+      descB: projectB.launchYear ? `Since ${projectB.launchYear}` : "Unknown",
+    },
+  ];
+
+  // Feature matrix
+  const featureMatrix: { label: string; a: boolean; b: boolean }[] = [
+    { label: "Open Source", a: !!projectA.github, b: !!projectB.github },
+    { label: "Verified", a: projectA.isVerified, b: projectB.isVerified },
+    { label: "Has Website", a: !!projectA.website, b: !!projectB.website },
+    { label: "Has Twitter", a: !!projectA.twitter, b: !!projectB.twitter },
+    { label: "Has GitHub", a: !!projectA.github, b: !!projectB.github },
+    { label: "Active Status", a: projectA.status === "ACTIVE", b: projectB.status === "ACTIVE" },
+  ];
 
   const comparisonRows: { label: string; valA: React.ReactNode; valB: React.ReactNode }[] = [
     {
@@ -243,13 +350,28 @@ export default async function ComparePage({ params }: Props) {
         <span className="text-[var(--hw-text-muted)]">{projectA.name} vs {projectB.name}</span>
       </nav>
 
-      {/* Title */}
+      {/* Hero with verdict badge */}
       <h1 className="font-[family-name:var(--font-space-grotesk)] text-3xl sm:text-4xl font-bold text-[var(--hw-text)] mb-2">
         {projectA.name} <span className="text-[var(--hw-text-dim)] text-2xl sm:text-3xl">vs</span> {projectB.name}
       </h1>
-      <p className="text-sm text-[var(--hw-text-dim)] mb-3">
-        Hyperliquid ecosystem comparison &middot; {projectA.category}
-      </p>
+      <div className="flex flex-wrap items-center gap-3 mb-3">
+        <p className="text-sm text-[var(--hw-text-dim)]">
+          Hyperliquid ecosystem comparison &middot; {projectA.category}
+        </p>
+        <span
+          className="inline-flex items-center gap-1 px-2.5 py-1 text-xs font-semibold text-[var(--hw-gold)]"
+          style={{
+            borderRadius: "9999px",
+            background: "rgba(255,200,0,0.08)",
+            border: "1px solid rgba(255,200,0,0.25)",
+          }}
+        >
+          <svg className="h-3 w-3" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+          </svg>
+          {verdictLabel}
+        </span>
+      </div>
 
       {/* Verdict Badges */}
       <div className="flex flex-wrap gap-2 mb-8">
@@ -342,7 +464,7 @@ export default async function ComparePage({ params }: Props) {
         </p>
       </div>
 
-      {/* CTA: Try Both */}
+      {/* CTA: Below Hero — Try Both */}
       {(projectA.website || projectB.website) && (
         <div className="flex flex-col sm:flex-row gap-3 mb-10">
           {projectA.website && (
@@ -505,9 +627,70 @@ export default async function ComparePage({ params }: Props) {
         )}
       </section>
 
-      {/* Feature Checklist */}
+      {/* Score Comparison */}
       <section className="mb-10">
-        <SectionHeading>Feature Checklist</SectionHeading>
+        <SectionHeading>Score Comparison</SectionHeading>
+        <div
+          className="border border-[var(--hw-border)] bg-[var(--hw-surface)] p-5"
+          style={{ borderRadius: "4px" }}
+        >
+          <div className="flex items-center gap-4 mb-5 text-xs text-[var(--hw-text-dim)]">
+            <span className="flex items-center gap-1.5">
+              <span className="inline-block h-2.5 w-5" style={{ borderRadius: "2px", background: "var(--hw-green)" }} />
+              {projectA.name}
+            </span>
+            <span className="flex items-center gap-1.5">
+              <span className="inline-block h-2.5 w-5" style={{ borderRadius: "2px", background: "var(--hw-cyan)" }} />
+              {projectB.name}
+            </span>
+          </div>
+          <div className="space-y-5">
+            {scoreBars.map((bar) => (
+              <div key={bar.label}>
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-xs font-medium text-[var(--hw-text-muted)]">{bar.label}</span>
+                </div>
+                <div className="space-y-1.5">
+                  <div className="flex items-center gap-3">
+                    <span className="text-[10px] text-[var(--hw-text-dim)] w-20 truncate shrink-0">{projectA.name}</span>
+                    <div className="flex-1 h-3 bg-[var(--hw-surface-raised)] overflow-hidden" style={{ borderRadius: "2px" }}>
+                      <div
+                        className="h-full transition-all"
+                        style={{
+                          width: `${bar.scoreA}%`,
+                          background: "var(--hw-green)",
+                          borderRadius: "2px",
+                          minWidth: bar.scoreA > 0 ? "4px" : "0px",
+                        }}
+                      />
+                    </div>
+                    <span className="text-[10px] text-[var(--hw-text-dim)] w-16 text-right shrink-0">{bar.descA}</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <span className="text-[10px] text-[var(--hw-text-dim)] w-20 truncate shrink-0">{projectB.name}</span>
+                    <div className="flex-1 h-3 bg-[var(--hw-surface-raised)] overflow-hidden" style={{ borderRadius: "2px" }}>
+                      <div
+                        className="h-full transition-all"
+                        style={{
+                          width: `${bar.scoreB}%`,
+                          background: "var(--hw-cyan)",
+                          borderRadius: "2px",
+                          minWidth: bar.scoreB > 0 ? "4px" : "0px",
+                        }}
+                      />
+                    </div>
+                    <span className="text-[10px] text-[var(--hw-text-dim)] w-16 text-right shrink-0">{bar.descB}</span>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Feature Matrix */}
+      <section className="mb-10">
+        <SectionHeading>Feature Matrix</SectionHeading>
         <div
           className="overflow-x-auto border border-[var(--hw-border)]"
           style={{ borderRadius: "4px" }}
@@ -515,38 +698,42 @@ export default async function ComparePage({ params }: Props) {
           <table className="w-full text-sm border-collapse">
             <thead>
               <tr>
-                <th className="bg-[var(--hw-surface-raised)] px-4 py-3 text-left text-xs text-[var(--hw-text-dim)] font-medium uppercase tracking-wider w-1/3 border-b border-[var(--hw-border)]">
+                <th className="bg-[var(--hw-surface-raised)] px-4 py-3 text-left text-xs text-[var(--hw-text-dim)] font-medium uppercase tracking-wider border-b border-[var(--hw-border)]">
                   Feature
                 </th>
-                <th className="bg-[var(--hw-surface-raised)] px-4 py-3 text-center text-[var(--hw-text)] font-semibold w-1/3 border-b border-[var(--hw-border)]">
-                  {projectA.name}
+                <th className="bg-[var(--hw-surface-raised)] px-4 py-3 text-center text-[var(--hw-text)] font-semibold border-b border-[var(--hw-border)] w-1/3">
+                  <span className="flex items-center justify-center gap-2">
+                    <ProjectLogo name={projectA.name} logoUrl={projectA.logoUrl} size="sm" />
+                    {projectA.name}
+                  </span>
                 </th>
-                <th className="bg-[var(--hw-surface-raised)] px-4 py-3 text-center text-[var(--hw-text)] font-semibold w-1/3 border-b border-[var(--hw-border)]">
-                  {projectB.name}
+                <th className="bg-[var(--hw-surface-raised)] px-4 py-3 text-center text-[var(--hw-text)] font-semibold border-b border-[var(--hw-border)] w-1/3">
+                  <span className="flex items-center justify-center gap-2">
+                    <ProjectLogo name={projectB.name} logoUrl={projectB.logoUrl} size="sm" />
+                    {projectB.name}
+                  </span>
                 </th>
               </tr>
             </thead>
             <tbody>
-              {[
-                { label: "Open Source", a: !!projectA.github, b: !!projectB.github },
-                { label: "Verified", a: !!projectA.isVerified, b: !!projectB.isVerified },
-                { label: "Has Twitter", a: !!projectA.twitter, b: !!projectB.twitter },
-                { label: "Has Discord", a: !!projectA.discord, b: !!projectB.discord },
-                { label: "Has Telegram", a: !!projectA.telegram, b: !!projectB.telegram },
-              ].map((row, i) => (
+              {featureMatrix.map((row, i) => (
                 <tr key={row.label} className={i % 2 === 0 ? "bg-[var(--hw-surface)]" : ""}>
-                  <td className="px-4 py-2.5 text-[var(--hw-text-dim)] font-medium text-xs border-b border-[var(--hw-border)]">
+                  <td className="px-4 py-3 text-[var(--hw-text-muted)] text-xs font-medium border-b border-[var(--hw-border)]">
                     {row.label}
                   </td>
-                  <td className="px-4 py-2.5 text-center text-sm border-b border-[var(--hw-border)]">
-                    {row.a
-                      ? <span className="text-[var(--hw-green)]">&#10003;</span>
-                      : <span className="text-[var(--hw-text-dim)]">&#10007;</span>}
+                  <td className="px-4 py-3 text-center border-b border-[var(--hw-border)]">
+                    {row.a ? (
+                      <span className="text-[var(--hw-green)] text-base font-bold">&#10003;</span>
+                    ) : (
+                      <span className="text-[var(--hw-text-dim)] text-base">&#10007;</span>
+                    )}
                   </td>
-                  <td className="px-4 py-2.5 text-center text-sm border-b border-[var(--hw-border)]">
-                    {row.b
-                      ? <span className="text-[var(--hw-green)]">&#10003;</span>
-                      : <span className="text-[var(--hw-text-dim)]">&#10007;</span>}
+                  <td className="px-4 py-3 text-center border-b border-[var(--hw-border)]">
+                    {row.b ? (
+                      <span className="text-[var(--hw-green)] text-base font-bold">&#10003;</span>
+                    ) : (
+                      <span className="text-[var(--hw-text-dim)] text-base">&#10007;</span>
+                    )}
                   </td>
                 </tr>
               ))}
@@ -554,6 +741,51 @@ export default async function ComparePage({ params }: Props) {
           </table>
         </div>
       </section>
+
+      {/* Mid-page CTA: Compare More */}
+      {midPageSuggestions.length > 0 && (
+        <section className="mb-10">
+          <div
+            className="border border-[var(--hw-border-bright)] bg-[var(--hw-surface)] p-5"
+            style={{
+              borderRadius: "4px",
+              background: "linear-gradient(135deg, var(--hw-surface) 0%, rgba(0,229,160,0.02) 100%)",
+            }}
+          >
+            <h3 className="font-[family-name:var(--font-space-grotesk)] text-sm font-semibold text-[var(--hw-text)] mb-3">
+              Compare More
+            </h3>
+            <div className="grid gap-2 sm:grid-cols-3">
+              {midPageSuggestions.map((rp) => (
+                <Link
+                  key={`mid-${rp.slugA}-${rp.slugB}`}
+                  href={`/compare/${rp.slugA}-vs-${rp.slugB}`}
+                  className="group flex items-center gap-2 border border-[var(--hw-border)] bg-[var(--hw-surface)] px-3 py-2.5 transition-all hover:border-[var(--hw-green)]"
+                  style={{ borderRadius: "4px" }}
+                >
+                  <div className="flex items-center -space-x-1">
+                    <span
+                      className="flex h-5 w-5 items-center justify-center text-[8px] font-bold text-[var(--hw-bg)] ring-1 ring-[var(--hw-surface)]"
+                      style={{ borderRadius: "4px", background: "var(--hw-green)" }}
+                    >
+                      {rp.nameA.charAt(0)}
+                    </span>
+                    <span
+                      className="flex h-5 w-5 items-center justify-center text-[8px] font-bold text-[var(--hw-bg)] ring-1 ring-[var(--hw-surface)]"
+                      style={{ borderRadius: "4px", background: "var(--hw-cyan)" }}
+                    >
+                      {rp.nameB.charAt(0)}
+                    </span>
+                  </div>
+                  <span className="text-xs text-[var(--hw-text-muted)] group-hover:text-[var(--hw-green)] transition-colors truncate">
+                    {rp.nameA} vs {rp.nameB}
+                  </span>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* Key Differences */}
       <section className="mb-10">
@@ -698,43 +930,6 @@ export default async function ComparePage({ params }: Props) {
         </div>
       </section>
 
-      {/* CTA: Compare More */}
-      {relatedPairs.length > 0 && (
-        <section className="mb-10">
-          <SectionHeading>Compare More</SectionHeading>
-          <div className="grid gap-3 sm:grid-cols-3">
-            {relatedPairs.slice(0, 3).map((rp) => (
-              <Link
-                key={`cta-${rp.slugA}-${rp.slugB}`}
-                href={`/compare/${rp.slugA}-vs-${rp.slugB}`}
-                className="group border border-[var(--hw-border)] bg-[var(--hw-surface)] p-5 transition-all hover:border-[var(--hw-green)]"
-                style={{ borderRadius: "4px" }}
-              >
-                <div className="flex items-center gap-2 mb-2">
-                  <span
-                    className="flex h-5 w-5 items-center justify-center text-[8px] font-bold text-[var(--hw-bg)]"
-                    style={{ borderRadius: "4px", background: "var(--hw-green)" }}
-                  >
-                    {rp.nameA.charAt(0)}
-                  </span>
-                  <span className="text-[10px] text-[var(--hw-text-dim)]">vs</span>
-                  <span
-                    className="flex h-5 w-5 items-center justify-center text-[8px] font-bold text-[var(--hw-bg)]"
-                    style={{ borderRadius: "4px", background: "var(--hw-cyan)" }}
-                  >
-                    {rp.nameB.charAt(0)}
-                  </span>
-                </div>
-                <p className="text-sm text-[var(--hw-text)] group-hover:text-[var(--hw-green)] transition-colors font-medium">
-                  {rp.nameA} vs {rp.nameB}
-                </p>
-                <p className="text-xs text-[var(--hw-text-dim)] mt-1">View comparison &rarr;</p>
-              </Link>
-            ))}
-          </div>
-        </section>
-      )}
-
       {/* Ecosystem Integration */}
       <section className="mb-10">
         <SectionHeading>Ecosystem Integration</SectionHeading>
@@ -832,7 +1027,7 @@ export default async function ComparePage({ params }: Props) {
       {relatedPairs.length > 0 && (
         <section className="mb-10">
           <SectionHeading>Related Comparisons</SectionHeading>
-          <div className="grid gap-3 sm:grid-cols-2">
+          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {relatedPairs.map((rp) => (
               <Link
                 key={`${rp.slugA}-${rp.slugB}`}
@@ -872,23 +1067,41 @@ export default async function ComparePage({ params }: Props) {
         </section>
       )}
 
-      {/* CTA: Explore Category */}
+      {/* Bottom CTA: See all category projects */}
       <div
-        className="border border-[var(--hw-border)] bg-[var(--hw-surface)] p-5 mb-8"
+        className="mb-10 border border-[var(--hw-border)] p-6 text-center"
         style={{
           borderRadius: "4px",
-          borderLeft: "3px solid var(--hw-green)",
+          background: "linear-gradient(135deg, var(--hw-surface) 0%, rgba(0,229,160,0.03) 100%)",
         }}
       >
         <p className="text-sm text-[var(--hw-text-muted)] mb-3">
-          Discover more projects in this space.
+          Explore more projects in this category
         </p>
-        <Link
-          href={`/category/${categoryToSlug(projectA.category)}`}
-          className="inline-flex items-center gap-2 text-sm font-semibold text-[var(--hw-green)] hover:underline"
-        >
-          Explore all {projectA.category} projects on perp.wiki &rarr;
-        </Link>
+        <div className="flex flex-wrap items-center justify-center gap-3">
+          <Link
+            href={`/category/${categoryToSlug(projectA.category)}`}
+            className="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-semibold transition-all hover:opacity-90"
+            style={{ borderRadius: "4px", background: "var(--hw-green)", color: "var(--hw-bg)" }}
+          >
+            See all {projectA.category} projects on perp.wiki
+            <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+            </svg>
+          </Link>
+          {!sameCategory && (
+            <Link
+              href={`/category/${categoryToSlug(projectB.category)}`}
+              className="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-semibold transition-all hover:opacity-90"
+              style={{ borderRadius: "4px", border: "1px solid var(--hw-cyan)", color: "var(--hw-cyan)" }}
+            >
+              See all {projectB.category} projects
+              <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+              </svg>
+            </Link>
+          )}
+        </div>
       </div>
 
       {/* Back links */}
