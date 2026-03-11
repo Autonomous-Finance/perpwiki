@@ -772,21 +772,28 @@ export default async function ProjectDetailPage({ params }: Props) {
           {relatedProjects.length > 0 && (
             <div className="rounded-sm border border-[var(--hw-border)] bg-[var(--hw-surface)] p-4">
               <h3 className="font-[family-name:var(--font-space-grotesk)] text-sm font-semibold text-[var(--hw-text)] mb-3">
-                Compare
+                Compare {project.name}
               </h3>
               <div className="space-y-2">
-                {relatedProjects.slice(0, 3).map((sp) => (
+                {relatedProjects.slice(0, 4).map((sp) => (
                   <Link
                     key={sp.slug}
                     href={`/compare/${project.slug}-vs-${sp.slug}`}
-                    className="flex items-center gap-2 text-sm text-[var(--hw-text-muted)] hover:text-[var(--hw-green)] transition-colors"
+                    className="flex items-center gap-2 px-2.5 py-1.5 text-sm text-[var(--hw-text-muted)] hover:text-[var(--hw-green)] hover:bg-[var(--hw-bg)] border border-transparent hover:border-[var(--hw-border)] transition-all"
+                    style={{ borderRadius: "4px" }}
                   >
-                    <span className="text-[var(--hw-text-dim)]">vs</span>
-                    {sp.name}
-                    <svg className="h-3 w-3 ml-auto text-[var(--hw-text-dim)]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" /></svg>
+                    <ProjectLogo name={sp.name} logoUrl={sp.logoUrl} size="sm" />
+                    <span className="truncate">{sp.name}</span>
+                    <span className="ml-auto shrink-0 text-xs text-[var(--hw-text-dim)]">Compare →</span>
                   </Link>
                 ))}
               </div>
+              <Link
+                href="/compare"
+                className="mt-3 flex items-center gap-1 text-xs text-[var(--hw-text-dim)] hover:text-[var(--hw-green)] transition-colors"
+              >
+                See all comparisons →
+              </Link>
             </div>
           )}
 

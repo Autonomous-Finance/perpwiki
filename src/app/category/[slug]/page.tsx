@@ -688,6 +688,26 @@ export default async function CategoryPage({ params }: Props) {
         </div>
       </div>
 
+      {/* ── Compare CTA ── */}
+      <div
+        className="mt-8 border border-[var(--hw-border)] bg-[var(--hw-surface)] p-5 text-center"
+        style={{ borderRadius: "4px" }}
+      >
+        <p className="text-sm text-[var(--hw-text-muted)] mb-3">
+          Compare {category} projects side-by-side
+        </p>
+        <Link
+          href="/compare"
+          className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-[var(--hw-bg)] transition-all hover:opacity-90"
+          style={{ borderRadius: "4px", background: "var(--hw-green)" }}
+        >
+          Compare Projects
+          <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+          </svg>
+        </Link>
+      </div>
+
       {/* ── Footer Links ── */}
       <div className="border-t border-[var(--hw-border)] pt-6 flex flex-wrap gap-4 text-sm text-[var(--hw-text-dim)]">
         <Link href="/projects" className="hover:text-[var(--hw-text-muted)] transition-colors">

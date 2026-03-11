@@ -2,7 +2,7 @@ import Link from "next/link";
 import { BreadcrumbSchema } from "@/components/BreadcrumbSchema";
 import { ProjectLogo } from "@/components/ProjectLogo";
 import { prisma } from "@/lib/prisma";
-import type { LearnArticle } from "@/lib/learn-articles";
+import { LEARN_ARTICLES, type LearnArticle } from "@/lib/learn-articles";
 
 /* Re-export reusable learn article components */
 export { LiveStatBanner } from "@/components/LiveStatBanner";
@@ -195,6 +195,37 @@ export async function LearnLayout({ article, prev, next, toc, children }: LearnL
             </div>
           )}
 
+          {/* Related Articles */}
+          {(() => {
+            const related = LEARN_ARTICLES
+              .filter((a) => a.category === article.category && a.slug !== article.slug)
+              .slice(0, 3);
+            if (related.length === 0) return null;
+            return (
+              <div className="mt-10 border-t border-[var(--hw-border)] pt-8">
+                <h2 className="font-[family-name:var(--font-space-grotesk)] text-lg font-semibold text-[var(--hw-text)] mb-4">
+                  Related Articles
+                </h2>
+                <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                  {related.map((ra) => (
+                    <Link
+                      key={ra.slug}
+                      href={`/learn/${ra.slug}`}
+                      className="group border border-[var(--hw-border)] bg-[var(--hw-surface)] p-4 transition-all hover:border-[var(--hw-green)]"
+                      style={{ borderRadius: "4px" }}
+                    >
+                      <span className="text-[10px] text-[var(--hw-text-dim)] uppercase tracking-wider">{ra.category}</span>
+                      <span className="block text-sm font-medium text-[var(--hw-text)] group-hover:text-[var(--hw-green)] transition-colors mt-1 line-clamp-2">
+                        {ra.title}
+                      </span>
+                      <span className="block text-xs text-[var(--hw-text-dim)] mt-1">{ra.readingTime} read</span>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            );
+          })()}
+
           {/* CTA Banner */}
           <div
             className="mt-10 border border-[var(--hw-border)] p-6 flex flex-col sm:flex-row items-center justify-between gap-4"
@@ -208,16 +239,23 @@ export async function LearnLayout({ article, prev, next, toc, children }: LearnL
                 Explore the Hyperliquid ecosystem
               </p>
               <p className="text-xs text-[var(--hw-text-dim)] mt-0.5">
-                Discover projects, track markets, and compare protocols
+                Discover projects, compare protocols, and track markets
               </p>
             </div>
-            <div className="flex gap-2">
+            <div className="flex flex-wrap gap-2">
               <Link
                 href="/projects"
                 className="inline-flex items-center gap-2 px-4 py-2 text-xs font-semibold transition-all hover:opacity-90"
                 style={{ borderRadius: "4px", background: "var(--hw-green)", color: "var(--hw-bg)" }}
               >
                 Browse Projects
+              </Link>
+              <Link
+                href="/compare"
+                className="inline-flex items-center gap-2 px-4 py-2 text-xs font-medium border border-[var(--hw-green)] text-[var(--hw-green)] hover:bg-[var(--hw-green-subtle)] transition-all"
+                style={{ borderRadius: "4px" }}
+              >
+                Compare Projects
               </Link>
               <Link
                 href="/learn"
@@ -417,6 +455,75 @@ export function CTA({ href, children }: { href: string; children: React.ReactNod
         </svg>
       </Link>
     </div>
+  );
+}
+
+/** TL;DR summary box — place at the top of articles */
+export function TldrBox({ items }: { items: string[] }) {
+  return (
+    <div
+      className="my-6 border border-[var(--hw-border-bright)] bg-[var(--hw-surface)] p-5"
+      style={{ borderRadius: "4px", borderLeft: "3px solid var(--hw-green)" }}
+    >
+      <div className="flex items-center gap-2 mb-3">
+        <span
+          className="inline-flex h-5 items-center px-1.5 text-[10px] font-bold uppercase tracking-wider"
+          style={{ borderRadius: "2px", background: "var(--hw-green)", color: "var(--hw-bg)" }}
+        >
+          TL;DR
+        </span>
+      </div>
+      <ul className="space-y-1.5">
+        {items.map((item, i) => (
+          <li key={i} className="flex gap-2 text-sm text-[var(--hw-text-muted)]">
+            <span className="text-[var(--hw-green)] shrink-0 mt-0.5">&#10003;</span>
+            {item}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+/** Featured project card for inline article mentions */
+export function FeatureCard({
+  name,
+  slug,
+  description,
+  logoUrl,
+  category,
+}: {
+  name: string;
+  slug: string;
+  description: string;
+  logoUrl?: string | null;
+  category?: string;
+}) {
+  return (
+    <Link
+      href={`/projects/${slug}`}
+      className="group my-4 flex items-start gap-3 border border-[var(--hw-border)] bg-[var(--hw-surface)] p-4 transition-all hover:border-[var(--hw-green)]"
+      style={{ borderRadius: "4px" }}
+    >
+      <ProjectLogo name={name} logoUrl={logoUrl ?? null} size="md" className="mt-0.5 shrink-0" />
+      <div className="min-w-0 flex-1">
+        <div className="flex items-center gap-2">
+          <span className="text-sm font-medium text-[var(--hw-text)] group-hover:text-[var(--hw-green)] transition-colors">
+            {name}
+          </span>
+          {category && (
+            <span
+              className="bg-[var(--hw-green-subtle)] px-1.5 py-0.5 text-[10px] text-[var(--hw-text-dim)]"
+              style={{ borderRadius: "2px" }}
+            >
+              {category}
+            </span>
+          )}
+        </div>
+        <p className="text-xs text-[var(--hw-text-dim)] mt-0.5 line-clamp-2">{description}</p>
+        <span className="text-[10px] text-[var(--hw-green)] mt-1 inline-block">View on perp.wiki &rarr;</span>
+      </div>
+    </Link>
   );
 }
 

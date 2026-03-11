@@ -178,6 +178,23 @@ export default async function CompareHubPage() {
           </span>
           <span className="text-[var(--hw-text-dim)]">projects</span>
         </div>
+        <p className="mt-3 text-sm text-[var(--hw-text-dim)]">
+          Jump to a category below, or search for a specific project comparison.
+        </p>
+      </div>
+
+      {/* Category Filter Chips */}
+      <div className="flex flex-wrap gap-2 mb-8">
+        {groups.map((group) => (
+          <a
+            key={`chip-${group.slug}`}
+            href={`#${group.slug}`}
+            className="px-3 py-1.5 text-xs font-medium border border-[var(--hw-border)] text-[var(--hw-text-muted)] hover:border-[var(--hw-green)] hover:text-[var(--hw-green)] transition-all"
+            style={{ borderRadius: "4px" }}
+          >
+            {group.category}
+          </a>
+        ))}
       </div>
 
       {/* Popular Comparisons */}

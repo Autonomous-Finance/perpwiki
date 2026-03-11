@@ -1,36 +1,36 @@
 import { NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
-import { submitToIndexNow } from "@/lib/indexnow";
-import { LEARN_ARTICLES } from "@/lib/learn-articles";
+import sitemap from "@/app/sitemap";
 
-const SITE_URL = "https://perp.wiki";
-const API_KEY = process.env.ADMIN_API_KEY;
+export const dynamic = "force-dynamic";
+
+const BATCH_SIZE = 500;
 
 export async function POST(req: Request) {
   const key = req.headers.get("x-api-key");
-  if (key !== API_KEY) return NextResponse.json({ error: "unauthorized" }, { status: 401 });
+  if (!key || key !== process.env.ADMIN_API_KEY) {
+    return NextResponse.json({ error: "unauthorized" }, { status: 401 });
+  }
 
-  const projects = await prisma.project.findMany({
-    where: { approvalStatus: "APPROVED" },
-    select: { slug: true },
-  });
+  const indexNowKey = process.env.INDEXNOW_API_KEY;
+  if (!indexNowKey) {
+    return NextResponse.json({ error: "INDEXNOW_API_KEY not set" }, { status: 500 });
+  }
 
-  const urls = [
-    SITE_URL,
-    `${SITE_URL}/projects`,
-    `${SITE_URL}/categories`,
-    `${SITE_URL}/learn`,
-    `${SITE_URL}/markets`,
-    `${SITE_URL}/stats`,
-    `${SITE_URL}/funding-rates`,
-    `${SITE_URL}/compare`,
-    `${SITE_URL}/tools`,
-    `${SITE_URL}/glossary`,
-    ...projects.map(p => `${SITE_URL}/projects/${p.slug}`),
-    ...projects.map(p => `${SITE_URL}/ecosystem/${p.slug}`),
-    ...LEARN_ARTICLES.map(a => `${SITE_URL}/learn/${a.slug}`),
-  ];
+  const entries = await sitemap();
+  const urls = entries.map((entry) => entry.url);
 
-  await submitToIndexNow(urls);
+  for (let i = 0; i < urls.length; i += BATCH_SIZE) {
+    const batch = urls.slice(i, i + BATCH_SIZE);
+    await fetch("https://api.indexnow.org/indexnow", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        host: "perp.wiki",
+        key: indexNowKey,
+        urlList: batch,
+      }),
+    });
+  }
+
   return NextResponse.json({ submitted: urls.length });
 }

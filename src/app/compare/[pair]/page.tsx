@@ -247,9 +247,69 @@ export default async function ComparePage({ params }: Props) {
       <h1 className="font-[family-name:var(--font-space-grotesk)] text-3xl sm:text-4xl font-bold text-[var(--hw-text)] mb-2">
         {projectA.name} <span className="text-[var(--hw-text-dim)] text-2xl sm:text-3xl">vs</span> {projectB.name}
       </h1>
-      <p className="text-sm text-[var(--hw-text-dim)] mb-8">
+      <p className="text-sm text-[var(--hw-text-dim)] mb-3">
         Hyperliquid ecosystem comparison &middot; {projectA.category}
       </p>
+
+      {/* Verdict Badges */}
+      <div className="flex flex-wrap gap-2 mb-8">
+        {sameCategory && sameLayer && (
+          <span
+            className="inline-block px-2.5 py-1 text-xs font-medium text-[var(--hw-green)] bg-[var(--hw-green-subtle)]"
+            style={{ borderRadius: "9999px", border: "1px solid rgba(0,229,160,0.2)" }}
+          >
+            Direct Competitors
+          </span>
+        )}
+        {sameCategory && !sameLayer && (
+          <span
+            className="inline-block px-2.5 py-1 text-xs font-medium text-[var(--hw-cyan)]"
+            style={{ borderRadius: "9999px", background: "rgba(0,200,255,0.08)", border: "1px solid rgba(0,200,255,0.2)" }}
+          >
+            Cross-Layer Alternatives
+          </span>
+        )}
+        {!sameCategory && (
+          <span
+            className="inline-block px-2.5 py-1 text-xs font-medium text-[var(--hw-gold)]"
+            style={{ borderRadius: "9999px", background: "rgba(255,200,0,0.08)", border: "1px solid rgba(255,200,0,0.2)" }}
+          >
+            Different Focus Areas
+          </span>
+        )}
+        {projectA.github && !projectB.github && (
+          <span
+            className="inline-block px-2.5 py-1 text-xs font-medium text-[var(--hw-text-muted)]"
+            style={{ borderRadius: "9999px", background: "var(--hw-surface-raised)", border: "1px solid var(--hw-border)" }}
+          >
+            Open Source Edge: {projectA.name}
+          </span>
+        )}
+        {!projectA.github && projectB.github && (
+          <span
+            className="inline-block px-2.5 py-1 text-xs font-medium text-[var(--hw-text-muted)]"
+            style={{ borderRadius: "9999px", background: "var(--hw-surface-raised)", border: "1px solid var(--hw-border)" }}
+          >
+            Open Source Edge: {projectB.name}
+          </span>
+        )}
+        {projectA.isVerified && !projectB.isVerified && (
+          <span
+            className="inline-block px-2.5 py-1 text-xs font-medium text-[var(--hw-green)]"
+            style={{ borderRadius: "9999px", background: "var(--hw-green-subtle)", border: "1px solid rgba(0,229,160,0.2)" }}
+          >
+            Verified: {projectA.name}
+          </span>
+        )}
+        {!projectA.isVerified && projectB.isVerified && (
+          <span
+            className="inline-block px-2.5 py-1 text-xs font-medium text-[var(--hw-green)]"
+            style={{ borderRadius: "9999px", background: "var(--hw-green-subtle)", border: "1px solid rgba(0,229,160,0.2)" }}
+          >
+            Verified: {projectB.name}
+          </span>
+        )}
+      </div>
 
       {/* Quick Take */}
       <div
@@ -281,6 +341,36 @@ export default async function ComparePage({ params }: Props) {
               : ` They serve different niches in the Hyperliquid ecosystem.`}
         </p>
       </div>
+
+      {/* CTA: Try Both */}
+      {(projectA.website || projectB.website) && (
+        <div className="flex flex-col sm:flex-row gap-3 mb-10">
+          {projectA.website && (
+            <a
+              href={projectA.website}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex-1 inline-flex items-center justify-center gap-2 px-5 py-2.5 text-sm font-semibold bg-[var(--hw-green)] text-[var(--hw-bg)] transition-opacity hover:opacity-90"
+              style={{ borderRadius: "4px" }}
+            >
+              Try {projectA.name}
+              <ExternalLinkIcon />
+            </a>
+          )}
+          {projectB.website && (
+            <a
+              href={projectB.website}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex-1 inline-flex items-center justify-center gap-2 px-5 py-2.5 text-sm font-semibold bg-[var(--hw-cyan)] text-[var(--hw-bg)] transition-opacity hover:opacity-90"
+              style={{ borderRadius: "4px" }}
+            >
+              Try {projectB.name}
+              <ExternalLinkIcon />
+            </a>
+          )}
+        </div>
+      )}
 
       {/* Side-by-side Project Cards */}
       <div className="grid gap-4 md:grid-cols-2 mb-10">
@@ -413,6 +503,56 @@ export default async function ComparePage({ params }: Props) {
             Highlighted tags are shared by both projects
           </p>
         )}
+      </section>
+
+      {/* Feature Checklist */}
+      <section className="mb-10">
+        <SectionHeading>Feature Checklist</SectionHeading>
+        <div
+          className="overflow-x-auto border border-[var(--hw-border)]"
+          style={{ borderRadius: "4px" }}
+        >
+          <table className="w-full text-sm border-collapse">
+            <thead>
+              <tr>
+                <th className="bg-[var(--hw-surface-raised)] px-4 py-3 text-left text-xs text-[var(--hw-text-dim)] font-medium uppercase tracking-wider w-1/3 border-b border-[var(--hw-border)]">
+                  Feature
+                </th>
+                <th className="bg-[var(--hw-surface-raised)] px-4 py-3 text-center text-[var(--hw-text)] font-semibold w-1/3 border-b border-[var(--hw-border)]">
+                  {projectA.name}
+                </th>
+                <th className="bg-[var(--hw-surface-raised)] px-4 py-3 text-center text-[var(--hw-text)] font-semibold w-1/3 border-b border-[var(--hw-border)]">
+                  {projectB.name}
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {[
+                { label: "Open Source", a: !!projectA.github, b: !!projectB.github },
+                { label: "Verified", a: !!projectA.isVerified, b: !!projectB.isVerified },
+                { label: "Has Twitter", a: !!projectA.twitter, b: !!projectB.twitter },
+                { label: "Has Discord", a: !!projectA.discord, b: !!projectB.discord },
+                { label: "Has Telegram", a: !!projectA.telegram, b: !!projectB.telegram },
+              ].map((row, i) => (
+                <tr key={row.label} className={i % 2 === 0 ? "bg-[var(--hw-surface)]" : ""}>
+                  <td className="px-4 py-2.5 text-[var(--hw-text-dim)] font-medium text-xs border-b border-[var(--hw-border)]">
+                    {row.label}
+                  </td>
+                  <td className="px-4 py-2.5 text-center text-sm border-b border-[var(--hw-border)]">
+                    {row.a
+                      ? <span className="text-[var(--hw-green)]">&#10003;</span>
+                      : <span className="text-[var(--hw-text-dim)]">&#10007;</span>}
+                  </td>
+                  <td className="px-4 py-2.5 text-center text-sm border-b border-[var(--hw-border)]">
+                    {row.b
+                      ? <span className="text-[var(--hw-green)]">&#10003;</span>
+                      : <span className="text-[var(--hw-text-dim)]">&#10007;</span>}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </section>
 
       {/* Key Differences */}
@@ -558,6 +698,43 @@ export default async function ComparePage({ params }: Props) {
         </div>
       </section>
 
+      {/* CTA: Compare More */}
+      {relatedPairs.length > 0 && (
+        <section className="mb-10">
+          <SectionHeading>Compare More</SectionHeading>
+          <div className="grid gap-3 sm:grid-cols-3">
+            {relatedPairs.slice(0, 3).map((rp) => (
+              <Link
+                key={`cta-${rp.slugA}-${rp.slugB}`}
+                href={`/compare/${rp.slugA}-vs-${rp.slugB}`}
+                className="group border border-[var(--hw-border)] bg-[var(--hw-surface)] p-5 transition-all hover:border-[var(--hw-green)]"
+                style={{ borderRadius: "4px" }}
+              >
+                <div className="flex items-center gap-2 mb-2">
+                  <span
+                    className="flex h-5 w-5 items-center justify-center text-[8px] font-bold text-[var(--hw-bg)]"
+                    style={{ borderRadius: "4px", background: "var(--hw-green)" }}
+                  >
+                    {rp.nameA.charAt(0)}
+                  </span>
+                  <span className="text-[10px] text-[var(--hw-text-dim)]">vs</span>
+                  <span
+                    className="flex h-5 w-5 items-center justify-center text-[8px] font-bold text-[var(--hw-bg)]"
+                    style={{ borderRadius: "4px", background: "var(--hw-cyan)" }}
+                  >
+                    {rp.nameB.charAt(0)}
+                  </span>
+                </div>
+                <p className="text-sm text-[var(--hw-text)] group-hover:text-[var(--hw-green)] transition-colors font-medium">
+                  {rp.nameA} vs {rp.nameB}
+                </p>
+                <p className="text-xs text-[var(--hw-text-dim)] mt-1">View comparison &rarr;</p>
+              </Link>
+            ))}
+          </div>
+        </section>
+      )}
+
       {/* Ecosystem Integration */}
       <section className="mb-10">
         <SectionHeading>Ecosystem Integration</SectionHeading>
@@ -694,6 +871,25 @@ export default async function ComparePage({ params }: Props) {
           </div>
         </section>
       )}
+
+      {/* CTA: Explore Category */}
+      <div
+        className="border border-[var(--hw-border)] bg-[var(--hw-surface)] p-5 mb-8"
+        style={{
+          borderRadius: "4px",
+          borderLeft: "3px solid var(--hw-green)",
+        }}
+      >
+        <p className="text-sm text-[var(--hw-text-muted)] mb-3">
+          Discover more projects in this space.
+        </p>
+        <Link
+          href={`/category/${categoryToSlug(projectA.category)}`}
+          className="inline-flex items-center gap-2 text-sm font-semibold text-[var(--hw-green)] hover:underline"
+        >
+          Explore all {projectA.category} projects on perp.wiki &rarr;
+        </Link>
+      </div>
 
       {/* Back links */}
       <div className="flex flex-wrap gap-4 pt-4 border-t border-[var(--hw-border)]">
