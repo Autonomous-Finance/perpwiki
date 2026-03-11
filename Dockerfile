@@ -21,7 +21,7 @@ ENV PORT=4001
 ENV HOSTNAME=0.0.0.0
 EXPOSE 4001
 RUN apk add --no-cache libstdc++ sqlite && \
-    wget -q -O /tmp/litestream.tar.gz https://github.com/benbjohnson/litestream/releases/download/v0.3.13/litestream-v0.3.13-linux-amd64.tar.gz && \
+    wget -q -O /tmp/litestream.tar.gz https://github.com/benbjohnson/litestream/releases/download/v0.5.9/litestream-v0.5.9-linux-amd64.tar.gz && \
     tar -xzf /tmp/litestream.tar.gz -C /usr/local/bin litestream && \
     rm /tmp/litestream.tar.gz
 RUN addgroup --system --gid 1001 nodejs && adduser --system --uid 1001 nextjs

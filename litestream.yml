@@ -1,5 +1,7 @@
 dbs:
   - path: /data/production.sqlite3
+    monitor-interval: 1s
+    checkpoint-interval: 1m
     replicas:
       - type: s3
         bucket: ${LITESTREAM_S3_BUCKET}
@@ -9,3 +11,18 @@ dbs:
         access-key-id: ${LITESTREAM_ACCESS_KEY_ID}
         secret-access-key: ${LITESTREAM_SECRET_ACCESS_KEY}
         sync-interval: 1s
+
+    # Tiered compaction — collapses L0 files automatically
+    levels:
+      - interval: 5m
+      - interval: 1h
+      - interval: 24h
+
+    # Snapshot + retention
+    snapshot:
+      interval: 6h
+      retention: 24h
+
+    # L0 cleanup after compaction
+    l0-retention: 5m
+    l0-retention-check-interval: 15s
