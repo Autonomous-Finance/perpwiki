@@ -78,7 +78,20 @@ export default async function ProjectsPage({
         : [{ isFeatured: "desc" as const }, { isVerified: "desc" as const }, { name: "asc" as const }];
 
   const [projects, totalCount] = await Promise.all([
-    prisma.project.findMany({ where, orderBy }),
+    prisma.project.findMany({
+      where,
+      orderBy,
+      select: {
+        slug: true,
+        name: true,
+        tagline: true,
+        category: true,
+        layer: true,
+        status: true,
+        logoUrl: true,
+        isVerified: true,
+      },
+    }),
     prisma.project.count({ where: { approvalStatus: "APPROVED" } }),
   ]);
 
