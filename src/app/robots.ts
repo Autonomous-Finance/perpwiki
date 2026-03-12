@@ -10,6 +10,11 @@ export default function robots(): MetadataRoute.Robots {
         allow: "/",
         disallow: ["/api/", "/submit"],
       },
+      {
+        userAgent: "PerplexityBot",
+        allow: "/",
+        disallow: [],
+      },
     ],
     sitemap: `${SITE_URL}/sitemap.xml`,
   };

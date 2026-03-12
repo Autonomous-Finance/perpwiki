@@ -241,6 +241,19 @@ export default async function HyperliquidFeesExplainedPage() {
           mainEntityOfPage: `https://perp.wiki/learn/${SLUG}`,
         }}
       />
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          mainEntity: [
+            { "@type": "Question", name: "Does Hyperliquid charge gas fees?", acceptedAnswer: { "@type": "Answer", text: "No gas fees on HyperCore for placing, modifying, or canceling orders. Only trading fees (0.025% maker / 0.050% taker) apply when orders execute. HyperEVM charges standard EVM gas, typically a few cents per transaction." } },
+            { "@type": "Question", name: "What are Hyperliquid maker and taker fees?", acceptedAnswer: { "@type": "Answer", text: "Maker orders add liquidity and pay 0.025%; taker orders remove liquidity and pay 0.050%. Volume-based tiers can reduce rates further — high-volume traders may achieve near-zero maker fees and rebates." } },
+            { "@type": "Question", name: "What are the withdrawal fees on Hyperliquid?", acceptedAnswer: { "@type": "Answer", text: "Withdrawals cost a flat 1 USDC per withdrawal regardless of amount, making batch withdrawals more cost-effective." } },
+            { "@type": "Question", name: "How do Hyperliquid fees compare to other exchanges?", acceptedAnswer: { "@type": "Answer", text: "Hyperliquid charges 0.025% maker / 0.050% taker with zero gas on HyperCore. Binance charges 0.02% maker / 0.05% taker. dYdX and GMX generally charge higher fees. Hyperliquid's edge is zero gas plus competitive trading fees." } },
+            { "@type": "Question", name: "How can I reduce my Hyperliquid fees?", acceptedAnswer: { "@type": "Answer", text: "Use limit orders instead of market orders (0.025% vs 0.050%), increase your 30-day volume tier, use referral codes, and batch withdrawals to minimize the flat 1 USDC fee." } },
+          ],
+        }}
+      />
 
       <ArticleMeta difficulty="Beginner" />
 

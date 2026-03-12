@@ -223,6 +223,19 @@ export default async function HowToStakeHypePage() {
           mainEntityOfPage: `https://perp.wiki/learn/${SLUG}`,
         }}
       />
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          mainEntity: [
+            { "@type": "Question", name: "Why should I stake HYPE?", acceptedAnswer: { "@type": "Answer", text: "Staking HYPE earns approximately 2.25% APY in native staking rewards while contributing to Hyperliquid network security through validator delegation, with no smart-contract risk beyond the base layer." } },
+            { "@type": "Question", name: "What is the difference between native staking and liquid staking for HYPE?", acceptedAnswer: { "@type": "Answer", text: "Native staking locks tokens with a 7-day unbonding period at ~2.25% APY but offers no DeFi composability. Liquid staking tokens like kHYPE, stHYPE, and beHYPE provide instant liquidity and DeFi use but charge 5–10% commission and introduce smart-contract risk." } },
+            { "@type": "Question", name: "Which HYPE liquid staking protocol should I choose?", acceptedAnswer: { "@type": "Answer", text: "kHYPE (Kinetiq) is the most widely integrated with ~$1.7B TVL. stHYPE (StakedHYPE) is the second-largest option. beHYPE is suited for yield aggregation if you want to abstract complexity." } },
+            { "@type": "Question", name: "What are the risks of staking HYPE?", acceptedAnswer: { "@type": "Answer", text: "Main risks include validator centralization, smart-contract risk for liquid staking tokens, slashing risk from validator misbehavior, and LST depeg risk during market stress." } },
+            { "@type": "Question", name: "How can I maximize yield on staked HYPE?", acceptedAnswer: { "@type": "Answer", text: "Use kHYPE as collateral on lending protocols like HyperLend, provide liquidity on DEXs like KittenSwap or HyperSwap, or use leveraged looping strategies with protocols like HypurrFi." } },
+          ],
+        }}
+      />
 
       <ArticleMeta difficulty="Beginner" />
 

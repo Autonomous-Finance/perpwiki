@@ -112,8 +112,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const project = await prisma.project.findUnique({ where: { slug } });
   if (!project) return { title: "Not Found" };
-  const seoTitle = `${project.name} — Hyperliquid Ecosystem`;
-  const seoDesc = `${project.name} on Hyperliquid: overview, features, layer, and ecosystem context. Independent profile on perp.wiki.`;
+  const layerLabel = project.layer ? ` on ${project.layer}` : ' on Hyperliquid';
+  const catLabel = project.category ? ` — ${project.category}` : '';
+  const seoTitle = `${project.name}${catLabel}${layerLabel} | perp.wiki`;
+  const seoDesc = project.tagline
+    ? `${project.tagline} | Independent profile on perp.wiki.`
+    : `${project.name} is a ${project.category || 'project'} building on ${project.layer || 'Hyperliquid'}. Features, overview, and ecosystem context on perp.wiki.`;
   const ogImageUrl = `/projects/${slug}/opengraph-image`;
   return {
     title: seoTitle,

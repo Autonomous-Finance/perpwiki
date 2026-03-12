@@ -235,6 +235,19 @@ export default function HowToBridgeToHyperliquidPage() {
           mainEntityOfPage: `https://perp.wiki/learn/${SLUG}`,
         }}
       />
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          mainEntity: [
+            { "@type": "Question", name: "What currency should I bridge to Hyperliquid?", acceptedAnswer: { "@type": "Answer", text: "USDC is the primary currency on Hyperliquid. All perpetual futures are settled in USDC and most DeFi protocols accept USDC deposits." } },
+            { "@type": "Question", name: "How long does bridging to Hyperliquid take?", acceptedAnswer: { "@type": "Answer", text: "The official Arbitrum bridge takes 1–2 minutes. Across Protocol completes in about 1 minute. deBridge takes 2–5 minutes. Withdrawals back to Arbitrum take 5–15 minutes." } },
+            { "@type": "Question", name: "What is the minimum deposit for Hyperliquid?", acceptedAnswer: { "@type": "Answer", text: "The official bridge minimum is 5 USDC with negligible gas cost. There is no maximum, though very large deposits may trigger additional security checks." } },
+            { "@type": "Question", name: "Which bridge should I use for Hyperliquid?", acceptedAnswer: { "@type": "Answer", text: "Use the official Arbitrum bridge if you're already on Arbitrum (free with minimal gas). Use Across Protocol from Ethereum mainnet. Use deBridge for non-EVM chains like Solana." } },
+            { "@type": "Question", name: "Is bridging to Hyperliquid safe?", acceptedAnswer: { "@type": "Answer", text: "Always verify the URL is app.hyperliquid.xyz, test with a small amount first, check audit status of third-party bridges, beware of token approval scams, and never bridge obscure tokens through the official bridge." } },
+          ],
+        }}
+      />
 
       <ArticleMeta difficulty="Beginner" />
 

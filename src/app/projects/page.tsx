@@ -5,29 +5,32 @@ import { LAYER_META, CATEGORIES } from "@/lib/categories";
 import Link from "next/link";
 import type { Metadata } from "next";
 
-export const metadata: Metadata = {
-  title: "All Projects",
-  description:
-    "Browse every project in the Hyperliquid ecosystem — HyperCore, HyperEVM, and HIP-3.",
-  alternates: { canonical: "https://perp.wiki/projects" },
-  openGraph: {
-    title: "All Hyperliquid Ecosystem Projects",
-    description:
-      "Browse every project in the Hyperliquid ecosystem — HyperCore, HyperEVM, and HIP-3.",
-    url: "https://perp.wiki/projects",
-    siteName: "perp.wiki",
-    images: [{ url: "/projects/opengraph-image", width: 1200, height: 630 }],
-    type: "website",
-  },
-  twitter: {
-    card: "summary_large_image",
-    site: "@perpwiki",
-    title: "All Hyperliquid Ecosystem Projects",
-    description:
-      "Browse every project in the Hyperliquid ecosystem — HyperCore, HyperEVM, and HIP-3.",
-    images: ["/projects/opengraph-image"],
-  },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const count = await prisma.project.count({ where: { approvalStatus: "APPROVED" } });
+  const countLabel = `${count}+`;
+  const title = `Hyperliquid Ecosystem Projects — ${countLabel} Apps, DEXs & Tools`;
+  const description = `Browse ${countLabel} projects building on Hyperliquid: HyperEVM DeFi, HyperCore traders, LSTs, lending, wallets, bridges, and infrastructure. Updated daily.`;
+  return {
+    title,
+    description,
+    alternates: { canonical: "https://perp.wiki/projects" },
+    openGraph: {
+      title,
+      description,
+      url: "https://perp.wiki/projects",
+      siteName: "perp.wiki",
+      images: [{ url: "/projects/opengraph-image", width: 1200, height: 630 }],
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      site: "@perpwiki",
+      title,
+      description,
+      images: ["/projects/opengraph-image"],
+    },
+  };
+}
 
 type SortOption = "name" | "category" | "newest";
 
