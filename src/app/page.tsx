@@ -9,6 +9,8 @@ import { getHypePrice, getHlMeta, getTopMarkets, formatUsd } from "@/lib/hl-api"
 import { LEARN_ARTICLES } from "@/lib/learn-articles";
 import type { Metadata } from "next";
 
+export const dynamic = "force-dynamic";
+
 export async function generateMetadata(): Promise<Metadata> {
   const stats = await getStats();
   const desc = `Independent directory of ${stats.total}+ Hyperliquid ecosystem projects. Browse HyperCore, HyperEVM, and HIP-3 apps — trading tools, DeFi, liquid staking, analytics and more. perp.wiki`;
