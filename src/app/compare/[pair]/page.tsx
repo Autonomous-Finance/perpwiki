@@ -462,6 +462,11 @@ export default async function ComparePage({ params }: Props) {
               ? ` Both are ${projectA.category.toLowerCase()} protocols on ${layerMetaA.label}, making them direct competitors in the Hyperliquid ecosystem.`
               : ` They serve different niches in the Hyperliquid ecosystem.`}
         </p>
+        <p className="mt-3 text-xs text-[var(--hw-text-dim)]">
+          Based on public data for {projectA.name} and {projectB.name}.
+          {" "}Key differentiators: layer deployment, fee structure, liquidity depth, and community adoption.
+          {projectA.updatedAt && ` Last reviewed: ${new Date(projectA.updatedAt).toLocaleDateString("en-US", { year: "numeric", month: "short" })}.`}
+        </p>
       </div>
 
       {/* CTA: Below Hero — Try Both */}

@@ -97,7 +97,7 @@ export function WebsitePreview({ url, name }: WebsitePreviewProps) {
       <div className="relative w-full" style={{ aspectRatio: "16 / 9" }}>
         {/* Loading skeleton */}
         {loading && !error && (
-          <div className="absolute inset-0 z-10 flex items-center justify-center bg-[var(--hw-surface)]">
+          <div className="absolute inset-0 z-10 flex items-center justify-center bg-[var(--hw-surface)]" aria-hidden="true" data-nosnippet>
             <div className="h-full w-full animate-pulse bg-[var(--hw-surface-raised)]">
               <div className="flex h-full flex-col items-center justify-center gap-3">
                 <div

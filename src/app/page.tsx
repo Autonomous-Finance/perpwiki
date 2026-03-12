@@ -9,25 +9,27 @@ import { getHypePrice, getHlMeta, getTopMarkets, formatUsd } from "@/lib/hl-api"
 import { LEARN_ARTICLES } from "@/lib/learn-articles";
 import type { Metadata } from "next";
 
-export const metadata: Metadata = {
-  title: "perp.wiki — Hyperliquid Ecosystem Directory 2026",
-  description:
-    "Independent directory of 48+ Hyperliquid ecosystem projects. Browse HyperCore, HyperEVM, and HIP-3 apps — trading tools, DeFi, liquid staking, analytics and more. perp.wiki",
-  openGraph: {
+export async function generateMetadata(): Promise<Metadata> {
+  const stats = await getStats();
+  const desc = `Independent directory of ${stats.total}+ Hyperliquid ecosystem projects. Browse HyperCore, HyperEVM, and HIP-3 apps — trading tools, DeFi, liquid staking, analytics and more. perp.wiki`;
+  return {
     title: "perp.wiki — Hyperliquid Ecosystem Directory 2026",
-    description:
-      "Independent directory of 48+ Hyperliquid ecosystem projects. Browse HyperCore, HyperEVM, and HIP-3 apps — trading tools, DeFi, liquid staking, analytics and more. perp.wiki",
-  },
-  keywords: [
-    "Hyperliquid",
-    "Hyperliquid ecosystem",
-    "HyperEVM projects",
-    "HYPE token",
-    "perp DEX",
-    "perpetual DEX directory",
-  ],
-  alternates: { canonical: "https://perp.wiki" },
-};
+    description: desc,
+    openGraph: {
+      title: "perp.wiki — Hyperliquid Ecosystem Directory 2026",
+      description: desc,
+    },
+    keywords: [
+      "Hyperliquid",
+      "Hyperliquid ecosystem",
+      "HyperEVM projects",
+      "HYPE token",
+      "perp DEX",
+      "perpetual DEX directory",
+    ],
+    alternates: { canonical: "https://perp.wiki" },
+  };
+}
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:4000";
 

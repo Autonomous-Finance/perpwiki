@@ -331,7 +331,17 @@ export default async function ProjectDetailPage({ params }: Props) {
                   Since {project.launchDate || project.launchYear}
                 </span>
               )}
+              {dossier?.updatedAt && (
+                <span className="px-2.5 py-1 text-xs text-[var(--hw-text-dim)]" style={{ borderRadius: "2px", background: "var(--hw-bg)" }}>
+                  Last reviewed: {formatRelativeTime(dossier.updatedAt)}
+                </span>
+              )}
             </div>
+            {dossierData?.risks && (
+              <p className="mt-2 text-xs text-[var(--hw-text-dim)] leading-relaxed">
+                <span className="font-medium text-[var(--hw-text-muted)]">Known limitations:</span> {dossierData.risks}
+              </p>
+            )}
 
             {/* CTA + Social row */}
             <div className="flex flex-wrap items-center gap-3 mt-5">

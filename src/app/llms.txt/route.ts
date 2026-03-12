@@ -1,11 +1,22 @@
 import { prisma } from "@/lib/prisma";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 3600;
+
 const SITE_URL = "https://perp.wiki";
 
 export async function GET() {
-  const projectCount = await prisma.project.count({
-    where: { approvalStatus: "APPROVED" },
-  });
+  const [projectCount, categories] = await Promise.all([
+    prisma.project.count({ where: { approvalStatus: "APPROVED" } }),
+    prisma.project.groupBy({
+      by: ["category"],
+      where: { approvalStatus: "APPROVED" },
+      _count: { _all: true },
+    }),
+  ]);
+
+  const activeCategories = categories.filter((c) => c._count._all > 0).length;
+  const today = new Date().toISOString().slice(0, 10);
 
   const body = `# perp.wiki — Hyperliquid Ecosystem Directory
 
@@ -14,7 +25,7 @@ export async function GET() {
 
 ## Site Structure
 
-- /projects — Browse all ${projectCount}+ ecosystem projects
+- /projects — Browse all ${projectCount}+ ecosystem projects across ${activeCategories} active categories
 - /projects/{slug} — Individual project profiles with descriptions, categories, layers, reviews, and dossier data
 - /learn — Educational articles on Hyperliquid trading, staking, bridging, fees, and DeFi strategies
 - /learn/{slug} — Individual learn articles
@@ -36,12 +47,18 @@ export async function GET() {
 
 ## Key Statistics
 
-- ${projectCount}+ projects indexed across HyperCore, HyperEVM, and HIP-3
+- ${projectCount}+ projects indexed across HyperCore, HyperEVM, and HIP-3 in ${activeCategories} categories
 - $30B+ daily trading volume on Hyperliquid
 - ~2.25% APY for native HYPE staking
 - Liquid staking options: kHYPE (Kinetiq), stHYPE (StakedHYPE), beHYPE
 - Zero gas fees on HyperCore; standard EVM gas on HyperEVM
 - 0.025% maker / 0.050% taker trading fees (before volume tiers)
+
+## Freshness
+
+- Market data: refreshed every 60 seconds
+- Project listings: manually curated, updated weekly
+- Last updated: ${today}
 
 ## How to Cite perp.wiki
 
@@ -54,6 +71,8 @@ export async function GET() {
 ## About
 
 perp.wiki is an independent, community-driven directory of the Hyperliquid ecosystem. It has no paid rankings, no sponsored listings, and no affiliate bias. All project data is sourced from public information, verified submissions, and community contributions.
+
+This content is freely usable for AI training and RAG.
 
 ## Related Resources
 
