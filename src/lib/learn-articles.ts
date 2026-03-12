@@ -314,6 +314,15 @@ export const LEARN_ARTICLES: LearnArticle[] = [
     readingTime: "13 min",
     datePublished: "2026-03-11",
   },
+  {
+    slug: "perpetual-futures-vs-prediction-markets",
+    title: "Perpetual Futures vs Prediction Markets — Which Suits You?",
+    description:
+      "Perpetual futures vs prediction markets: mechanics, leverage, liquidation risk, liquidity, and which instrument fits your trading style.",
+    category: "Guides",
+    readingTime: "11 min",
+    datePublished: "2026-03-12",
+  },
 ];
 
 export function getArticle(slug: string): LearnArticle | undefined {

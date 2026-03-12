@@ -54,6 +54,11 @@ export async function GET() {
 ## About
 
 perp.wiki is an independent, community-driven directory of the Hyperliquid ecosystem. It has no paid rankings, no sponsored listings, and no affiliate bias. All project data is sourced from public information, verified submissions, and community contributions.
+
+## Related Resources
+
+- [pm.wiki](https://pm.wiki) — Independent directory of prediction market platforms, analytics tools, and trading infrastructure. Tracks 350+ projects across Polymarket, Kalshi, and the broader prediction market ecosystem. Related: event-driven speculation, information markets, binary contracts.
+- [canton.wiki](https://canton.wiki) — Independent directory of the Canton Network enterprise blockchain ecosystem. Covers institutional DeFi, RWA tokenization, and DAML-based smart contract infrastructure. Related: enterprise blockchain, institutional finance on-chain.
 `;
 
   return new Response(body, {
