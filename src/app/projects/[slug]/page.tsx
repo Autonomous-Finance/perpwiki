@@ -169,6 +169,14 @@ export default async function ProjectDetailPage({ params }: Props) {
     }
   })();
 
+  const highlights: Array<{ icon: string; label: string; value: string }> = (() => {
+    try {
+      return project.highlights ? JSON.parse(project.highlights) : [];
+    } catch {
+      return [];
+    }
+  })();
+
   const relatedProjects = await prisma.project.findMany({
     where: {
       approvalStatus: "APPROVED",
@@ -337,10 +345,35 @@ export default async function ProjectDetailPage({ params }: Props) {
                 </span>
               )}
             </div>
-            {dossierData?.risks && (
-              <p className="mt-2 text-xs text-[var(--hw-text-dim)] leading-relaxed">
-                <span className="font-medium text-[var(--hw-text-muted)]">Known limitations:</span> {dossierData.risks}
-              </p>
+            {/* Feature tags */}
+            {tags.length > 0 && (
+              <div className="flex flex-wrap gap-1.5 mt-3">
+                {tags.slice(0, 8).map((tag) => (
+                  <span
+                    key={tag}
+                    className="px-2 py-0.5 text-[11px] text-[var(--hw-text-dim)] border border-[var(--hw-border)]"
+                    style={{ borderRadius: "2px", background: "var(--hw-bg)" }}
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            )}
+
+            {/* Highlights strip */}
+            {highlights.length > 0 && (
+              <div className="grid grid-cols-3 gap-3 mt-5 pt-5 border-t border-[var(--hw-border)]">
+                {highlights.map((h, i) => (
+                  <div key={i} className="flex flex-col gap-1">
+                    <span className="text-[10px] uppercase tracking-widest text-[var(--hw-text-dim)] font-medium">
+                      {h.label}
+                    </span>
+                    <span className="text-sm font-semibold text-[var(--hw-text)] leading-tight">
+                      {h.value}
+                    </span>
+                  </div>
+                ))}
+              </div>
             )}
 
             {/* CTA + Social row */}
@@ -780,6 +813,22 @@ export default async function ProjectDetailPage({ params }: Props) {
               )}
               <InfoRow label="Status" value={project.status} />
             </dl>
+            {tags.length > 0 && (
+              <div className="pt-2 mt-2 border-t border-[var(--hw-border)]">
+                <dt className="text-[var(--hw-text-dim)] text-xs mb-1.5">Tags</dt>
+                <dd className="flex flex-wrap gap-1">
+                  {tags.slice(0, 6).map((tag) => (
+                    <span
+                      key={tag}
+                      className="px-1.5 py-0.5 text-[10px] text-[var(--hw-text-dim)] border border-[var(--hw-border)]"
+                      style={{ borderRadius: "2px" }}
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </dd>
+              </div>
+            )}
           </div>
 
           {/* Compare */}

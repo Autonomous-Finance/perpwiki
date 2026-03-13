@@ -90,6 +90,7 @@ export default async function ProjectsPage({
         status: true,
         logoUrl: true,
         isVerified: true,
+        tags: true,
       },
     }),
     prisma.project.count({ where: { approvalStatus: "APPROVED" } }),
@@ -193,6 +194,7 @@ export default async function ProjectsPage({
             status={project.status}
             isVerified={project.isVerified}
             logoUrl={project.logoUrl}
+            tags={project.tags}
           />
         ))}
       </div>

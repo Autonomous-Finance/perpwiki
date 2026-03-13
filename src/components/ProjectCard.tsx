@@ -11,6 +11,7 @@ interface ProjectCardProps {
   status: string;
   isVerified: boolean;
   logoUrl?: string | null;
+  tags?: string;
 }
 
 export function ProjectCard({
@@ -22,7 +23,13 @@ export function ProjectCard({
   status,
   isVerified,
   logoUrl,
+  tags: tagsJson,
 }: ProjectCardProps) {
+  const parsedTags: string[] = (() => {
+    try { return tagsJson ? JSON.parse(tagsJson) : []; }
+    catch { return []; }
+  })();
+
   return (
     <Link href={`/projects/${slug}`} className="group block">
       <div
@@ -42,6 +49,15 @@ export function ProjectCard({
           <p className="line-clamp-2 text-sm text-[var(--hw-text-muted)]">
             {tagline}
           </p>
+        )}
+        {parsedTags.length > 0 && (
+          <div className="flex gap-1 mt-2 flex-wrap">
+            {parsedTags.slice(0, 3).map((tag) => (
+              <span key={tag} className="px-1.5 py-0.5 text-[10px] text-[var(--hw-text-dim)] border border-[var(--hw-border)]" style={{ borderRadius: "2px" }}>
+                {tag}
+              </span>
+            ))}
+          </div>
         )}
         <div className="mt-auto flex items-center justify-between gap-2">
           <span className="rounded-sm bg-[var(--hw-green-subtle)] px-1.5 py-0.5 text-xs text-[var(--hw-text-muted)]">

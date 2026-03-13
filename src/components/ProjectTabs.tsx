@@ -31,12 +31,47 @@ interface ProjectTabsProps {
   isFeatured: boolean;
 }
 
+function renderInline(text: string): React.ReactNode[] {
+  const parts: React.ReactNode[] = [];
+  const regex = /\*\*(.+?)\*\*/g;
+  let last = 0;
+  let match;
+  let key = 0;
+  while ((match = regex.exec(text)) !== null) {
+    if (match.index > last) {
+      parts.push(text.slice(last, match.index));
+    }
+    parts.push(<strong key={key++} className="text-[var(--hw-text)]">{match[1]}</strong>);
+    last = regex.lastIndex;
+  }
+  if (last < text.length) {
+    parts.push(text.slice(last));
+  }
+  return parts;
+}
+
 const renderParagraphs = (text: string) =>
-  text.split(/\n\n+/).map((para, i) => (
-    <p key={i} className="text-sm leading-relaxed text-[var(--hw-text-muted)] mb-3 last:mb-0">
-      {para}
-    </p>
-  ));
+  text.split(/\n\n+/).map((block, i) => {
+    const lines = block.split("\n");
+    const bulletLines = lines.filter((l) => /^[-•]\s/.test(l.trim()));
+    if (bulletLines.length > 0 && bulletLines.length === lines.length) {
+      return (
+        <ul key={i} className="text-sm leading-relaxed text-[var(--hw-text-muted)] mb-3 last:mb-0 space-y-1 list-none">
+          {lines.map((line, j) => (
+            <li key={j} className="flex gap-2">
+              <span className="text-[var(--hw-green)] shrink-0 mt-0.5">&#8226;</span>
+              <span>{renderInline(line.replace(/^[-•]\s*/, ""))}</span>
+            </li>
+          ))}
+        </ul>
+      );
+    }
+    return (
+      <p key={i} className="text-sm leading-relaxed text-[var(--hw-text-muted)] mb-3 last:mb-0">
+        {renderInline(block)}
+      </p>
+    );
+  });
 
 // --- Helpers ---
 
