@@ -8,7 +8,7 @@ const article = getArticle(SLUG)!;
 const { prev, next } = getAdjacentArticles(SLUG);
 
 export const metadata: Metadata = {
-  title: "Hyperliquid vs Binance Perps: On-Chain vs CEX Comparison 2026",
+  title: "Hyperliquid vs Binance Perps: DEX vs CEX 2026",
   description:
     "Detailed comparison of Hyperliquid vs Binance perpetual futures: fees, custody, transparency, speed, depth, and self-custody vs KYC requirements.",
   openGraph: {

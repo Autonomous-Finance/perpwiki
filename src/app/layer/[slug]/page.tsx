@@ -26,7 +26,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const meta = LAYER_META[layer];
   const layerTitles: Record<string, string> = {
     HYPERCORE: "Best HyperCore Projects 2026 — Hyperliquid Native",
-    HYPEREVM: "Best HyperEVM Projects 2026 — Ethereum-Compatible on Hyperliquid",
+    HYPEREVM: "Best HyperEVM Projects 2026: EVM on Hyperliquid",
     HIP3: "HIP-3 Projects 2026 — Hyperliquid External Assets",
   };
   const title = layerTitles[layer] || `${meta.label} Projects`;

@@ -8,7 +8,7 @@ const article = getArticle(SLUG)!;
 const { prev, next } = getAdjacentArticles(SLUG);
 
 export const metadata: Metadata = {
-  title: "Hyperliquid vs dYdX: Which Perp DEX Should You Use in 2026?",
+  title: "Hyperliquid vs dYdX: Which Perp DEX in 2026?",
   description:
     "Detailed comparison of Hyperliquid vs dYdX: architecture, fees, leverage, liquidity, volume, ecosystem, and which perp DEX is best for your trading style.",
   alternates: { canonical: `https://perp.wiki/learn/${SLUG}` },

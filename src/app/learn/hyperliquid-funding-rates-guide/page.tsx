@@ -8,7 +8,7 @@ const article = getArticle(SLUG)!;
 const { prev, next } = getAdjacentArticles(SLUG);
 
 export const metadata: Metadata = {
-  title: "Hyperliquid Funding Rates Explained: How to Read, Profit & Hedge",
+  title: "Hyperliquid Funding Rates: Read, Profit & Hedge",
   description:
     "Complete guide to Hyperliquid funding rates: how 8-hour intervals work, positive vs negative rates, cash-and-carry strategies, and delta-neutral farming.",
   openGraph: {

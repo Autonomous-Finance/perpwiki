@@ -8,7 +8,7 @@ const article = getArticle(SLUG)!;
 const { prev, next } = getAdjacentArticles(SLUG);
 
 export const metadata: Metadata = {
-  title: "Open Interest on Hyperliquid: What It Tells You About Markets",
+  title: "Hyperliquid Open Interest: Market Signals Guide",
   description:
     "Learn what open interest means on Hyperliquid, how to read it, its relationship to volume, and what rising or falling OI signals about market direction.",
   openGraph: {

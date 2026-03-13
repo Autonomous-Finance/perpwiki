@@ -8,7 +8,7 @@ const article = getArticle(SLUG)!;
 const { prev, next } = getAdjacentArticles(SLUG);
 
 export const metadata: Metadata = {
-  title: "What is HYPE Token? Complete Guide to Hyperliquid's Native Token",
+  title: "What Is HYPE? Hyperliquid's Native Token Guide",
   description:
     "Everything you need to know about HYPE token: tokenomics, staking, governance, the $1.6B airdrop, buy-and-burn mechanism, and where to buy HYPE.",
   alternates: { canonical: `https://perp.wiki/learn/${SLUG}` },

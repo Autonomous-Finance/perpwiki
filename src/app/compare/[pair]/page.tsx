@@ -4,6 +4,7 @@ import { LayerBadge } from "@/components/LayerBadge";
 import { ProjectLogo } from "@/components/ProjectLogo";
 import { BreadcrumbSchema } from "@/components/BreadcrumbSchema";
 import { LAYER_META, categoryToSlug } from "@/lib/categories";
+import { stripLogoUrl } from "@/lib/strip-logo";
 import Link from "next/link";
 import type { Metadata } from "next";
 
@@ -95,7 +96,10 @@ export default async function ComparePage({ params }: Props) {
 
   if (!projectA || !projectB) notFound();
 
-  const tagsA = parseTags(projectA.tags);
+  const projectAStripped = stripLogoUrl(projectA);
+  const projectBStripped = stripLogoUrl(projectB);
+
+  const tagsA = parseTags(projectAStripped.tags);
   const tagsB = parseTags(projectB.tags);
   const sharedTags = tagsA.filter((t) => tagsB.includes(t));
   const uniqueTagsA = tagsA.filter((t) => !tagsB.includes(t));
@@ -514,7 +518,7 @@ export default async function ComparePage({ params }: Props) {
             style={{ borderRadius: "4px" }}
           >
             <div className="flex items-center gap-2 mb-3">
-              <ProjectLogo name={projectA.name} logoUrl={projectA.logoUrl} size="sm" />
+              <ProjectLogo name={projectA.name} logoUrl={projectAStripped.logoUrl} size="sm" />
               <h3 className="font-[family-name:var(--font-space-grotesk)] text-base font-semibold text-[var(--hw-text)]">
                 {projectA.name}
               </h3>
@@ -538,7 +542,7 @@ export default async function ComparePage({ params }: Props) {
             style={{ borderRadius: "4px" }}
           >
             <div className="flex items-center gap-2 mb-3">
-              <ProjectLogo name={projectB.name} logoUrl={projectB.logoUrl} size="sm" />
+              <ProjectLogo name={projectB.name} logoUrl={projectBStripped.logoUrl} size="sm" />
               <h3 className="font-[family-name:var(--font-space-grotesk)] text-base font-semibold text-[var(--hw-text)]">
                 {projectB.name}
               </h3>
@@ -575,13 +579,13 @@ export default async function ComparePage({ params }: Props) {
                 </th>
                 <th className="bg-[var(--hw-surface-raised)] px-4 py-3 text-left text-[var(--hw-text)] font-semibold w-[37.5%] border-b border-[var(--hw-border)]">
                   <span className="flex items-center gap-2">
-                    <ProjectLogo name={projectA.name} logoUrl={projectA.logoUrl} size="sm" />
+                    <ProjectLogo name={projectA.name} logoUrl={projectAStripped.logoUrl} size="sm" />
                     {projectA.name}
                   </span>
                 </th>
                 <th className="bg-[var(--hw-surface-raised)] px-4 py-3 text-left text-[var(--hw-text)] font-semibold w-[37.5%] border-b border-[var(--hw-border)]">
                   <span className="flex items-center gap-2">
-                    <ProjectLogo name={projectB.name} logoUrl={projectB.logoUrl} size="sm" />
+                    <ProjectLogo name={projectB.name} logoUrl={projectBStripped.logoUrl} size="sm" />
                     {projectB.name}
                   </span>
                 </th>
@@ -708,13 +712,13 @@ export default async function ComparePage({ params }: Props) {
                 </th>
                 <th className="bg-[var(--hw-surface-raised)] px-4 py-3 text-center text-[var(--hw-text)] font-semibold border-b border-[var(--hw-border)] w-1/3">
                   <span className="flex items-center justify-center gap-2">
-                    <ProjectLogo name={projectA.name} logoUrl={projectA.logoUrl} size="sm" />
+                    <ProjectLogo name={projectA.name} logoUrl={projectAStripped.logoUrl} size="sm" />
                     {projectA.name}
                   </span>
                 </th>
                 <th className="bg-[var(--hw-surface-raised)] px-4 py-3 text-center text-[var(--hw-text)] font-semibold border-b border-[var(--hw-border)] w-1/3">
                   <span className="flex items-center justify-center gap-2">
-                    <ProjectLogo name={projectB.name} logoUrl={projectB.logoUrl} size="sm" />
+                    <ProjectLogo name={projectB.name} logoUrl={projectBStripped.logoUrl} size="sm" />
                     {projectB.name}
                   </span>
                 </th>
@@ -945,7 +949,7 @@ export default async function ComparePage({ params }: Props) {
           <div className="grid gap-6 md:grid-cols-2">
             <div>
               <div className="flex items-center gap-2 mb-3">
-                <ProjectLogo name={projectA.name} logoUrl={projectA.logoUrl} size="sm" />
+                <ProjectLogo name={projectA.name} logoUrl={projectAStripped.logoUrl} size="sm" />
                 <h3 className="font-[family-name:var(--font-space-grotesk)] text-sm font-semibold text-[var(--hw-text)]">
                   {projectA.name}
                 </h3>
@@ -968,7 +972,7 @@ export default async function ComparePage({ params }: Props) {
             </div>
             <div>
               <div className="flex items-center gap-2 mb-3">
-                <ProjectLogo name={projectB.name} logoUrl={projectB.logoUrl} size="sm" />
+                <ProjectLogo name={projectB.name} logoUrl={projectBStripped.logoUrl} size="sm" />
                 <h3 className="font-[family-name:var(--font-space-grotesk)] text-sm font-semibold text-[var(--hw-text)]">
                   {projectB.name}
                 </h3>
@@ -1012,7 +1016,7 @@ export default async function ComparePage({ params }: Props) {
               className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium border border-[var(--hw-green)] text-[var(--hw-green)] transition-all hover:bg-[var(--hw-green)] hover:text-[var(--hw-bg)]"
               style={{ borderRadius: "4px" }}
             >
-              <ProjectLogo name={projectA.name} logoUrl={projectA.logoUrl} size="sm" />
+              <ProjectLogo name={projectA.name} logoUrl={projectAStripped.logoUrl} size="sm" />
               Review {projectA.name}
             </Link>
             <span className="text-xs text-[var(--hw-text-dim)]">or</span>
@@ -1021,7 +1025,7 @@ export default async function ComparePage({ params }: Props) {
               className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium border border-[var(--hw-cyan)] text-[var(--hw-cyan)] transition-all hover:bg-[var(--hw-cyan)] hover:text-[var(--hw-bg)]"
               style={{ borderRadius: "4px" }}
             >
-              <ProjectLogo name={projectB.name} logoUrl={projectB.logoUrl} size="sm" />
+              <ProjectLogo name={projectB.name} logoUrl={projectBStripped.logoUrl} size="sm" />
               Review {projectB.name}
             </Link>
           </div>

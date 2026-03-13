@@ -8,7 +8,7 @@ const article = getArticle(SLUG)!;
 const { prev, next } = getAdjacentArticles(SLUG);
 
 export const metadata: Metadata = {
-  title: "Hyperliquid Fees Explained — Trading Fees, Gas, Maker Rebates 2026",
+  title: "Hyperliquid Fees: Trading, Gas & Rebates 2026",
   description:
     "Complete breakdown of Hyperliquid fees in 2026: taker fees (0.035%-0.045%), maker rebates, HyperEVM gas costs, withdrawal fees, and how to reduce your fees with higher volume.",
   openGraph: {

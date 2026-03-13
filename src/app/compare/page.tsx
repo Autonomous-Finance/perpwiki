@@ -5,6 +5,7 @@ import { ProjectLogo } from "@/components/ProjectLogo";
 import { CompareSearch } from "@/components/CompareSearch";
 import { prisma } from "@/lib/prisma";
 import { categoryToSlug } from "@/lib/categories";
+import { stripLogoUrls } from "@/lib/strip-logo";
 import type { Metadata } from "next";
 
 export const dynamic = "force-dynamic";
@@ -66,11 +67,11 @@ const CATEGORY_ICONS: Record<string, string> = {
 };
 
 export default async function CompareHubPage() {
-  const projects = await prisma.project.findMany({
+  const projects = stripLogoUrls(await prisma.project.findMany({
     where: { approvalStatus: "APPROVED" },
     select: { slug: true, name: true, category: true, logoUrl: true },
     orderBy: { name: "asc" },
-  });
+  }));
 
   // Group by category
   const byCategory = new Map<string, { slug: string; name: string; logoUrl: string | null }[]>();

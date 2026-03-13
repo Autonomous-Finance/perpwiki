@@ -14,6 +14,7 @@ import { WebsitePreview } from "@/components/WebsitePreview";
 import { LAYER_META } from "@/lib/categories";
 import { getRelatedArticlesForCategory } from "@/lib/learn-articles";
 import { getCtaLabel, getStatusColor, getHostname } from "@/lib/format";
+import { stripLogoUrl, stripLogoUrls } from "@/lib/strip-logo";
 import Link from "next/link";
 import type { Metadata } from "next";
 
@@ -112,9 +113,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const project = await prisma.project.findUnique({ where: { slug } });
   if (!project) return { title: "Not Found" };
-  const layerLabel = project.layer ? ` on ${project.layer}` : ' on Hyperliquid';
-  const catLabel = project.category ? ` — ${project.category}` : '';
-  const seoTitle = `${project.name}${catLabel}${layerLabel} | perp.wiki`;
+  const seoTitle = project.name;
   const seoDesc = project.tagline
     ? `${project.tagline} | Independent profile on perp.wiki.`
     : `${project.name} is a ${project.category || 'project'} building on ${project.layer || 'Hyperliquid'}. Features, overview, and ecosystem context on perp.wiki.`;
@@ -161,6 +160,8 @@ export default async function ProjectDetailPage({ params }: Props) {
     notFound();
   }
 
+  const strippedProject = stripLogoUrl(project);
+
   const tags: string[] = (() => {
     try {
       return JSON.parse(project.tags);
@@ -177,7 +178,7 @@ export default async function ProjectDetailPage({ params }: Props) {
     }
   })();
 
-  const relatedProjects = await prisma.project.findMany({
+  const relatedProjects = stripLogoUrls(await prisma.project.findMany({
     where: {
       approvalStatus: "APPROVED",
       category: project.category,
@@ -185,7 +186,7 @@ export default async function ProjectDetailPage({ params }: Props) {
     },
     take: 4,
     orderBy: [{ isFeatured: "desc" }, { name: "asc" }],
-  });
+  }));
 
   const dossier = await prisma.dossier.findUnique({
     where: { projectId: project.id },
@@ -286,7 +287,7 @@ export default async function ProjectDetailPage({ params }: Props) {
           {/* Logo */}
           <ProjectLogo
             name={project.name}
-            logoUrl={project.logoUrl}
+            logoUrl={strippedProject.logoUrl}
             size="lg"
             className="border-2 border-[var(--hw-border)]"
           />

@@ -11,7 +11,7 @@ const article = getArticle(SLUG)!;
 const { prev, next } = getAdjacentArticles(SLUG);
 
 export const metadata: Metadata = {
-  title: "Hyperliquid Fees Explained: Complete Fee Structure Guide 2026",
+  title: "Hyperliquid Fees Explained: Fee Structure 2026",
   description:
     "Full breakdown of Hyperliquid fees: perp maker/taker rates, spot fees, HyperEVM gas, deposit/withdrawal costs, and how to reduce trading costs.",
   openGraph: {

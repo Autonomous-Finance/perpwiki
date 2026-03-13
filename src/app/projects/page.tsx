@@ -1,7 +1,9 @@
 import { prisma } from "@/lib/prisma";
 import { ProjectCard } from "@/components/ProjectCard";
 import { SearchBar } from "@/components/SearchBar";
+import { LoadMoreProjects } from "@/components/LoadMoreProjects";
 import { LAYER_META, CATEGORIES } from "@/lib/categories";
+import { stripLogoUrls } from "@/lib/strip-logo";
 import Link from "next/link";
 import type { Metadata } from "next";
 
@@ -77,10 +79,11 @@ export default async function ProjectsPage({
         ? [{ category: "asc" as const }, { name: "asc" as const }]
         : [{ isFeatured: "desc" as const }, { isVerified: "desc" as const }, { name: "asc" as const }];
 
-  const [projects, totalCount] = await Promise.all([
+  const [rawProjects, totalCount] = await Promise.all([
     prisma.project.findMany({
       where,
       orderBy,
+      take: 24,
       select: {
         slug: true,
         name: true,
@@ -95,6 +98,7 @@ export default async function ProjectsPage({
     }),
     prisma.project.count({ where: { approvalStatus: "APPROVED" } }),
   ]);
+  const projects = stripLogoUrls(rawProjects);
 
   const layers = ["HYPERCORE", "HYPEREVM", "HIP3"];
   const activeCategories = await prisma.project.findMany({
@@ -198,6 +202,14 @@ export default async function ProjectsPage({
           />
         ))}
       </div>
+
+      <LoadMoreProjects
+        initialHasMore={projects.length === 24}
+        layer={layer}
+        category={category}
+        q={q}
+        sort={sort}
+      />
 
       {projects.length === 0 && (
         <div className="py-16 text-center">

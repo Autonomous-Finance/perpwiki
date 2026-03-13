@@ -42,9 +42,9 @@ const CATEGORY_CONTENT: Record<string, CategoryContent> = {
     whyItMatters:
       "On-chain DEXs are the foundation of any DeFi ecosystem. Without deep spot liquidity, lending protocols cannot liquidate collateral efficiently, liquid staking tokens cannot maintain their pegs, and new token launches lack a venue for fair price discovery. Hyperliquid DEXs close this gap, enabling the composability that makes the rest of HyperEVM DeFi possible.",
     relatedCategories: [
-      { label: "Lending & Borrowing", slug: "lending-borrowing" },
+      { label: "Lending & Borrowing", slug: "lending-and-borrowing" },
       { label: "Liquid Staking", slug: "liquid-staking" },
-      { label: "Yield & Vaults", slug: "yield-vaults" },
+      { label: "Yield & Vaults", slug: "yield-and-vaults" },
     ],
     comparePairs: [
       { slugA: "hyperswap", slugB: "gliquid", nameA: "HyperSwap", nameB: "Gliquid" },
@@ -60,7 +60,7 @@ const CATEGORY_CONTENT: Record<string, CategoryContent> = {
     },
   },
 
-  "lending-borrowing": {
+  "lending-and-borrowing": {
     headline: "Lending & Borrowing Protocols on Hyperliquid",
     intro:
       "Lending protocols on HyperEVM enable traders to borrow against their perp positions and staked assets, creating a capital-efficient loop unique to Hyperliquid's unified state design. Protocols like HyperLend and Felix are building the money market infrastructure for the HL ecosystem.",
@@ -72,7 +72,7 @@ const CATEGORY_CONTENT: Record<string, CategoryContent> = {
       "Lending is the connective tissue of any DeFi ecosystem. Without money markets, liquid staking tokens have limited utility beyond holding, DEX LP positions cannot be leveraged, and stablecoins cannot be minted against native assets. Hyperliquid's lending protocols unlock capital efficiency that keeps assets productive across the ecosystem rather than sitting idle.",
     relatedCategories: [
       { label: "Liquid Staking", slug: "liquid-staking" },
-      { label: "Yield & Vaults", slug: "yield-vaults" },
+      { label: "Yield & Vaults", slug: "yield-and-vaults" },
       { label: "Decentralized Exchanges", slug: "decentralized-exchanges" },
     ],
     comparePairs: [
@@ -100,8 +100,8 @@ const CATEGORY_CONTENT: Record<string, CategoryContent> = {
     whyItMatters:
       "Liquid staking is arguably the most important DeFi primitive on Hyperliquid. It secures the network through staking while keeping capital liquid for DeFi — without it, users face a binary choice between staking rewards and DeFi yields. With $1.7B+ in LSTs, liquid staking has become the largest DeFi category on Hyperliquid and the foundation that lending, DEX, and yield protocols build upon.",
     relatedCategories: [
-      { label: "Lending & Borrowing", slug: "lending-borrowing" },
-      { label: "Yield & Vaults", slug: "yield-vaults" },
+      { label: "Lending & Borrowing", slug: "lending-and-borrowing" },
+      { label: "Yield & Vaults", slug: "yield-and-vaults" },
       { label: "Decentralized Exchanges", slug: "decentralized-exchanges" },
     ],
     comparePairs: [
@@ -119,7 +119,7 @@ const CATEGORY_CONTENT: Record<string, CategoryContent> = {
     },
   },
 
-  "yield-vaults": {
+  "yield-and-vaults": {
     headline: "Yield & Vault Protocols on Hyperliquid",
     intro:
       "Yield and vault protocols on Hyperliquid let traders earn passive returns on idle capital — from automated HLP strategies to structured yield products built natively on HyperCore and HyperEVM. With multiple projects in this category, Hyperliquid has the deepest yield infrastructure of any perp-native L1.",
@@ -131,7 +131,7 @@ const CATEGORY_CONTENT: Record<string, CategoryContent> = {
       "Yield infrastructure determines how much capital stays in an ecosystem. Without compelling yield products, USDC and HYPE leave Hyperliquid for higher returns elsewhere. Vault protocols solve this by making it easy for passive users to earn competitive returns without active trading — growing TVL, deepening liquidity, and making the entire ecosystem more robust.",
     relatedCategories: [
       { label: "Liquid Staking", slug: "liquid-staking" },
-      { label: "Lending & Borrowing", slug: "lending-borrowing" },
+      { label: "Lending & Borrowing", slug: "lending-and-borrowing" },
       { label: "Decentralized Exchanges", slug: "decentralized-exchanges" },
     ],
     comparePairs: [],
@@ -158,7 +158,7 @@ const CATEGORY_CONTENT: Record<string, CategoryContent> = {
     relatedCategories: [
       { label: "Trading Terminals & Interfaces", slug: "trading-terminals-interfaces" },
       { label: "Analytics & Data", slug: "analytics-data" },
-      { label: "Yield & Vaults", slug: "yield-vaults" },
+      { label: "Yield & Vaults", slug: "yield-and-vaults" },
     ],
     comparePairs: [],
     glossaryTerms: ["grid bot", "copy trading", "market making", "algorithmic trading", "slippage"],
@@ -184,7 +184,6 @@ const CATEGORY_CONTENT: Record<string, CategoryContent> = {
     relatedCategories: [
       { label: "Trading Bots & Automation", slug: "trading-bots-automation" },
       { label: "Analytics & Data", slug: "analytics-data" },
-      { label: "Portfolio Trackers", slug: "portfolio-trackers" },
     ],
     comparePairs: [],
     glossaryTerms: ["order book", "limit order", "market order", "stop loss", "take profit"],
@@ -210,7 +209,7 @@ const CATEGORY_CONTENT: Record<string, CategoryContent> = {
     relatedCategories: [
       { label: "Wallets & Account Abstraction", slug: "wallets-account-abstraction" },
       { label: "Decentralized Exchanges", slug: "decentralized-exchanges" },
-      { label: "Lending & Borrowing", slug: "lending-borrowing" },
+      { label: "Lending & Borrowing", slug: "lending-and-borrowing" },
     ],
     comparePairs: [],
     glossaryTerms: ["bridge", "cross-chain", "USDC", "omnichain", "finality"],
@@ -236,7 +235,6 @@ const CATEGORY_CONTENT: Record<string, CategoryContent> = {
     relatedCategories: [
       { label: "Trading Terminals & Interfaces", slug: "trading-terminals-interfaces" },
       { label: "Trading Bots & Automation", slug: "trading-bots-automation" },
-      { label: "Portfolio Trackers", slug: "portfolio-trackers" },
     ],
     comparePairs: [],
     glossaryTerms: ["open interest", "funding rate", "TVL", "volume", "block explorer"],
@@ -260,8 +258,8 @@ const CATEGORY_CONTENT: Record<string, CategoryContent> = {
     whyItMatters:
       "Oracles are the backbone of DeFi composability. Every lending liquidation, every vault rebalance, and every derivative settlement depends on accurate price data. On Hyperliquid, where the DeFi stack is growing rapidly across lending, liquid staking, and structured products, reliable oracle infrastructure is a prerequisite for the ecosystem's security and growth.",
     relatedCategories: [
-      { label: "Lending & Borrowing", slug: "lending-borrowing" },
-      { label: "Yield & Vaults", slug: "yield-vaults" },
+      { label: "Lending & Borrowing", slug: "lending-and-borrowing" },
+      { label: "Yield & Vaults", slug: "yield-and-vaults" },
       { label: "Liquid Staking", slug: "liquid-staking" },
     ],
     comparePairs: [],
@@ -282,9 +280,9 @@ const CATEGORY_CONTENT: Record<string, CategoryContent> = {
 
 const CATEGORY_LEARN_MAP: Record<string, string[]> = {
   "decentralized-exchanges": ["perp-dex-comparison", "best-hyperevm-projects", "best-hyperevm-defi-projects"],
-  "lending-borrowing": ["best-hyperevm-defi-projects", "how-to-earn-yield-on-hyperliquid", "hyperevm-yield-farming-guide"],
+  "lending-and-borrowing": ["best-hyperevm-defi-projects", "how-to-earn-yield-on-hyperliquid", "hyperevm-yield-farming-guide"],
   "liquid-staking": ["how-to-stake-hype", "hyperliquid-staking-guide", "best-hyperevm-defi-projects"],
-  "yield-vaults": ["how-to-earn-yield-on-hyperliquid", "hlp-vault-guide", "hyperevm-yield-farming-guide"],
+  "yield-and-vaults": ["how-to-earn-yield-on-hyperliquid", "hlp-vault-guide", "hyperevm-yield-farming-guide"],
   "trading-bots-automation": ["best-hyperliquid-trading-bots", "how-to-use-hyperliquid", "hyperliquid-funding-rates-guide"],
   "trading-terminals-interfaces": ["how-to-use-hyperliquid", "hyperliquid-fees", "perp-dex-comparison"],
   "bridges-cross-chain": ["how-to-bridge-to-hyperliquid", "hyperunit-bridge-guide", "what-is-hyperevm"],
@@ -293,16 +291,12 @@ const CATEGORY_LEARN_MAP: Record<string, string[]> = {
   "wallets-account-abstraction": ["how-to-use-hyperliquid", "what-is-hyperevm", "what-is-hyperliquid"],
   "prediction-markets": ["what-is-hip-3", "what-is-hip-1", "what-is-hyperliquid"],
   "rwa-perps": ["what-is-hip-3", "hyperliquid-open-interest-explained", "perp-dex-comparison"],
-  "event-contracts": ["what-is-hip-3", "what-is-hip-1", "hyperliquid-funding-rates-guide"],
-  "meme-perps": ["what-is-hip-3", "what-is-hip-1", "how-to-use-hyperliquid"],
   "sdks-developer-tools": ["what-is-hyperevm", "hypercore-vs-hyperevm", "what-is-hyperliquid"],
   "security-audits": ["what-is-hyperevm", "best-hyperevm-defi-projects", "what-is-hyperliquid"],
   "data-apis": ["hyperliquid-open-interest-explained", "what-is-hyperevm", "what-is-hyperliquid"],
   "nfts-collectibles": ["what-is-hyperevm", "what-is-hip-1", "what-is-hyperliquid"],
   "communities-daos": ["what-is-hyperliquid", "hype-token-guide", "what-is-hyperevm"],
   "media-education": ["what-is-hyperliquid", "how-to-use-hyperliquid", "what-is-hyperevm"],
-  "airdrop-trackers": ["hype-token-guide", "what-is-hyperliquid", "how-to-use-hyperliquid"],
-  "portfolio-trackers": ["how-to-use-hyperliquid", "hyperliquid-fees", "what-is-hyperliquid"],
 };
 
 /* ------------------------------------------------------------------ */

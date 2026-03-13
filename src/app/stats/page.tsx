@@ -8,7 +8,7 @@ import type { Metadata } from "next";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Hyperliquid Stats — Volume, Open Interest & Ecosystem Growth",
+  title: "Hyperliquid Stats: Volume, OI & Growth",
   description:
     "Hyperliquid ecosystem statistics: $1B+ weekly volume, 200+ perpetual markets, live open interest, funding rate heatmap, and DEX market share. The most comprehensive Hyperliquid analytics dashboard.",
   openGraph: {
@@ -360,7 +360,7 @@ export default async function StatsPage() {
                 <strong className="text-[var(--hw-text)]">Thriving ecosystem:</strong> Over {projectCount} protocols now build on Hyperliquid across{" "}
                 <Link href="/layer/hypercore" className="text-[var(--hw-green)] hover:text-[var(--hw-green-dim)]">HyperCore</Link>,{" "}
                 <Link href="/layer/hyperevm" className="text-[var(--hw-green)] hover:text-[var(--hw-green-dim)]">HyperEVM</Link>, and{" "}
-                <Link href="/layer/hip-3" className="text-[var(--hw-green)] hover:text-[var(--hw-green-dim)]">HIP-3</Link> — spanning DeFi, trading tools, NFTs, and more.
+                <Link href="/layer/hip3" className="text-[var(--hw-green)] hover:text-[var(--hw-green-dim)]">HIP-3</Link> — spanning DeFi, trading tools, NFTs, and more.
               </p>
             </li>
             <li className="flex items-start gap-3">
@@ -890,7 +890,7 @@ export default async function StatsPage() {
                 </strong> for native perpetual trading, <strong className="text-[var(--hw-text)]">
                 <Link href="/layer/hyperevm" className="text-[var(--hw-green)] hover:text-[var(--hw-green-dim)]">HyperEVM</Link>
                 </strong> for composable DeFi (lending, DEXs, liquid staking), and <strong className="text-[var(--hw-text)]">
-                <Link href="/layer/hip-3" className="text-[var(--hw-green)] hover:text-[var(--hw-green-dim)]">HIP-3</Link>
+                <Link href="/layer/hip3" className="text-[var(--hw-green)] hover:text-[var(--hw-green-dim)]">HIP-3</Link>
                 </strong> for permissionless custom perpetual markets including tokenized stocks and prediction markets.
                 Together, these layers have attracted over $2B in TVL across {projectCount}+ ecosystem
                 projects.

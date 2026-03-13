@@ -8,7 +8,7 @@ const article = getArticle(SLUG)!;
 const { prev, next } = getAdjacentArticles(SLUG);
 
 export const metadata: Metadata = {
-  title: "Best Perp DEX in 2026 — Hyperliquid vs dYdX vs GMX vs Drift Compared",
+  title: "Best Perp DEX 2026: Hyperliquid vs dYdX vs GMX",
   description:
     "Detailed comparison of the top perpetual DEXs in 2026: Hyperliquid, dYdX, GMX, Drift, and Lighter. Volume, fees, leverage, user experience, and which suits different trader types.",
   openGraph: {

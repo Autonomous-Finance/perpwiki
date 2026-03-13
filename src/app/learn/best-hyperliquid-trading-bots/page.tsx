@@ -251,7 +251,7 @@ export default function BestHyperliquidTradingBotsPage() {
 
       <H2 id="growi">Growi</H2>
       <P>
-        <InlineLink href="/projects/growi">Growi</InlineLink> focuses on portfolio management
+        Growi focuses on portfolio management
         and automation for Hyperliquid users managing multiple positions. Rather than executing
         individual trading strategies, Growi helps users automate portfolio-level operations:
         rebalancing across positions, implementing DCA (dollar-cost averaging) schedules,
