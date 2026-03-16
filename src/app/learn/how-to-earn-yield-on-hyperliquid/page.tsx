@@ -1,7 +1,13 @@
 import { getArticle, getAdjacentArticles } from "@/lib/learn-articles";
 import { LearnLayout, H2, P, InlineLink, ComparisonTable, CTA } from "@/components/LearnLayout";
 import { JsonLd } from "@/components/JsonLd";
+import { LiveEcosystemStats, fetchHypePrice } from "@/components/learn/LiveData";
+import { YieldCalculator } from "@/components/learn/Interactive";
+import { ProsConsTable, RiskBadge } from "@/components/learn/UiBlocks";
+import { ProjectLogoGrid } from "@/components/learn/ProjectGrid";
 import type { Metadata } from "next";
+
+export const dynamic = "force-dynamic";
 
 const SLUG = "how-to-earn-yield-on-hyperliquid";
 const article = getArticle(SLUG)!;
@@ -21,6 +27,7 @@ export const metadata: Metadata = {
 
 const TOC = [
   { id: "yield-overview", title: "Yield Overview" },
+  { id: "yield-options", title: "Live Yield Options" },
   { id: "hlp-vault", title: "1. HLP Vault" },
   { id: "hype-staking", title: "2. HYPE Staking" },
   { id: "lending", title: "3. Lending on HyperLend" },
@@ -35,7 +42,7 @@ const FAQ = [
   {
     question: "What is the best way to earn yield on Hyperliquid?",
     answer:
-      "It depends on your holdings and risk tolerance. The HLP vault offers 15-25% APY on USDC with market-making risk. HYPE staking provides 5-10% APY with minimal risk. Lending on HyperLend offers 3-12% on various assets. Builder vaults and funding rate arbitrage are higher-effort, higher-reward options.",
+      "It depends on your holdings and risk tolerance. The HLP vault offers 15-25% APY on USDC with market-making risk. HYPE staking provides ~2.25% APY with minimal risk. Lending on HyperLend offers 3-12% on various assets. Builder vaults and funding rate arbitrage are higher-effort, higher-reward options.",
   },
   {
     question: "How much does the HLP vault pay?",
@@ -45,7 +52,7 @@ const FAQ = [
   {
     question: "Can I earn yield on HYPE without selling it?",
     answer:
-      "Yes. You can stake HYPE directly to validators for 5-10% APY, use liquid staking (Kinetiq for kHYPE or StakedHYPE for stHYPE) to earn staking rewards while keeping your tokens liquid, or deposit HYPE into HyperLend to earn lending interest from borrowers.",
+      "Yes. You can stake HYPE directly to validators for ~2.25% APY, use liquid staking (Kinetiq for kHYPE or StakedHYPE for stHYPE) to earn staking rewards while keeping your tokens liquid, or deposit HYPE into HyperLend to earn lending interest from borrowers.",
   },
   {
     question: "Is yield farming on Hyperliquid safe?",
@@ -59,7 +66,9 @@ const FAQ = [
   },
 ];
 
-export default function HowToEarnYieldOnHyperliquidPage() {
+export default async function HowToEarnYieldOnHyperliquidPage() {
+  const hypePrice = await fetchHypePrice() ?? 24.5;
+
   return (
     <LearnLayout article={article} prev={prev} next={next} toc={TOC}>
       <JsonLd
@@ -87,6 +96,8 @@ export default function HowToEarnYieldOnHyperliquidPage() {
         }}
       />
 
+      <LiveEcosystemStats />
+
       <H2 id="yield-overview">Yield Overview</H2>
       <P>
         <InlineLink href="/learn/what-is-hyperliquid">Hyperliquid</InlineLink> has evolved from
@@ -103,7 +114,32 @@ export default function HowToEarnYieldOnHyperliquidPage() {
         tolerance and time commitment.
       </P>
 
-      <H2 id="hlp-vault">1. HLP Vault (15-25% Variable APY)</H2>
+      <H2 id="yield-options">Live Yield Options</H2>
+      <ComparisonTable
+        headers={["Option", "Product", "APY", "Currency", "Risk", "Lock-up"]}
+        rows={[
+          ["Native Staking", "HYPE", "~2.25%", "HYPE", "Low", "7 days"],
+          ["kHYPE (Kinetiq)", "LST", "~4-5%", "HYPE", "Low", "None"],
+          ["stHYPE (StakedHYPE)", "LST", "~3-4%", "HYPE", "Low", "Varies"],
+          ["HLP Vault", "Market Making", "10-25%", "USDC", "Medium", "None"],
+          ["HyperLend USDC", "Lending", "5-15%", "USDC", "Low-Med", "None"],
+          ["Yield Vaults", "Automated", "8-20%", "Various", "Med-High", "None"],
+        ]}
+      />
+
+      <YieldCalculator
+        defaultAmount={1000}
+        options={[
+          { label: "HYPE Native Staking", apy: 2.25, description: "Fixed validator rewards, 7-day unstaking period" },
+          { label: "kHYPE (Kinetiq)", apy: 4.5, description: "Liquid staking with DeFi composability" },
+          { label: "stHYPE (StakedHYPE)", apy: 3.5, description: "Liquid staking via Valantis" },
+          { label: "HLP Vault", apy: 17, description: "Variable market-making yield, USDC-denominated" },
+          { label: "HyperLend Lending", apy: 8, description: "Supply-side lending interest" },
+        ]}
+        hypePrice={hypePrice}
+      />
+
+      <H2 id="hlp-vault">1. HLP Vault (15-25% Variable APY) <RiskBadge level="Medium" /></H2>
       <P>
         The <InlineLink href="/learn/hlp-vault-guide">HLP (Hyperliquidity Provider) vault</InlineLink>{" "}
         is Hyperliquid&apos;s protocol-operated liquidity vault and the single largest yield
@@ -122,17 +158,23 @@ export default function HowToEarnYieldOnHyperliquidPage() {
         $43 million in total profits since inception with $373M+ in TVL. There is no lock-up
         period — you can deposit or withdraw USDC at any time.
       </P>
-      <P>
-        <strong>Best for:</strong> USDC holders who want passive yield without managing positions
-        or taking directional exposure. The main risk is temporary drawdowns during extreme
-        market volatility, when the vault&apos;s market-making positions can move against it.
-        Maximum historical drawdown has been approximately 4-5% of TVL.
-      </P>
+      <ProsConsTable
+        pros={[
+          "Highest passive yield on Hyperliquid (15-25% APY historically)",
+          "No lock-up — withdraw USDC anytime",
+          "No management or performance fees",
+        ]}
+        cons={[
+          "Temporary drawdowns during extreme volatility (up to 4-5%)",
+          "Variable returns — lower in quiet markets",
+          "Not composable with other DeFi protocols",
+        ]}
+      />
 
-      <H2 id="hype-staking">2. HYPE Staking (5-10% APY)</H2>
+      <H2 id="hype-staking">2. HYPE Staking (~2.25% APY) <RiskBadge level="Low" /></H2>
       <P>
         HYPE holders can stake their tokens directly to Hyperliquid validators to earn consensus
-        rewards. The staking APY currently ranges from 5-10%, paid in HYPE. This is the simplest
+        rewards. The staking APY is currently approximately 2.25%, paid in HYPE. This is the simplest
         and lowest-risk yield option for HYPE holders.
       </P>
       <P>
@@ -149,13 +191,10 @@ export default function HowToEarnYieldOnHyperliquidPage() {
         <InlineLink href="/projects/stakedhype">StakedHYPE</InlineLink> offers stHYPE with
         similar functionality.
       </P>
-      <P>
-        <strong>Best for:</strong> Long-term HYPE holders who believe in the token&apos;s value
-        and want to earn rewards on their position. Liquid staking via Kinetiq or StakedHYPE is
-        preferable if you want to use your staked position in DeFi.
-      </P>
 
-      <H2 id="lending">3. Lending on HyperLend (3-12% APY)</H2>
+      <ProjectLogoGrid slugs={["kinetiq", "stakedhype", "hyperbeat"]} title="Liquid Staking Protocols" showTagline />
+
+      <H2 id="lending">3. Lending on HyperLend (3-12% APY) <RiskBadge level="Low" /></H2>
       <P>
         <InlineLink href="/projects/hyperlend">HyperLend</InlineLink> is the primary lending
         protocol on HyperEVM. By supplying assets (USDC, HYPE, kHYPE, or other supported
@@ -174,13 +213,10 @@ export default function HowToEarnYieldOnHyperliquidPage() {
         at any time (subject to available liquidity in the pool). Your deposited assets serve as
         potential collateral for other users&apos; borrowing activity.
       </P>
-      <P>
-        <strong>Best for:</strong> Users who want predictable, low-risk yield on USDC or HYPE.
-        Lending carries smart contract risk (inherent in any DeFi protocol) but does not have
-        the market-making risk of HLP or the directional exposure of staking.
-      </P>
 
-      <H2 id="builder-vaults">4. Builder Vaults (Variable APY)</H2>
+      <ProjectLogoGrid slugs={["hyperlend", "felix-protocol", "morpho"]} title="Lending & CDP Protocols" showTagline />
+
+      <H2 id="builder-vaults">4. Builder Vaults (Variable APY) <RiskBadge level="High" /></H2>
       <P>
         Beyond the protocol-operated HLP vault, Hyperliquid supports user-created vaults —
         commonly called builder vaults. These are managed by individual traders or teams who
@@ -199,14 +235,20 @@ export default function HowToEarnYieldOnHyperliquidPage() {
         historical performance, current positions, and the vault leader&apos;s track record on
         the Hyperliquid interface.
       </P>
-      <P>
-        <strong>Best for:</strong> Users who want to allocate to specific trading strategies
-        without executing them personally. The key risk is vault manager performance — a bad
-        strategy or unlucky market conditions can produce losses. Always diversify across
-        multiple vaults and monitor performance regularly.
-      </P>
+      <ProsConsTable
+        pros={[
+          "Access to specialized trading strategies without executing them yourself",
+          "Some vaults significantly outperform HLP in favorable conditions",
+          "Wide variety of strategies to choose from",
+        ]}
+        cons={[
+          "Performance fees (10-20%) reduce net returns",
+          "Vault manager risk — poor strategies can produce losses",
+          "Less transparent than protocol-operated HLP",
+        ]}
+      />
 
-      <H2 id="funding-rate-arb">5. Funding Rate Arbitrage (10-30% APY)</H2>
+      <H2 id="funding-rate-arb">5. Funding Rate Arbitrage (10-30% APY) <RiskBadge level="Medium" /></H2>
       <P>
         Funding rate arbitrage is the most hands-on yield strategy on this list but also one of
         the most consistent. The concept is simple: when perpetual funding rates are positive
@@ -227,19 +269,14 @@ export default function HowToEarnYieldOnHyperliquidPage() {
         positions when rates compress or flip negative. For a detailed walkthrough, see our{" "}
         <InlineLink href="/learn/hyperliquid-funding-rates-guide">funding rates guide</InlineLink>.
       </P>
-      <P>
-        <strong>Best for:</strong> Active traders comfortable with margin management and
-        position monitoring. The risks include funding rate reversal (the rate flips and your
-        short starts paying instead of earning), margin liquidation on the perp side during
-        sharp rallies, and execution slippage when entering or exiting positions.
-      </P>
 
       <H2 id="comparison">Yield Comparison</H2>
       <ComparisonTable
         headers={["Strategy", "Typical APY", "Deposit Asset", "Risk Level", "Effort"]}
         rows={[
           ["HLP Vault", "15-25%", "USDC", "Medium", "Passive"],
-          ["HYPE Staking", "5-10%", "HYPE", "Low", "Passive"],
+          ["HYPE Native Staking", "~2.25%", "HYPE", "Low", "Passive"],
+          ["Liquid Staking (kHYPE)", "~4-5%", "HYPE", "Low", "Passive"],
           ["HyperLend Lending", "3-12%", "USDC / HYPE / kHYPE", "Low-Medium", "Passive"],
           ["Builder Vaults", "Variable", "USDC", "Medium-High", "Semi-passive"],
           ["Funding Rate Arb", "10-30%", "USDC + Spot", "Medium", "Active"],
@@ -255,11 +292,11 @@ export default function HowToEarnYieldOnHyperliquidPage() {
       <P>
         <strong>Example stack for HYPE holders:</strong> Start with 1,000 HYPE. Stake via{" "}
         <InlineLink href="/projects/kinetiq">Kinetiq</InlineLink> to receive 1,000 kHYPE (earn
-        ~7% staking APY). Deposit kHYPE into{" "}
+        ~4.5% staking APY). Deposit kHYPE into{" "}
         <InlineLink href="/projects/felix-protocol">Felix Protocol</InlineLink> as collateral
         and mint 5,000 feUSD (at 50% LTV). Lend the 5,000 feUSD on{" "}
         <InlineLink href="/projects/hyperlend">HyperLend</InlineLink> at 5% APY. Your effective
-        yield is now: 7% staking on the full position + 5% lending on the borrowed amount —
+        yield is now: 4.5% staking on the full position + 5% lending on the borrowed amount —
         significantly more than any single strategy alone.
       </P>
       <P>
