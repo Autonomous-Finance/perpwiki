@@ -1,7 +1,11 @@
 import { getArticle, getAdjacentArticles } from "@/lib/learn-articles";
 import { LearnLayout, H2, P, InlineLink, CTA } from "@/components/LearnLayout";
 import { JsonLd } from "@/components/JsonLd";
+import { LiveTopOI, LiveFundingRatesTable, LiveEcosystemStats } from "@/components/learn/LiveData";
+import { NumberCalloutRow } from "@/components/learn/UiBlocks";
 import type { Metadata } from "next";
+
+export const dynamic = "force-dynamic";
 
 const SLUG = "hyperliquid-open-interest-explained";
 const article = getArticle(SLUG)!;
@@ -58,7 +62,7 @@ const FAQ = [
   },
 ];
 
-export default function HyperliquidOpenInterestExplainedPage() {
+export default async function HyperliquidOpenInterestExplainedPage() {
   return (
     <LearnLayout article={article} prev={prev} next={next} toc={TOC}>
       <JsonLd
@@ -94,6 +98,10 @@ export default function HyperliquidOpenInterestExplainedPage() {
         volume, which measures the total value of contracts traded over a period, open interest
         is a snapshot of current positioning.
       </P>
+
+      {/* Live OI table — this is THE article for OI */}
+      <LiveTopOI topN={10} />
+
       <P>
         In perpetual futures, every open position has two sides: a long and a short. When a new
         buyer opens a long position and a new seller opens a short position, one new contract is
@@ -185,6 +193,9 @@ export default function HyperliquidOpenInterestExplainedPage() {
       </P>
 
       <H2 id="oi-on-hyperliquid">OI on Hyperliquid</H2>
+
+      <LiveEcosystemStats />
+
       <P>
         Hyperliquid displays open interest data on each market&apos;s trading page. The OI
         figure is shown in USD and updates in real time as positions are opened and closed.
@@ -208,6 +219,9 @@ export default function HyperliquidOpenInterestExplainedPage() {
       </P>
 
       <H2 id="oi-and-funding">OI and Funding Rates</H2>
+
+      <LiveFundingRatesTable topN={5} />
+
       <P>
         Open interest and{" "}
         <InlineLink href="/learn/hyperliquid-funding-rates-guide">funding rates</InlineLink>{" "}
