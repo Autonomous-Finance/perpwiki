@@ -13,12 +13,13 @@ export const dynamic = "force-dynamic";
 
 export async function generateMetadata(): Promise<Metadata> {
   const stats = await getStats();
-  const desc = `Independent directory of ${stats.total}+ Hyperliquid ecosystem projects. Browse HyperCore, HyperEVM, and HIP-3 apps — trading tools, DeFi, liquid staking, analytics and more. perp.wiki`;
+  const title = `perp.wiki — Hyperliquid Ecosystem: ${stats.total} Projects, Tools & Protocols`;
+  const desc = `The independent directory for Hyperliquid. Browse ${stats.total}+ projects across yield, DEXs, lending, analytics, trading bots, and developer tools. Compare, review, and explore the full HyperEVM ecosystem.`;
   return {
-    title: "perp.wiki — Hyperliquid Ecosystem Directory 2026",
+    title,
     description: desc,
     openGraph: {
-      title: "perp.wiki — Hyperliquid Ecosystem Directory 2026",
+      title,
       description: desc,
     },
     keywords: [
