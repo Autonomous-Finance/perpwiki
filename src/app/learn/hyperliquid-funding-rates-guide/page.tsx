@@ -1,7 +1,12 @@
 import { getArticle, getAdjacentArticles } from "@/lib/learn-articles";
 import { LearnLayout, H2, P, InlineLink, CTA } from "@/components/LearnLayout";
 import { JsonLd } from "@/components/JsonLd";
+import { LiveFundingRatesTable, LiveTopOI } from "@/components/learn/LiveData";
+import { FundingRateCalculator } from "@/components/learn/Interactive";
+import { ProsConsTable, StrategyCard } from "@/components/learn/UiBlocks";
 import type { Metadata } from "next";
+
+export const dynamic = "force-dynamic";
 
 const SLUG = "hyperliquid-funding-rates-guide";
 const article = getArticle(SLUG)!;
@@ -21,6 +26,7 @@ export const metadata: Metadata = {
 
 const TOC = [
   { id: "what-are-funding-rates", title: "What Are Funding Rates?" },
+  { id: "live-funding-rates", title: "Live Funding Rates" },
   { id: "how-funding-works-on-hl", title: "How Funding Works on Hyperliquid" },
   { id: "positive-vs-negative", title: "Positive vs Negative Rates" },
   { id: "reading-funding-data", title: "Reading the Funding Data" },
@@ -59,7 +65,7 @@ const FAQ = [
   },
 ];
 
-export default function HyperliquidFundingRatesGuidePage() {
+export default async function HyperliquidFundingRatesGuidePage() {
   return (
     <LearnLayout article={article} prev={prev} next={next} toc={TOC}>
       <JsonLd
@@ -108,6 +114,19 @@ export default function HyperliquidFundingRatesGuidePage() {
         exchanges, and across every perp DEX. Understanding them is essential for any serious
         derivatives trader because they directly affect your profitability on every open position.
       </P>
+
+      {/* Live OI table — shows these are real, large markets */}
+      <LiveTopOI topN={5} />
+
+      <H2 id="live-funding-rates">Live Funding Rates</H2>
+      <P>
+        The table below shows the markets with the highest absolute funding rates right now on
+        Hyperliquid. Green rates mean shorts are paying longs (longs earn). Red rates mean longs
+        are paying shorts (costs long holders). The APY column annualizes the 8-hour rate so you
+        can compare against other yield sources.
+      </P>
+
+      <LiveFundingRatesTable topN={10} />
 
       <H2 id="how-funding-works-on-hl">How Funding Works on Hyperliquid</H2>
       <P>
@@ -188,12 +207,23 @@ export default function HyperliquidFundingRatesGuidePage() {
       </P>
 
       <H2 id="cash-and-carry">Cash-and-Carry Strategy</H2>
-      <P>
-        The cash-and-carry trade is the most popular way to profit from funding rates. The
-        concept is straightforward: buy the spot asset and simultaneously short the same asset on
-        the perpetual market. Your net exposure to price movement is zero (delta-neutral), and
-        you collect the funding rate payments from your short position when funding is positive.
-      </P>
+
+      <StrategyCard
+        title="Cash-and-Carry Funding Farm"
+        risk="Medium"
+        timeCommitment="1-2h/week monitoring"
+        capitalMin="$5,000+"
+        description="Buy spot and short the same asset on perps to collect positive funding rates. Delta-neutral exposure means you are indifferent to price direction — you are purely harvesting the funding spread."
+        steps={[
+          "Identify a market with sustained positive funding (>0.01%/8h) on Hyperliquid",
+          "Buy the equivalent dollar amount on spot (HL spot or external exchange)",
+          "Open a short perpetual position of the same size on Hyperliquid",
+          "Collect funding payments every 8 hours at settlement",
+          "Monitor margin levels — add margin if price rallies sharply against your short",
+          "Unwind both legs when funding rate compresses or reverses",
+        ]}
+      />
+
       <P>
         On Hyperliquid, a typical cash-and-carry setup looks like this: buy $10,000 of ETH on
         the spot market (either on Hyperliquid&apos;s native spot order book or on an external
@@ -214,6 +244,9 @@ export default function HyperliquidFundingRatesGuidePage() {
         perpetual price and spot price can diverge temporarily, creating unrealized PnL swings
         even on a delta-neutral book.
       </P>
+
+      {/* Interactive calculator */}
+      <FundingRateCalculator />
 
       <H2 id="delta-neutral-farming">Delta-Neutral Farming</H2>
       <P>
@@ -246,6 +279,22 @@ export default function HyperliquidFundingRatesGuidePage() {
       </P>
 
       <H2 id="risks-and-pitfalls">Risks and Pitfalls</H2>
+
+      <ProsConsTable
+        pros={[
+          "Passive income from funding — collect payments every 8 hours",
+          "Delta-neutral: no directional price risk when properly hedged",
+          "Scalable strategy — works from $5K to $500K+ positions",
+          "Can be diversified across many markets simultaneously",
+        ]}
+        cons={[
+          "Rate reversal risk — funding can flip direction rapidly",
+          "Requires active margin monitoring to avoid liquidation",
+          "Execution risk when entering/exiting both legs simultaneously",
+          "Capital inefficient — need margin on both spot and perp sides",
+        ]}
+      />
+
       <P>
         <strong>Rate reversal.</strong> Funding rates can change direction rapidly. A market that
         has been paying +0.03% for a week can flip to -0.02% in a single interval if sentiment
