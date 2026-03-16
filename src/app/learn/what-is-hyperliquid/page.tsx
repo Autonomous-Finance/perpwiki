@@ -1,7 +1,12 @@
 import { getArticle, getAdjacentArticles } from "@/lib/learn-articles";
 import { LearnLayout, H2, P, InlineLink, CTA } from "@/components/LearnLayout";
 import { JsonLd } from "@/components/JsonLd";
+import { LiveEcosystemStats, LiveTopOI } from "@/components/learn/LiveData";
+import { NumberCalloutRow } from "@/components/learn/UiBlocks";
+import { ProjectLogoGrid } from "@/components/learn/ProjectGrid";
 import type { Metadata } from "next";
+
+export const dynamic = "force-dynamic";
 
 const SLUG = "what-is-hyperliquid";
 const article = getArticle(SLUG)!;
@@ -33,7 +38,7 @@ const TOC = [
   { id: "key-risks", title: "Key Risks" },
 ];
 
-export default function WhatIsHyperliquidPage() {
+export default async function WhatIsHyperliquidPage() {
   return (
     <LearnLayout article={article} prev={prev} next={next} toc={TOC}>
       <JsonLd
@@ -49,6 +54,8 @@ export default function WhatIsHyperliquidPage() {
           mainEntityOfPage: `https://perp.wiki/learn/${SLUG}`,
         }}
       />
+
+      <LiveEcosystemStats />
 
       <H2 id="what-is-hyperliquid">What Is Hyperliquid?</H2>
       <P>
@@ -73,6 +80,13 @@ export default function WhatIsHyperliquidPage() {
       </P>
 
       <H2 id="hypercore-l1">The HyperCore L1</H2>
+
+      <NumberCalloutRow items={[
+        { value: "~200ms", label: "Block Time" },
+        { value: "200K+", label: "Orders/Second", sub: "peak throughput" },
+        { value: "229+", label: "Active Markets" },
+      ]} />
+
       <P>
         At the heart of Hyperliquid is HyperCore — a custom Layer 1 blockchain running the
         HyperBFT consensus mechanism. HyperBFT is a modified version of HotStuff, the same
@@ -163,6 +177,15 @@ export default function WhatIsHyperliquidPage() {
         <InlineLink href="/projects/kittenswap">KittenSwap</InlineLink> provide spot trading
         for HyperEVM-native tokens.
       </P>
+
+      <ProjectLogoGrid
+        slugs={["hyperlend", "kinetiq", "stakedhype", "hyperswap", "felix-protocol", "across-protocol", "redstone"]}
+        title="Key Ecosystem Projects"
+        showTagline
+      />
+
+      <LiveTopOI topN={5} />
+
       <P>
         HIP-3, the permissionless perpetual market standard, has enabled prediction markets,
         stock perpetuals, and other novel financial products. Read our{" "}
