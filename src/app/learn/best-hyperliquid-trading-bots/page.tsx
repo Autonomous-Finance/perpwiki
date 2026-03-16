@@ -1,7 +1,12 @@
 import { getArticle, getAdjacentArticles } from "@/lib/learn-articles";
 import { LearnLayout, H2, P, InlineLink, ComparisonTable, CTA, TLDRBox, FeatureCard } from "@/components/LearnLayout";
 import { JsonLd } from "@/components/JsonLd";
+import { LiveEcosystemStats } from "@/components/learn/LiveData";
+import { StrategyCard } from "@/components/learn/UiBlocks";
+import { ProjectLogoGrid } from "@/components/learn/ProjectGrid";
 import type { Metadata } from "next";
+
+export const dynamic = "force-dynamic";
 
 const SLUG = "best-hyperliquid-trading-bots";
 const article = getArticle(SLUG)!;
@@ -60,7 +65,7 @@ const FAQ = [
   },
 ];
 
-export default function BestHyperliquidTradingBotsPage() {
+export default async function BestHyperliquidTradingBotsPage() {
   return (
     <LearnLayout article={article} prev={prev} next={next} toc={TOC}>
       <JsonLd
@@ -95,6 +100,8 @@ export default function BestHyperliquidTradingBotsPage() {
           "Always use trade-only API keys (no withdrawal access) and start with small position sizes when running any bot.",
         ]}
       />
+
+      <LiveEcosystemStats />
 
       <H2 id="why-bots">Why Use Trading Bots on Hyperliquid?</H2>
       <P>
@@ -279,15 +286,62 @@ export default function BestHyperliquidTradingBotsPage() {
         bots, newer platform with less track record, subscription-based pricing.
       </P>
 
+      <ProjectLogoGrid slugs={["hummingbot", "insilico-terminal", "pvp-trade", "katoshi", "growi-hf"]} title="Featured Trading Bots" showTagline />
+
+      <StrategyCard
+        title="Copy Trading Strategy"
+        risk="Medium"
+        timeCommitment="30 min/week"
+        capitalMin="$500+"
+        description="Mirror the trades of verified profitable Hyperliquid traders. Leverage on-chain transparency to select traders with proven track records."
+        steps={[
+          "Browse top traders on pvp.trade — filter by PnL, win rate, and risk metrics",
+          "Select 2-3 traders with different strategies for diversification",
+          "Set position sizing (start at 10-25% of the leader's relative size)",
+          "Monitor performance weekly and replace underperforming leaders",
+          "Set maximum drawdown limits to auto-stop copying if losses exceed threshold",
+        ]}
+      />
+
+      <StrategyCard
+        title="Grid Bot Strategy"
+        risk="Low"
+        timeCommitment="1h setup, passive"
+        capitalMin="$1,000+"
+        description="Place buy and sell orders at regular price intervals to profit from market oscillation. Works best in range-bound markets."
+        steps={[
+          "Choose a market that's been range-bound (check 30-day price range)",
+          "Set a grid of 10-20 buy/sell levels across the range",
+          "Configure order sizes (equal or weighted toward center)",
+          "Let the bot accumulate profits from each fill across the grid",
+          "Adjust or close the grid if price breaks out of the range",
+        ]}
+      />
+
+      <StrategyCard
+        title="Market Making Strategy"
+        risk="High"
+        timeCommitment="Setup + monitoring"
+        capitalMin="$5,000+"
+        description="Provide liquidity by placing both buy and sell orders. Earn the spread plus maker rebates on every fill."
+        steps={[
+          "Set up Hummingbot with Hyperliquid connector and API keys",
+          "Choose a market with decent volume but wide-enough spreads",
+          "Configure bid-ask spread (start wide at 0.1-0.3% and tighten gradually)",
+          "Set inventory limits to prevent accumulating too much directional risk",
+          "Monitor and adjust parameters as market conditions change",
+        ]}
+      />
+
       <H2 id="comparison">Bot Comparison</H2>
       <ComparisonTable
-        headers={["Bot", "Type", "Skill Required", "Cost", "Best For"]}
+        headers={["Bot", "Type", "Skill Level", "Cost", "Open Source?", "Best For"]}
         rows={[
-          ["Hummingbot", "Market making / custom", "High (coding)", "Free (open source)", "Developers, market makers"],
-          ["Insilico Terminal", "Trading terminal + automation", "Medium", "Subscription", "Active traders"],
-          ["pvp.trade", "Copy trading", "Low", "Performance fee", "Passive traders"],
-          ["Katoshi", "AI-driven strategies", "Low", "AUM fee", "Hands-off automation"],
-          ["Growi", "Portfolio automation", "Medium", "Subscription", "Multi-position managers"],
+          ["Hummingbot", "Market making / custom", "High (coding)", "Free", "Yes", "Developers, market makers"],
+          ["Insilico Terminal", "Trading terminal + automation", "Medium", "Subscription", "No", "Active professional traders"],
+          ["pvp.trade", "Copy trading", "Low", "Performance fee", "No", "Passive traders, beginners"],
+          ["Katoshi", "AI-driven strategies", "Low", "AUM fee", "No", "Hands-off automation seekers"],
+          ["Growi", "Portfolio automation", "Medium", "Subscription", "No", "Multi-position portfolio managers"],
         ]}
       />
 
