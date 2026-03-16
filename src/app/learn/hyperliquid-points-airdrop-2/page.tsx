@@ -8,14 +8,14 @@ const article = getArticle(SLUG)!;
 const { prev, next } = getAdjacentArticles(SLUG);
 
 export const metadata: Metadata = {
-  title: "Hyperliquid Points & Airdrop Season 2: What We Know",
+  title: "Hyperliquid Points Season 2 & HYPE Airdrop Guide 2026",
   description:
-    "Everything known about Hyperliquid Season 2 points and the potential second HYPE airdrop. Earning strategies, timeline speculation, and risks to consider.",
+    "Everything about Hyperliquid Points Season 2 and HYPE token airdrops. How points are earned, what activities count, and how to maximize your HYPE allocation in 2026.",
   alternates: { canonical: `https://perp.wiki/learn/${SLUG}` },
   openGraph: {
-    title: "Hyperliquid Points & Airdrop Season 2: What We Know",
+    title: "Hyperliquid Points Season 2 & HYPE Airdrop Guide 2026",
     description:
-      "Guide to Hyperliquid Season 2: how points work, earning strategies, timeline speculation, and whether farming is worth the effort.",
+      "Everything about Hyperliquid Points Season 2 and HYPE token airdrops. How points are earned, what activities count, and how to maximize your HYPE allocation in 2026.",
     url: `https://perp.wiki/learn/${SLUG}`,
     siteName: "perp.wiki",
     type: "article",
@@ -23,9 +23,9 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     site: "@perpwiki",
-    title: "Hyperliquid Points & Airdrop Season 2: What We Know",
+    title: "Hyperliquid Points Season 2 & HYPE Airdrop Guide 2026",
     description:
-      "Guide to Hyperliquid Season 2: how points work, earning strategies, timeline speculation, and whether farming is worth the effort.",
+      "Everything about Hyperliquid Points Season 2 and HYPE token airdrops. How points are earned, what activities count, and how to maximize your HYPE allocation in 2026.",
   },
 };
 
@@ -38,6 +38,7 @@ const TOC = [
   { id: "timeline", title: "Timeline & Speculation" },
   { id: "risks-and-considerations", title: "Risks & Considerations" },
   { id: "faq", title: "FAQ" },
+  { id: "next-steps", title: "Next Steps" },
 ];
 
 const FAQ = [
@@ -116,17 +117,28 @@ export default function HyperliquidPointsAirdrop2Page() {
       </P>
       <P>
         When the genesis event occurred on November 29, 2024, accumulated Season 1 points were converted
-        to HYPE token allocations. The conversion rate was generous — 310 million HYPE tokens (31% of
-        total supply) were distributed. At HYPE&apos;s initial trading price, this made Season 1 one of
-        the most lucrative farming opportunities in DeFi history. Some large traders received allocations
-        worth hundreds of thousands or even millions of dollars.
+        to HYPE token allocations. The conversion rate was extraordinary — <strong>310 million HYPE tokens
+        (31% of total supply) were distributed to approximately 94,000 wallets</strong>. At HYPE&apos;s
+        peak price, the total value of the Season 1 distribution reached roughly <strong>$7.5 billion</strong>,
+        making it the largest airdrop in DeFi history by a significant margin. Even at the initial trading
+        price on day one, the distribution was worth over $1.6 billion. Some large, consistent traders
+        received allocations worth hundreds of thousands or even millions of dollars.
       </P>
       <P>
-        The Season 1 distribution was notable for several reasons. First, its size — 31% of total supply
-        to users is nearly unprecedented. Most airdrops allocate 5-15%. Second, the absence of VC
-        allocations meant the community distribution was not diluted by investor tokens. Third, the
-        allocation formula appeared to meaningfully reward genuine, consistent users over short-term
-        mercenary farmers, though the exact methodology was never fully disclosed.
+        The Season 1 distribution stood out for several structural reasons. Its size — 31% of total supply
+        to community users — is nearly unprecedented; most protocol airdrops allocate 5–15%. Hyperliquid
+        had accepted no external venture capital funding, which meant there were no investor unlocks diluting
+        the community allocation. The token launched without a pre-sale, presale whitelist, or exchange
+        listing negotiation — simply a direct distribution to users who had earned it. The allocation
+        formula appeared to meaningfully reward genuine, consistent platform engagement over short-term
+        mercenary farming, though the exact methodology was never fully disclosed.
+      </P>
+      <P>
+        What counted toward Season 1 points included: perpetual futures trading volume (both maker and
+        taker), USDC deposited in the HLP market-making vault, open interest held over time, and referral
+        activity. Wash trading and Sybil behavior were actively filtered. Users who traded regularly across
+        many weeks on major markets like BTC-PERP and ETH-PERP tended to receive stronger allocations
+        relative to their volume compared with users who concentrated activity in a single week.
       </P>
       <P>
         The success of Season 1 created both an opportunity and a challenge for Season 2. The opportunity
@@ -213,20 +225,44 @@ export default function HyperliquidPointsAirdrop2Page() {
         <InlineLink href="/learn/how-to-use-hyperliquid">How to Use Hyperliquid</InlineLink>.
       </P>
       <P>
-        <strong>Providing HLP liquidity.</strong> Depositing USDC into the HLP vault earns points
-        passively while also generating the vault&apos;s market-making returns (historically 15-25% APR).
-        This is arguably the best risk-adjusted strategy for points accumulation — you earn yield from
-        the vault itself plus points for the deposit. The main risk is the vault&apos;s market-making
-        drawdowns during extreme volatility. For details, see our{" "}
+        <strong>Trading volume strategy.</strong> Not all volume is treated equally. The platform favors
+        volume that reflects genuine market participation. Practically, this means placing limit orders
+        rather than market orders wherever possible, spreading activity across multiple trading sessions
+        throughout the week rather than executing everything at once, and avoiding patterns that look
+        algorithmic or self-dealing. Posting limit orders at or near the spread on BTC-PERP or ETH-PERP
+        earns maker rebates while also accumulating points — a double benefit that makes genuine market
+        making one of the highest-yield activities on the platform. Avoid concentrating volume at round
+        numbers or in ways that could flag as artificial. Volume on liquid, high-open-interest markets
+        appears to be weighted more favorably than obscure long-tail markets.
+      </P>
+      <P>
+        <strong>HLP vault participation.</strong> Depositing USDC into the{" "}
+        <InlineLink href="/projects/hlp">HLP vault</InlineLink> earns points passively while also
+        generating the vault&apos;s market-making returns (historically 15–25% APR over Season 1). This
+        is arguably the best risk-adjusted strategy for points accumulation — you earn vault yield
+        regardless of whether a Season 2 distribution materializes, and points on top of that. The size
+        of your deposit and how long you maintain it both matter; larger, longer-held deposits earn
+        proportionally more points. The main risk is the vault&apos;s market-making drawdowns during
+        extreme volatility events. For a full breakdown, see our{" "}
         <InlineLink href="/learn/hlp-vault-guide">HLP Vault Guide</InlineLink>.
       </P>
       <P>
-        <strong>Using ecosystem projects.</strong> Engaging with the broader Hyperliquid ecosystem may
-        contribute to points accumulation, particularly if the team rewards cross-ecosystem activity.
-        This includes trading on spot markets, using HyperEVM DeFi protocols, and participating in
-        HIP-3 markets. While the direct points impact of these activities is less clear than perp
-        trading and HLP deposits, diversifying your on-chain activity creates a more robust farming
-        profile.
+        <strong>HyperEVM activity.</strong> HyperEVM — Hyperliquid&apos;s EVM-compatible execution
+        environment — launched in early 2025 and has become an increasingly important part of the
+        ecosystem. While the direct relationship between HyperEVM activity and Season 2 points has not
+        been officially confirmed, engaging with native HyperEVM protocols creates a broader on-chain
+        footprint that is likely to be considered as the team evaluates distribution criteria. Activities
+        worth pursuing include using HyperEVM-native DEXes for spot swaps, providing liquidity in
+        HyperEVM AMM pools, borrowing and lending on HyperEVM money markets, and interacting with
+        new protocols during their launch periods. For an overview of the HyperEVM DeFi landscape, see{" "}
+        <InlineLink href="/learn/best-hyperevm-defi-projects">Best HyperEVM DeFi Projects</InlineLink>.
+      </P>
+      <P>
+        <strong>Using ecosystem projects.</strong> Beyond HyperEVM, engaging with the broader
+        Hyperliquid ecosystem may contribute to points accumulation. This includes trading on spot
+        markets, participating in HIP-3 prediction markets, and using the native bridge. Diversifying
+        your on-chain activity across multiple protocol layers creates a more robust farming profile
+        and hedges against any single activity category being de-weighted.
       </P>
       <P>
         <strong>Consistency over bursts.</strong> Analysis of Season 1 allocations suggested that
@@ -234,6 +270,8 @@ export default function HyperliquidPointsAirdrop2Page() {
         Users who traded regularly throughout the season tended to receive better allocations relative
         to their total volume than users who concentrated all their activity into a few weeks. This
         pattern — if it continues into Season 2 — favors steady engagement over one-time farming sprints.
+        Consider setting a recurring schedule: a fixed amount of trading each week, HLP deposits
+        maintained continuously, and periodic HyperEVM interactions to build a consistent track record.
       </P>
 
       <H2 id="timeline">Timeline &amp; Speculation</H2>
@@ -314,6 +352,18 @@ export default function HyperliquidPointsAirdrop2Page() {
           <P>{f.answer}</P>
         </div>
       ))}
+
+      <H2 id="next-steps">Next Steps</H2>
+      <P>
+        Understanding the HYPE token itself — its supply mechanics, vesting schedule, and role in
+        Hyperliquid governance — is essential context for evaluating Season 2 farming decisions.
+        See our complete{" "}
+        <InlineLink href="/learn/hype-token-guide">HYPE Token Guide</InlineLink> for a deep dive
+        into tokenomics, staking, and what drives HYPE&apos;s value. If you are new to Hyperliquid
+        entirely,{" "}
+        <InlineLink href="/learn/how-to-use-hyperliquid">How to Use Hyperliquid</InlineLink> covers
+        account setup, depositing funds, and placing your first trade.
+      </P>
     </LearnLayout>
   );
 }
