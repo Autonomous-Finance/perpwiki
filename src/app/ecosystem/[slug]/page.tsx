@@ -26,20 +26,30 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const project = await prisma.project.findUnique({
     where: { slug },
-    select: { name: true, tagline: true, slug: true, approvalStatus: true },
+    select: { name: true, tagline: true, description: true, slug: true, approvalStatus: true },
   });
 
   if (!project || project.approvalStatus !== "APPROVED") {
     return { title: "Not Found" };
   }
 
-  const title = `${project.name} on Hyperliquid — Overview, Features & Analysis`;
-  const description = `Everything you need to know about ${project.name} on Hyperliquid. ${project.tagline || ""}. Layer, category, features, and ecosystem context.`;
+  const title = `${project.name} Ecosystem Guide — Integrations, Use Cases & Analysis`;
+
+  // Use sentences 2-3 of description (sentence 1 is used on project page)
+  let description: string;
+  if (project.description) {
+    const sentences = project.description.split(". ");
+    const eco = sentences.slice(1, 3).join(". ");
+    description = eco ? (eco.endsWith(".") ? eco : eco + ".").slice(0, 155) : `${project.name} ecosystem guide on Hyperliquid. Integrations, use cases, and analysis.`;
+  } else {
+    description = `${project.name} ecosystem guide on Hyperliquid. Integrations, use cases, and analysis.`;
+  }
+
   return {
     title,
     description,
     alternates: {
-      canonical: `${SITE_URL}/ecosystem/${project.slug}`,
+      canonical: `${SITE_URL}/projects/${project.slug}`,
     },
     openGraph: {
       title,
