@@ -8,14 +8,14 @@ const article = getArticle(SLUG)!;
 const { prev, next } = getAdjacentArticles(SLUG);
 
 export const metadata: Metadata = {
-  title: "Hyperliquid API Guide for Developers and Algo Traders",
+  title: "Hyperliquid API & TypeScript SDK Guide for Developers 2026",
   description:
-    "Complete Hyperliquid API guide: Info API, Exchange API, WebSocket feeds, authentication, rate limits, Python and TypeScript SDKs, and building your first trading bot.",
+    "Complete Hyperliquid developer guide: REST API, WebSocket feeds, TypeScript SDK, and Python client. Authentication, rate limits, and working code examples.",
   alternates: { canonical: `https://perp.wiki/learn/${SLUG}` },
   openGraph: {
-    title: "Hyperliquid API Guide for Developers and Algo Traders",
+    title: "Hyperliquid API & TypeScript SDK Guide for Developers 2026",
     description:
-      "Everything you need to build on the Hyperliquid API: endpoints, authentication, WebSocket, SDKs, and bot development.",
+      "Complete Hyperliquid developer guide: REST API, WebSocket feeds, TypeScript SDK, and Python client. Authentication, rate limits, and working code examples.",
     url: `https://perp.wiki/learn/${SLUG}`,
     siteName: "perp.wiki",
     type: "article",
@@ -23,14 +23,15 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     site: "@perpwiki",
-    title: "Hyperliquid API Guide for Developers and Algo Traders",
+    title: "Hyperliquid API & TypeScript SDK Guide for Developers 2026",
     description:
-      "Complete guide to the Hyperliquid API: endpoints, auth, WebSocket, SDKs, and building trading bots.",
+      "Complete Hyperliquid developer guide: REST API, WebSocket feeds, TypeScript SDK, and Python client. Authentication, rate limits, and working code examples.",
   },
 };
 
 const TOC = [
   { id: "introduction", title: "Introduction" },
+  { id: "typescript-sdk", title: "TypeScript / JavaScript SDK" },
   { id: "api-overview", title: "API Overview" },
   { id: "authentication", title: "Authentication" },
   { id: "info-endpoints", title: "Info API Endpoints" },
@@ -112,6 +113,68 @@ export default function HyperliquidApiGuidePage() {
         This guide covers everything you need to get started: the two-API architecture, authentication
         with EIP-712 signatures, key endpoints for market data and trading, real-time WebSocket feeds,
         rate limits, available SDKs, and practical advice for building your first trading bot.
+      </P>
+
+      <H2 id="typescript-sdk">TypeScript / JavaScript SDK</H2>
+      <P>
+        The fastest way to start building on Hyperliquid with TypeScript is the{" "}
+        <InlineLink href="https://github.com/nktkas/hyperliquid">@nktkas/hyperliquid</InlineLink>{" "}
+        SDK — a fully typed client for both the Info and Exchange APIs. Install it with:
+      </P>
+      <P>
+        <code>npm install @nktkas/hyperliquid</code>
+      </P>
+      <P>
+        <strong>Quick start — fetch the order book:</strong>
+      </P>
+      <pre style={{ background: "var(--hw-surface)", padding: "1rem", borderRadius: "4px", overflowX: "auto", fontSize: "0.875rem", lineHeight: "1.5" }}>
+        <code>{`import { HttpTransport, PublicClient } from "@nktkas/hyperliquid";
+
+const client = new PublicClient({ transport: new HttpTransport() });
+
+// Fetch BTC order book
+const book = await client.l2Book({ coin: "BTC" });
+console.log("Best bid:", book.levels[0][0].px);
+console.log("Best ask:", book.levels[1][0].px);`}</code>
+      </pre>
+      <P>
+        <strong>Place an order (authenticated):</strong>
+      </P>
+      <pre style={{ background: "var(--hw-surface)", padding: "1rem", borderRadius: "4px", overflowX: "auto", fontSize: "0.875rem", lineHeight: "1.5" }}>
+        <code>{`import { HttpTransport, WalletClient } from "@nktkas/hyperliquid";
+import { privateKeyToAccount } from "viem/accounts";
+
+const account = privateKeyToAccount("0xYOUR_PRIVATE_KEY");
+const wallet = new WalletClient({
+  account,
+  transport: new HttpTransport(),
+});
+
+// Place a limit buy order for 0.01 BTC at $60,000
+await wallet.order({
+  orders: [{
+    a: 0, // BTC asset index
+    b: true, // buy
+    p: "60000",
+    s: "0.01",
+    r: false, // not reduce-only
+    t: { limit: { tif: "Gtc" } },
+  }],
+  grouping: "na",
+});`}</code>
+      </pre>
+      <P>
+        The SDK provides full TypeScript type definitions for all API responses, making it easy to
+        work with market data and order types in a type-safe way. It supports both Node.js and
+        browser environments.
+      </P>
+      <P>
+        <strong>Python alternative:</strong> If you prefer Python, the official{" "}
+        <code>hyperliquid-python-sdk</code> provides equivalent functionality — see the{" "}
+        <InlineLink href="https://github.com/hyperliquid-dex/hyperliquid-python-sdk">
+          GitHub repository
+        </InlineLink>{" "}
+        for installation and examples.
       </P>
 
       <H2 id="api-overview">API Overview: Two APIs, One Platform</H2>

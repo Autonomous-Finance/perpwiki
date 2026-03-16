@@ -289,9 +289,9 @@ export const LEARN_ARTICLES: LearnArticle[] = [
   },
   {
     slug: "hyperliquid-api-guide",
-    title: "Hyperliquid API Guide for Developers and Algo Traders",
+    title: "Hyperliquid API & TypeScript SDK Guide for Developers 2026",
     description:
-      "Complete Hyperliquid API guide: Info and Exchange endpoints, WebSocket feeds, authentication, rate limits, SDKs, and building your first trading bot.",
+      "Complete Hyperliquid developer guide: REST API, WebSocket feeds, TypeScript SDK, and Python client. Authentication, rate limits, and working code examples.",
     category: "Guides",
     readingTime: "12 min",
     datePublished: "2026-03-11",
