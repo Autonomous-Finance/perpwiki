@@ -2,12 +2,35 @@ import { prisma } from "@/lib/prisma";
 import { ProjectCard } from "@/components/ProjectCard";
 import { SearchBar } from "@/components/SearchBar";
 import { LoadMoreProjects } from "@/components/LoadMoreProjects";
-import { LAYER_META, CATEGORIES } from "@/lib/categories";
+import { LAYER_META, CATEGORIES, categoryToSlug } from "@/lib/categories";
+import { getCategoryContent } from "@/lib/category-content";
 import { stripLogoUrls } from "@/lib/strip-logo";
 import Link from "next/link";
 import type { Metadata } from "next";
 
-export async function generateMetadata(): Promise<Metadata> {
+export async function generateMetadata({
+  searchParams,
+}: {
+  searchParams: Promise<{ category?: string }>;
+}): Promise<Metadata> {
+  const params = await searchParams;
+  const category = params.category || "";
+
+  if (category) {
+    const slug = categoryToSlug(category);
+    const content = getCategoryContent(slug);
+    const count = await prisma.project.count({ where: { approvalStatus: "APPROVED", category } });
+    const description = content
+      ? content.intro
+      : `Browse ${count} ${category} projects on Hyperliquid. Independent reviews, verified listings, and comparisons. perp.wiki`;
+    return {
+      title: `Best ${category} on Hyperliquid 2026`,
+      description,
+      alternates: { canonical: `https://perp.wiki/category/${slug}` },
+      robots: { index: false, follow: true },
+    };
+  }
+
   const count = await prisma.project.count({ where: { approvalStatus: "APPROVED" } });
   const countLabel = `${count}+`;
   const title = `Hyperliquid Ecosystem Projects — ${countLabel} Apps, DEXs & Tools`;
