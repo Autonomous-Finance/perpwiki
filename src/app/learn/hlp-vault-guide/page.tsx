@@ -1,7 +1,12 @@
 import { getArticle, getAdjacentArticles } from "@/lib/learn-articles";
 import { LearnLayout, H2, P, InlineLink, ComparisonTable, CTA } from "@/components/LearnLayout";
 import { JsonLd } from "@/components/JsonLd";
+import { LiveEcosystemStats, fetchHypePrice } from "@/components/learn/LiveData";
+import { YieldCalculator } from "@/components/learn/Interactive";
+import { ProsConsTable, RiskBadge } from "@/components/learn/UiBlocks";
 import type { Metadata } from "next";
+
+export const dynamic = "force-dynamic";
 
 const SLUG = "hlp-vault-guide";
 const article = getArticle(SLUG)!;
@@ -58,7 +63,9 @@ const FAQ = [
   },
 ];
 
-export default function HlpVaultGuidePage() {
+export default async function HlpVaultGuidePage() {
+  const hypePrice = await fetchHypePrice() ?? 24.5;
+
   return (
     <LearnLayout article={article} prev={prev} next={next} toc={TOC}>
       <JsonLd
@@ -85,6 +92,8 @@ export default function HlpVaultGuidePage() {
           })),
         }}
       />
+
+      <LiveEcosystemStats />
 
       <H2 id="what-is-hlp">What Is the HLP Vault?</H2>
       <P>
@@ -309,6 +318,18 @@ export default function HlpVaultGuidePage() {
         (more spread capture and fee revenue), market volatility (more liquidations), and favorable
         funding rate environments.
       </P>
+
+      <YieldCalculator
+        defaultAmount={10000}
+        options={[
+          { label: "HLP Vault", apy: 17, description: "Variable, USDC-denominated — historical range 10-30% APY" },
+          { label: "HYPE Native Staking", apy: 2.25, description: "Fixed validator rewards, 7-day unstaking period" },
+          { label: "Kinetiq kHYPE", apy: 4.5, description: "Liquid staking with DeFi composability" },
+        ]}
+        hypePrice={hypePrice}
+        currency="USD"
+      />
+
       <P>
         Returns are denominated in USDC, meaning depositors have no exposure to HYPE token price
         fluctuations. This makes HLP attractive for users who want DeFi yield without taking on
@@ -316,7 +337,24 @@ export default function HlpVaultGuidePage() {
         extended periods of low volatility can produce below-average yields.
       </P>
 
-      <H2 id="hlp-risks">Risks</H2>
+      <H2 id="hlp-risks">Risks <RiskBadge level="Medium" /></H2>
+
+      <ProsConsTable
+        pros={[
+          "No management or performance fees — 100% of profits to depositors",
+          "No lock-up period — withdraw USDC anytime",
+          "Variable 10-30% APY from market-making, fees, and liquidations",
+          "No HYPE token price exposure — pure USDC yield",
+          "Protocol-operated with transparent on-chain accounting",
+        ]}
+        cons={[
+          "Temporary drawdowns during extreme market volatility (up to 4-5%)",
+          "Variable returns — can underperform in low-volatility periods",
+          "Market manipulation risk (e.g., JELLY incident in March 2025)",
+          "Not composable — vault shares cannot be used in other DeFi protocols",
+        ]}
+      />
+
       <P>
         <strong>Market risk.</strong> HLP&apos;s market-making positions can move against the vault
         during extreme price swings. Large, sudden moves in major assets (BTC, ETH) can cause
@@ -412,12 +450,15 @@ export default function HlpVaultGuidePage() {
         headers={["", "HLP Vault", "Direct HYPE Staking", "Liquid Staking (kHYPE/stHYPE)"]}
         rows={[
           ["Deposit asset", "USDC", "HYPE", "HYPE (receive kHYPE or stHYPE)"],
-          ["Typical APY", "10-30% (variable)", "5-10% (consensus)", "5-10% + DeFi yield"],
+          ["Typical APY", "10-30% (variable)", "~2.25% (consensus)", "~2.1% + DeFi yield"],
           ["Yield source", "Market-making activity", "Validator consensus rewards", "Consensus rewards + DeFi composability"],
           ["Risk profile", "Market risk (drawdowns possible)", "Minimal (small slashing risk)", "Smart contract risk + validator risk"],
           ["Lock-up period", "None — instant withdrawal", "7-day unbonding period", "Instant via DEX (sell kHYPE/stHYPE)"],
           ["DeFi composability", "Not composable", "Not composable", "Fully composable (use as collateral, LP, etc.)"],
           ["Token price exposure", "None (USDC-denominated)", "Full HYPE exposure", "Full HYPE exposure"],
+          ["Minimum deposit", "No minimum", "1 HYPE", "No minimum"],
+          ["Best for", "USDC holders wanting passive yield", "Long-term HYPE believers", "Active DeFi users"],
+          ["Tax treatment", "Likely ordinary income", "Consensus rewards (varies)", "Complex (multiple yield layers)"],
         ]}
       />
       <P>
