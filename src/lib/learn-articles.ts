@@ -271,12 +271,39 @@ export const LEARN_ARTICLES: LearnArticle[] = [
   },
   {
     slug: "hyperliquid-points-airdrop-2",
-    title: "Hyperliquid Points & Airdrop Season 2: What We Know",
+    title: "Hyperliquid Points Season 2 & HYPE Airdrop Guide 2026",
     description:
-      "Guide to Hyperliquid points and airdrop season 2: how points work, earning strategies, timeline, and what to expect after the record-breaking season 1.",
+      "Everything about Hyperliquid Points Season 2 and HYPE token airdrops. How points are earned, what activities count, and how to maximize your HYPE allocation in 2026.",
     category: "Guides",
     readingTime: "10 min",
     datePublished: "2026-03-11",
+  },
+  {
+    slug: "is-hyperliquid-safe",
+    title: "Is Hyperliquid Safe? Security, Risks & Honest Review 2026",
+    description:
+      "Is Hyperliquid safe to trade on? Independent review of Hyperliquid's security model, smart contract audits, custody, decentralization, and real risks. Updated 2026.",
+    category: "Guides",
+    readingTime: "11 min",
+    datePublished: "2026-03-16",
+  },
+  {
+    slug: "hyperliquid-alternatives",
+    title: "Best Hyperliquid Alternatives 2026: Top Perp DEXs Compared",
+    description:
+      "The best alternatives to Hyperliquid for perpetual futures trading in 2026. dYdX, GMX, Vertex, Drift, and more — fees, liquidity, and UX compared.",
+    category: "Comparisons",
+    readingTime: "12 min",
+    datePublished: "2026-03-16",
+  },
+  {
+    slug: "perpetual-futures-tax",
+    title: "Perpetual Futures Tax Guide 2026: How Perps Are Taxed",
+    description:
+      "How perpetual futures contracts are taxed in 2026. Covers US, UK, and EU treatment of crypto perp gains, funding payments, and unrealized PnL. Includes Hyperliquid-specific notes.",
+    category: "Guides",
+    readingTime: "13 min",
+    datePublished: "2026-03-16",
   },
   {
     slug: "perpetual-futures-vs-options",
