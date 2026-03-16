@@ -123,6 +123,8 @@ export default async function ProjectsPage({
   ]);
   const projects = stripLogoUrls(rawProjects);
 
+  const categoryContent = category ? getCategoryContent(categoryToSlug(category)) : null;
+
   const layers = ["HYPERCORE", "HYPEREVM", "HIP3"];
   const activeCategories = await prisma.project.findMany({
     where: { approvalStatus: "APPROVED" },
@@ -181,6 +183,33 @@ export default async function ProjectsPage({
             />
           ))}
       </div>
+
+      {/* Category header when filtered */}
+      {category && (
+        <div className="mb-6 border border-[var(--hw-border)] bg-[var(--hw-surface)] p-5" style={{ borderRadius: "4px" }}>
+          <div className="text-xs text-[var(--hw-text-dim)] mb-3">
+            <Link href="/" className="hover:text-[var(--hw-green)]">Home</Link>
+            {" / "}
+            <Link href="/category" className="hover:text-[var(--hw-green)]">Categories</Link>
+            {" / "}
+            <span>{category}</span>
+          </div>
+          <h1 className="text-xl font-bold text-[var(--hw-text)] font-[family-name:var(--font-space-grotesk)] mb-2">
+            {categoryContent?.headline ?? category} ({projects.length})
+          </h1>
+          {categoryContent?.intro && (
+            <p className="text-sm text-[var(--hw-text-muted)] leading-relaxed mb-3 max-w-2xl">
+              {categoryContent.intro}
+            </p>
+          )}
+          <Link
+            href={`/category/${categoryToSlug(category)}`}
+            className="text-xs font-medium text-[var(--hw-green)] hover:underline"
+          >
+            See full {category} guide with comparisons, FAQs &amp; deep dive →
+          </Link>
+        </div>
+      )}
 
       {/* Results header with count + sort */}
       <div className="mb-4 flex items-center justify-between">
