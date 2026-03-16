@@ -4,6 +4,7 @@ import { SearchBar } from "@/components/SearchBar";
 import { LoadMoreProjects } from "@/components/LoadMoreProjects";
 import { LAYER_META, CATEGORIES, categoryToSlug } from "@/lib/categories";
 import { getCategoryContent } from "@/lib/category-content";
+import { JsonLd } from "@/components/JsonLd";
 import { stripLogoUrls } from "@/lib/strip-logo";
 import Link from "next/link";
 import type { Metadata } from "next";
@@ -148,6 +149,22 @@ export default async function ProjectsPage({
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8">
+      {category && (
+        <JsonLd data={{
+          "@context": "https://schema.org",
+          "@type": "ItemList",
+          name: `${category} Projects on Hyperliquid`,
+          description: categoryContent?.intro,
+          url: `https://perp.wiki/projects?category=${encodeURIComponent(category)}`,
+          numberOfItems: projects.length,
+          itemListElement: projects.slice(0, 20).map((p, i) => ({
+            "@type": "ListItem",
+            position: i + 1,
+            name: p.name,
+            url: `https://perp.wiki/projects/${p.slug}`,
+          })),
+        }} />
+      )}
       <h1 className="font-[family-name:var(--font-space-grotesk)] text-3xl font-bold text-[var(--hw-text)] mb-6">
         All Projects
       </h1>
