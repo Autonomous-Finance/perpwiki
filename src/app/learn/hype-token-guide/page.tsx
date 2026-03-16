@@ -1,7 +1,12 @@
 import { getArticle, getAdjacentArticles } from "@/lib/learn-articles";
 import { LearnLayout, H2, P, InlineLink, ComparisonTable, CTA } from "@/components/LearnLayout";
 import { JsonLd } from "@/components/JsonLd";
+import { LiveHypePrice, LiveEcosystemStats, fetchHypePrice } from "@/components/learn/LiveData";
+import { YieldCalculator } from "@/components/learn/Interactive";
+import { ProjectLogoGrid } from "@/components/learn/ProjectGrid";
 import type { Metadata } from "next";
+
+export const dynamic = "force-dynamic";
 
 const SLUG = "hype-token-guide";
 const article = getArticle(SLUG)!;
@@ -52,7 +57,9 @@ const FAQ = [
   },
 ];
 
-export default function HypeTokenGuidePage() {
+export default async function HypeTokenGuidePage() {
+  const hypePrice = await fetchHypePrice() ?? 24.5;
+
   return (
     <LearnLayout article={article} prev={prev} next={next} toc={TOC}>
       <JsonLd
@@ -80,7 +87,10 @@ export default function HypeTokenGuidePage() {
         }}
       />
 
-      <H2 id="what-is-hype">What Is HYPE?</H2>
+      <H2 id="what-is-hype">What Is HYPE? <LiveHypePrice /></H2>
+
+      <LiveEcosystemStats />
+
       <P>
         HYPE is the native token of Hyperliquid, the high-performance L1 blockchain that processes
         over $3.4B in daily perpetual trading volume across 229 markets. HYPE serves as the backbone
@@ -95,6 +105,16 @@ export default function HypeTokenGuidePage() {
       </P>
 
       <H2 id="tokenomics">Tokenomics</H2>
+      <ComparisonTable
+        headers={["Allocation", "% of Supply", "Tokens", "Notes"]}
+        rows={[
+          ["Genesis Airdrop", "31.0%", "310M", "Distributed Nov 2024, no lockup"],
+          ["Future Community", "38.8%", "388M", "Validator rewards, incentives, future airdrops"],
+          ["Community Grants", "6.0%", "60M", "Developer and researcher grants"],
+          ["Team & Advisors", "23.8%", "238M", "Multi-year vesting schedule"],
+          ["Venture Capital", "0.0%", "0", "No VC allocation — self-funded"],
+        ]}
+      />
       <P>
         HYPE has a total supply of 1 billion tokens. The distribution was designed to be heavily
         community-oriented: approximately 31% was distributed in the genesis airdrop, with additional
@@ -158,6 +178,16 @@ export default function HypeTokenGuidePage() {
         are currently 25 active validators (of 30 total) securing the network. HYPE holders can
         delegate their tokens to any validator to earn a share of consensus rewards.
       </P>
+
+      <YieldCalculator
+        defaultAmount={1000}
+        options={[
+          { label: "Native Staking", apy: 2.25, description: "Direct delegation to validators, 7-day unstaking period" },
+          { label: "kHYPE (Kinetiq)", apy: 4.5, description: "Liquid staking with full DeFi composability" },
+          { label: "stHYPE (StakedHYPE)", apy: 3.5, description: "Liquid staking via Valantis infrastructure" },
+        ]}
+        hypePrice={hypePrice}
+      />
       <P>
         Direct staking APY ranges from roughly 5-10%, depending on the total amount staked and the
         validator&apos;s commission rate. Staking involves a bonding period — when you unstake, there
@@ -386,6 +416,8 @@ export default function HypeTokenGuidePage() {
         ecosystem&apos;s success. HYPE&apos;s price performance since the airdrop has validated
         this approach, with the token appreciating significantly from its launch price.
       </P>
+
+      <ProjectLogoGrid slugs={["hyperlend", "kinetiq", "stakedhype", "felix-protocol"]} title="HYPE Utility — Key Protocols" showTagline />
 
       <H2 id="where-to-get">Where to Get HYPE</H2>
       <P>
