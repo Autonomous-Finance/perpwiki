@@ -1,6 +1,8 @@
 import { getArticle, getAdjacentArticles } from "@/lib/learn-articles";
 import { LearnLayout, H2, P, InlineLink, ComparisonTable, CTA } from "@/components/LearnLayout";
 import { JsonLd } from "@/components/JsonLd";
+import { FeeCalculator } from "@/components/learn/Interactive";
+import { NumberCalloutRow } from "@/components/learn/UiBlocks";
 import Link from "next/link";
 import type { Metadata } from "next";
 
@@ -306,6 +308,8 @@ export default async function HyperliquidFeesExplainedPage() {
 
       <FeeCalculatorPreview />
 
+      <FeeCalculator />
+
       <P>
         For higher-volume traders, Hyperliquid offers volume-based fee tiers that reduce costs
         as your 30-day trading volume increases. The exact tier thresholds and rates are visible
@@ -391,6 +395,13 @@ export default async function HyperliquidFeesExplainedPage() {
       </P>
 
       <H2 id="fee-comparison">Fee Comparison: Hyperliquid vs Competitors</H2>
+
+      <NumberCalloutRow items={[
+        { value: "$1.50", label: "Saved per $10K trade", sub: "vs Binance taker fee" },
+        { value: "$15", label: "Saved per $100K trade", sub: "vs Binance taker fee" },
+        { value: "$0", label: "Gas fees on HyperCore", sub: "zero for order operations" },
+      ]} />
+
       <P>
         To put Hyperliquid&apos;s fees in context, here is how they compare to other major
         perpetual trading platforms:
@@ -411,6 +422,17 @@ export default async function HyperliquidFeesExplainedPage() {
         significantly higher fees and runs on Arbitrum where gas costs are an additional
         consideration.
       </P>
+
+      <ComparisonTable
+        headers={["Volume Tier", "30d Volume", "Maker Fee", "Taker Fee"]}
+        rows={[
+          ["Base", "< $5M", "0.025%", "0.050%"],
+          ["VIP 1", "$5M - $25M", "0.020%", "0.045%"],
+          ["VIP 2", "$25M - $100M", "0.015%", "0.040%"],
+          ["VIP 3", "$100M - $500M", "0.010%", "0.035%"],
+          ["VIP 4", "> $500M", "Rebate", "0.030%"],
+        ]}
+      />
 
       <H2 id="reducing-fees">How to Reduce Your Fees</H2>
       <P>
