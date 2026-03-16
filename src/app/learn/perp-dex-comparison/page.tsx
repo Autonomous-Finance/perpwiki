@@ -1,7 +1,12 @@
 import { getArticle, getAdjacentArticles } from "@/lib/learn-articles";
 import { LearnLayout, H2, P, InlineLink, ComparisonTable, CTA } from "@/components/LearnLayout";
 import { JsonLd } from "@/components/JsonLd";
+import { LiveEcosystemStats } from "@/components/learn/LiveData";
+import { ProsConsTable } from "@/components/learn/UiBlocks";
+import { ProjectLogoGrid } from "@/components/learn/ProjectGrid";
 import type { Metadata } from "next";
+
+export const dynamic = "force-dynamic";
 
 const SLUG = "perp-dex-comparison";
 const article = getArticle(SLUG)!;
@@ -51,7 +56,7 @@ const FAQ = [
   },
 ];
 
-export default function PerpDexComparisonPage() {
+export default async function PerpDexComparisonPage() {
   return (
     <LearnLayout article={article} prev={prev} next={next} toc={TOC}>
       <JsonLd
@@ -78,6 +83,8 @@ export default function PerpDexComparisonPage() {
           })),
         }}
       />
+
+      <LiveEcosystemStats />
 
       <H2 id="overview">The Perp DEX Landscape in 2026</H2>
       <P>
@@ -164,6 +171,24 @@ export default function PerpDexComparisonPage() {
         passive yield from market-making, with historical APY ranging from 10–30%. For a full ecosystem
         overview, see our <InlineLink href="/learn/best-hyperevm-projects">Best HyperEVM Projects</InlineLink> guide.
       </P>
+      <ProsConsTable
+        pros={[
+          "Highest volume and deepest liquidity of any perp DEX (~$3.4B daily)",
+          "Lowest fees: 0.035% taker, 0.01% maker rebate, zero gas",
+          "229+ perpetual markets with permissionless listing via HIP-3",
+          "Full DeFi ecosystem via HyperEVM (lending, LSTs, DEXs)",
+          "Sub-200ms order confirmation on purpose-built L1",
+        ]}
+        cons={[
+          "Smaller validator set than dYdX — centralization concern",
+          "Single-chain risk — all activity depends on Hyperliquid L1 health",
+          "Younger platform (launched 2023) vs multi-year track records of competitors",
+          "Regulatory visibility increases as market share grows",
+        ]}
+      />
+
+      <ProjectLogoGrid slugs={["hyperlend", "kinetiq", "hyperswap", "stakedhype"]} title="Hyperliquid Ecosystem" showTagline />
+
       <P>
         <strong>Best for:</strong> Serious perpetual traders who prioritize execution quality, low fees,
         and deep liquidity. Limit order users who want to earn maker rebates. Anyone who wants CEX-level
@@ -312,6 +337,22 @@ export default function PerpDexComparisonPage() {
       </P>
 
       <H2 id="hl-vs-dydx">Head-to-Head: Hyperliquid vs dYdX</H2>
+
+      <ComparisonTable
+        headers={["", "Hyperliquid", "dYdX v4", "Winner"]}
+        rows={[
+          ["Daily Volume", "~$3.4B", "~$400M", "Hyperliquid"],
+          ["Taker Fee", "0.035%", "0.050%", "Hyperliquid"],
+          ["Maker Fee", "-0.010% (rebate)", "0.020%", "Hyperliquid"],
+          ["Gas Fees", "Zero (HyperCore)", "Minimal", "Hyperliquid"],
+          ["Order Confirmation", "~200ms", "~500ms-1s", "Hyperliquid"],
+          ["Markets", "229+", "~80", "Hyperliquid"],
+          ["Validators", "25", "60+", "dYdX"],
+          ["DeFi Ecosystem", "Full (HyperEVM)", "Perps only", "Hyperliquid"],
+          ["Track Record", "Since 2023", "Since 2021", "dYdX"],
+        ]}
+      />
+
       <P>
         The Hyperliquid vs dYdX comparison is the most consequential matchup in the perp DEX space, as
         these are the two largest CLOB-based perpetual platforms. On raw volume, Hyperliquid dominates
