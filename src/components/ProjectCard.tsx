@@ -12,6 +12,7 @@ interface ProjectCardProps {
   isVerified: boolean;
   logoUrl?: string | null;
   tags?: string;
+  updatedAt?: Date | string | null;
 }
 
 export function ProjectCard({
@@ -24,11 +25,13 @@ export function ProjectCard({
   isVerified,
   logoUrl,
   tags: tagsJson,
+  updatedAt,
 }: ProjectCardProps) {
   const parsedTags: string[] = (() => {
     try { return tagsJson ? JSON.parse(tagsJson) : []; }
     catch { return []; }
   })();
+  const isRecentlyUpdated = updatedAt && (Date.now() - new Date(updatedAt).getTime()) < 7 * 24 * 60 * 60 * 1000;
 
   return (
     <Link href={`/projects/${slug}`} className="group block">
@@ -60,8 +63,15 @@ export function ProjectCard({
           </div>
         )}
         <div className="mt-auto flex items-center justify-between gap-2">
-          <span className="rounded-sm bg-[var(--hw-green-subtle)] px-1.5 py-0.5 text-xs text-[var(--hw-text-muted)]">
-            {category}
+          <span className="flex items-center gap-2">
+            <span className="rounded-sm bg-[var(--hw-green-subtle)] px-1.5 py-0.5 text-xs text-[var(--hw-text-muted)]">
+              {category}
+            </span>
+            {isRecentlyUpdated && (
+              <span className="text-[10px] text-[var(--hw-green)] font-medium">
+                ↑ Updated recently
+              </span>
+            )}
           </span>
           <div className="flex items-center gap-2">
             {status !== "ACTIVE" && (

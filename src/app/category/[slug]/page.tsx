@@ -107,6 +107,14 @@ export default async function CategoryPage({ params }: Props) {
   const verifiedCount = projects.filter((p) => p.isVerified).length;
   const featuredProject = projects.find((p) => p.isFeatured) ?? null;
 
+  const mostRecentUpdate = projects.reduce((latest, p) => {
+    const d = new Date(p.updatedAt);
+    return d > latest ? d : latest;
+  }, new Date(0));
+  const freshness = mostRecentUpdate > new Date(0)
+    ? `Last updated: ${mostRecentUpdate.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}`
+    : null;
+
   // Get category content (rich or fallback)
   const content = getCategoryContent(slug) ?? generateFallbackContent(category, slug);
 
@@ -199,9 +207,14 @@ export default async function CategoryPage({ params }: Props) {
       <h1 className="font-[family-name:var(--font-space-grotesk)] text-3xl sm:text-4xl font-bold text-[var(--hw-text)] mb-3">
         {content.headline}
       </h1>
-      <p className="text-base text-[var(--hw-text-muted)] mb-6 max-w-3xl leading-relaxed">
+      <p className="text-base text-[var(--hw-text-muted)] mb-3 max-w-3xl leading-relaxed">
         {content.intro}
       </p>
+      {freshness && (
+        <p className="text-xs text-[var(--hw-text-dim)] mb-6">
+          {freshness} · {totalProjects} projects listed
+        </p>
+      )}
 
       {/* ── Aggregate Stats ── */}
       <div className="mb-8 grid grid-cols-2 sm:grid-cols-3 gap-4">
