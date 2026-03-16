@@ -1,7 +1,12 @@
 import { getArticle, getAdjacentArticles } from "@/lib/learn-articles";
 import { LearnLayout, H2, P, InlineLink, ComparisonTable, CTA } from "@/components/LearnLayout";
 import { JsonLd } from "@/components/JsonLd";
+import { LiveEcosystemStats } from "@/components/learn/LiveData";
+import { ProsConsTable, NumberCalloutRow } from "@/components/learn/UiBlocks";
+import { ProjectLogoGrid } from "@/components/learn/ProjectGrid";
 import type { Metadata } from "next";
+
+export const dynamic = "force-dynamic";
 
 const SLUG = "best-hyperevm-defi-projects";
 const article = getArticle(SLUG)!;
@@ -59,7 +64,7 @@ const FAQ = [
   },
 ];
 
-export default function BestHyperEvmDefiProjectsPage() {
+export default async function BestHyperEvmDefiProjectsPage() {
   return (
     <LearnLayout article={article} prev={prev} next={next} toc={TOC}>
       <JsonLd
@@ -87,7 +92,15 @@ export default function BestHyperEvmDefiProjectsPage() {
         }}
       />
 
+      <LiveEcosystemStats />
+
       <H2 id="hyperevm-defi-overview">HyperEVM DeFi Overview</H2>
+
+      <NumberCalloutRow items={[
+        { value: "$2B+", label: "Total Value Locked", sub: "across HyperEVM protocols" },
+        { value: "110+", label: "Ecosystem Projects", sub: "and growing" },
+      ]} />
+
       <P>
         <InlineLink href="/learn/what-is-hyperevm">HyperEVM</InlineLink> is the EVM-compatible
         smart contract layer running on Hyperliquid&apos;s L1 blockchain. Since its launch in
@@ -108,6 +121,11 @@ export default function BestHyperEvmDefiProjectsPage() {
         serving a distinct purpose in the ecosystem: stablecoin minting, lending, liquid staking,
         yield aggregation, and delta-neutral strategies.
       </P>
+
+      <ProjectLogoGrid slugs={["hyperlend", "felix-protocol", "morpho"]} title="Lending & CDP" showTagline />
+      <ProjectLogoGrid slugs={["hyperswap", "kittenswap", "gliquid"]} title="DEXs" showTagline />
+      <ProjectLogoGrid slugs={["kinetiq", "stakedhype", "hyperbeat"]} title="Liquid Staking & Yield" showTagline />
+      <ProjectLogoGrid slugs={["across-protocol", "debridge", "layerzero"]} title="Bridges" showTagline />
 
       <H2 id="felix-protocol">Felix Protocol — CDP Stablecoin</H2>
       <P>
@@ -258,6 +276,22 @@ export default function BestHyperEvmDefiProjectsPage() {
           ["Kinetiq", "Liquid Staking", "HYPE", "5-10%", "Validator + contract risk"],
           ["HyperBeat", "Yield Aggregation", "Various", "8-20%", "Strategy risk"],
           ["Liminal", "Delta-Neutral", "USDC", "10-25%", "Funding rate reversal"],
+        ]}
+      />
+
+      <ProsConsTable
+        pros={[
+          "Tight integration with HyperCore trading — DeFi and exchange on same L1",
+          "Low gas costs (fractions of a cent per transaction)",
+          "HYPE and LSTs (kHYPE, stHYPE) provide productive collateral across protocols",
+          "Fastest-growing DeFi ecosystem in 2025-2026 ($0 to $2B+ TVL)",
+          "Composable yield stacking: staking + lending + CDP in one chain",
+        ]}
+        cons={[
+          "Younger ecosystem — fewer battle-tested protocols vs Ethereum",
+          "Smart contract risk across newer, less audited projects",
+          "Single-chain dependency — all DeFi relies on Hyperliquid L1 health",
+          "Smaller developer community vs Ethereum or Solana",
         ]}
       />
 
